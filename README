@@ -13,3 +13,21 @@
 
   You should have received a copy of the GNU General Public License
   along with bashoid.  If not, see <http://www.gnu.org/licenses/>.
+
+  ----------
+  
+  Requirements:
+  Apache Ant - http://ant.apache.org/bindownload.cgi
+  Java JRE - http://www.oracle.com/technetwork/java/javase/downloads/index.html
+
+  Note: Ant is only required for application building.
+
+
+  Building the project:
+  1/ download and extract all project files to some directory (DIR)
+  2/ open the command line, change working directory to DIR
+  3/ run the following command: ant compile jar
+
+  Running the project:
+  In the same directory as mentioned above, run the following command: ant run
+ 
