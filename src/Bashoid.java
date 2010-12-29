@@ -1,1 +1,0 @@
-import org.jibble.pircbot.*;public class Bashoid extends PircBot {        public Bashoid() {        this.setName("Bashoid_XX");    }    }
