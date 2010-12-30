@@ -10,6 +10,7 @@ public class Bashoid extends PircBot {
     public Bashoid() {
         setName("bashoid");
         setAutoNickChange(true);
+        setMessageDelay(0);
     }
 
     @Override
