@@ -21,7 +21,7 @@ public class Bash {
     public Bash() {
         init();
         if ( isOnCooldown() )
-            setErrorOutput();
+            setErrorOutputBecauseOfCooldown();
         else
             downloadParseOutput();
     }
@@ -57,8 +57,7 @@ public class Bash {
             takeOneQuoteAndSetOutput();
             cooldown.start();
         } catch (Exception e) {
-            System.err.println("Cannot parse bash.org webpage");
-            e.printStackTrace();
+            setErrorOutput("Bash.org is currently down.");
         }
     }
 
@@ -111,10 +110,14 @@ public class Bash {
         output.add(url);
     }
 
-    private void setErrorOutput() {
+    private void setErrorOutputBecauseOfCooldown() {
         String error = "I'm currently relaxing. I'll be back in " + cooldown.remainingSeconds() + " seconds.";
+        setErrorOutput(error);
+    }
+
+    private void setErrorOutput(String reason) {
         output = new ArrayList<String>();
-        output.add(error);
+        output.add(reason);
     }
 
     public ArrayList<String> getOutput() {
