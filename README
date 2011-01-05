@@ -18,10 +18,7 @@
   
   Requirements:
   Apache Ant - http://ant.apache.org/bindownload.cgi
-  Java JRE - http://www.oracle.com/technetwork/java/javase/downloads/index.html
-
-  Note: Ant is only required for application building.
-
+  Java JDK - http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
   Building the project:
   1/ download and extract all project files to some directory (DIR)
