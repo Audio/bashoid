@@ -1,6 +1,6 @@
 package bash;
 
-public class Quote implements Comparable {
+public class Quote implements Comparable<Quote> {
 
     private int    id;
     private String content;
@@ -33,9 +33,7 @@ public class Quote implements Comparable {
         return content;
     }
 
-    public int compareTo(Object o) {
-        Quote other = (Quote) o;
-
+    public int compareTo(Quote other) {
         if (score < other.score)
             return 1;
         else if (score > other.score)
