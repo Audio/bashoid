@@ -16,15 +16,4 @@
 
   ----------
   
-  Requirements:
-  Apache Ant - http://ant.apache.org/bindownload.cgi
-  Java JDK - http://www.oracle.com/technetwork/java/javase/downloads/index.html
-
-  Building the project:
-  1/ download and extract all project files to some directory (DIR)
-  2/ open the command line, change working directory to DIR
-  3/ run the following command: ant compile jar
-
-  Running the project:
-  In the same directory as mentioned above, run the following command: ant run
- 
+  How to install and run bashoid: https://github.com/Audio/bashoid/wiki
