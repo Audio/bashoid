@@ -18,17 +18,8 @@ public class Bash {
     private static Cooldown cooldown;
     private static HashMap<String, String> tagList;
 
-    public Bash() {
-        init();
-        if ( isOnCooldown() )
-            setErrorOutputBecauseOfCooldown();
-        else
-            downloadParseOutput();
-    }
-
-    private void init() {
-        if (cooldown == null)
-            cooldown = new Cooldown(30);
+    static {
+        cooldown = new Cooldown(30);
 
         tagList = new HashMap<String, String>();
         tagList.put("&lt;",   "<");
@@ -41,6 +32,13 @@ public class Bash {
         tagList.put("<br />",  "");
         tagList.put("<span style=\"color: ;\">", "");
         tagList.put("</span>", "");
+    }
+
+    public Bash() {
+        if ( isOnCooldown() )
+            setErrorOutputBecauseOfCooldown();
+        else
+            downloadParseOutput();
     }
 
     private boolean isOnCooldown() {
@@ -134,4 +132,5 @@ public class Bash {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         return dateFormat.format(date);
     }
+
 }
