@@ -1,9 +1,7 @@
 package bash;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import utils.Cooldown;
@@ -19,7 +17,7 @@ public class Bash {
     private static HashMap<String, String> tagList;
 
     static {
-        cooldown = new Cooldown(30);
+        cooldown = new Cooldown(120);
 
         tagList = new HashMap<String, String>();
         tagList.put("&lt;",   "<");
@@ -98,7 +96,7 @@ public class Bash {
 
     private void setOutput(Quote quote) {
         String quoteContent = removeHTML( quote.getContent() );
-        String url = "-- http://bash.org/?" + quote.getTextId() + " -- Next bash at " + getNextBashTime();
+        String url = "-- http://bash.org/?" + quote.getTextId() + " -- Next bash in " + getNextBashTime();
 
         output = new ArrayList<String>();
         String[] lines = quoteContent.split("\n");
@@ -127,10 +125,21 @@ public class Bash {
     }
 
     private String getNextBashTime() {
-        long nextCD = cooldown.nextCooldownFromNow() * 1000L;
-        Date date = new Date(nextCD);
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        return dateFormat.format(date);
+        long seconds = cooldown.length();
+        long minutes = seconds / 60;
+        seconds = seconds - minutes*60;
+        return timeToString(minutes, seconds);
+    }
+
+    private String timeToString(long minutes, long seconds) {
+        if (minutes == 0 && seconds == 0)
+            return "0 seconds";
+        else if (minutes == 0)
+            return seconds + " seconds";
+        else if (seconds == 0)
+            return minutes + " minutes";
+        else
+            return minutes + " minutes and " + seconds + " seconds";
     }
 
 }

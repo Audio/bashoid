@@ -12,6 +12,10 @@ public class Cooldown {
         this.whenStarted = 0;
     }
 
+    public long length() {
+        return seconds;
+    }
+
     public void start() {
         whenStarted = currentTime();
     }
