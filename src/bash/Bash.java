@@ -12,6 +12,7 @@ public class Bash {
 
     private ArrayList<Quote> quotes;
     private ArrayList<String> output;
+    private boolean errorOccured;
 
     private static Cooldown cooldown;
     private static HashMap<String, String> tagList;
@@ -37,6 +38,10 @@ public class Bash {
             setErrorOutputBecauseOfCooldown();
         else
             downloadParseOutput();
+    }
+
+    public boolean errorOccured() {
+        return errorOccured;
     }
 
     private boolean isOnCooldown() {
@@ -115,6 +120,7 @@ public class Bash {
     private void setErrorOutput(String reason) {
         output = new ArrayList<String>();
         output.add(reason);
+        errorOccured = true;
     }
 
     public ArrayList<String> getOutput() {

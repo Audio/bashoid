@@ -16,7 +16,7 @@ public class Bashoid extends PircBot {
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         if ( Bash.isBashMessage(message) )
-            sendListOfMessages(channel, new Bash().getOutput() );
+            sendBash(channel, sender);
     }
 
     @Override
@@ -30,6 +30,19 @@ public class Bashoid extends PircBot {
     protected void sendListOfMessages(String target, ArrayList<String> output) {
         for ( String line : output )
             sendMessage(target, line);
+    }
+
+    protected void sendListOfNotices(String target, ArrayList<String> output) {
+        for ( String line : output )
+            sendNotice(target, line);
+    }
+
+    private void sendBash(String channel, String sender) {
+        Bash b = new Bash();
+        if ( b.errorOccured() )
+            sendListOfNotices(sender, b.getOutput() );
+        else
+            sendListOfMessages(channel, b.getOutput() );
     }
 
 }
