@@ -107,7 +107,8 @@ public class Bash {
     }
 
     private void setErrorOutputBecauseOfCooldown() {
-        String error = "I'm currently relaxing. I'll be back in " + cooldown.remainingSeconds() + " seconds.";
+        String error = "I'm currently relaxing. I'll be back in "
+                     + timeToString( cooldown.remainingSeconds() ) + ".";
         setErrorOutput(error);
     }
 
@@ -125,21 +126,33 @@ public class Bash {
     }
 
     private String getNextBashTime() {
-        long seconds = cooldown.length();
-        long minutes = seconds / 60;
-        seconds = seconds - minutes*60;
-        return timeToString(minutes, seconds);
+        return timeToString( cooldown.length() );
     }
 
-    private String timeToString(long minutes, long seconds) {
+    private String timeToString(long seconds) {
+        long minutes = seconds / 60;
+        seconds = seconds - minutes*60;
+
         if (minutes == 0 && seconds == 0)
-            return "0 seconds";
+            return "zero seconds";
         else if (minutes == 0)
-            return seconds + " seconds";
+            return secondsToString(seconds);
         else if (seconds == 0)
-            return minutes + " minutes";
+            return minutesToString(minutes);
         else
-            return minutes + " minutes and " + seconds + " seconds";
+            return minutesToString(minutes) + " and " + secondsToString(seconds);
+    }
+
+    private String minutesToString(long minutes) {
+        return minutes + " " + getWordInSingularOrPluralForm("minute", minutes);
+    }
+
+    private String secondsToString(long seconds) {
+        return seconds + " " + getWordInSingularOrPluralForm("second", seconds);
+    }
+
+    private String getWordInSingularOrPluralForm(String word, long count) {
+        return (count > 1) ? word + "s" : word;
     }
 
 }
