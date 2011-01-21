@@ -7,8 +7,11 @@ import static org.junit.Assert.*;
 public class CooldownTest {
 
     @Test
-    public void testEverything() {
-        assertFalse(false);
+    public void testLenght() {
+        long fiveSeconds = 5;
+        Cooldown instance = new Cooldown(fiveSeconds);
+        long lenght = instance.length();
+        assertEquals(lenght, fiveSeconds);
     }
 
 }
