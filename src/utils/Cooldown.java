@@ -7,7 +7,10 @@ public class Cooldown {
     private long whenStarted;
     private final long NEVER = 0;
 
-    public Cooldown(long seconds) {
+    public Cooldown(long seconds) throws IllegalArgumentException {
+        if (seconds < 1)
+            throw new IllegalArgumentException("Number of seconds must be greater than zero.");
+
         this.seconds = seconds;
         this.whenStarted = 0;
     }
