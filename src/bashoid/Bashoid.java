@@ -17,6 +17,8 @@ public class Bashoid extends PircBot {
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         if ( Bash.isBashMessage(message) )
             sendBash(channel, sender);
+        if ( message.equals(".stats") )
+            sendAction(channel, "slaps " + sender + " with Ozzy Osbourne.");
     }
 
     @Override
