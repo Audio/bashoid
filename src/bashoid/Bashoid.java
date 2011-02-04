@@ -2,6 +2,7 @@ package bashoid;
 
 import bash.Bash;
 import java.util.ArrayList;
+import link.Youtube;
 import org.jibble.pircbot.*;
 
 
@@ -17,8 +18,15 @@ public class Bashoid extends PircBot {
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         if ( Bash.isBashMessage(message) )
             sendBash(channel, sender);
-        if ( message.equals(".stats") )
+
+        else if ( message.equals(".stats") )
             sendAction(channel, "slaps " + sender + " with Ozzy Osbourne.");
+
+        else if ( Youtube.isYoutubeMessage(message) )
+            sendYoutube(channel);
+
+        else
+            Youtube.setVideoIDIfPresent(message);
     }
 
     @Override
@@ -45,6 +53,12 @@ public class Bashoid extends PircBot {
             sendListOfNotices(sender, b.getOutput() );
         else
             sendListOfMessages(channel, b.getOutput() );
+    }
+
+    private void sendYoutube(String channel) {
+        Youtube y = new Youtube();
+        String title = y.getOutput();
+        sendMessage(channel, title);
     }
 
 }
