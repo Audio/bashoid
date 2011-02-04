@@ -53,7 +53,9 @@ public class Youtube {
     }
 
     public static void setVideoIDIfPresent(String message) {
-        videoID = getVideoIDOrEmptyString(message);
+        String newVideoID = getVideoIDOrEmptyString(message);
+        if ( newVideoID.length() > 0 )
+            videoID = newVideoID;
     }
 
     private static String getVideoIDOrEmptyString(String message) {
