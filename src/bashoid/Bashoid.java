@@ -23,7 +23,7 @@ public class Bashoid extends PircBot {
             sendAction(channel, "slaps " + sender + " with Ozzy Osbourne.");
 
         else if ( Youtube.isYoutubeMessage(message) )
-            sendYoutube(channel);
+            sendMessage(channel, Youtube.getLastUsedTitle() );
 
         else
             Youtube.setVideoIDIfPresent(message);
@@ -53,12 +53,6 @@ public class Bashoid extends PircBot {
             sendListOfNotices(sender, b.getOutput() );
         else
             sendListOfMessages(channel, b.getOutput() );
-    }
-
-    private void sendYoutube(String channel) {
-        Youtube y = new Youtube();
-        String title = y.getOutput();
-        sendMessage(channel, title);
     }
 
 }

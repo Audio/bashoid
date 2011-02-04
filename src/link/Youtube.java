@@ -5,57 +5,48 @@ import utils.WebPage;
 
 public class Youtube {
 
-    private static String videoID = "";
     private static final int VIDEO_ID_LENGTH = 11;
     private static final int NOT_FOUND = -1;
 
-    private String output;
-
-    public Youtube() {
-        downloadParseOutput();
-    }
-
-    private void downloadParseOutput() {
+    public static void downloadParseTitle(String videoID) {
         try {
-            WebPage entry = loadVideoEntry();
-            String title = getVideoTitle(entry);
-            setOutput(title);
+            WebPage entry = loadVideoEntry(videoID);
+            String title = getVideoTitleFromRawXML(entry);
+            saveTitle(videoID, title);
         } catch (Exception e) {
-            setOutput("Unknown video");
+            System.err.println( e.getMessage() );
         }
     }
 
-    private WebPage loadVideoEntry() throws Exception {
-        if ( videoID.length() == 0 )
-            throw new Exception("No youtube URL has been received.");
-
+    private static WebPage loadVideoEntry(String videoID) throws Exception {
         return WebPage.loadWebPage("http://gdata.youtube.com/feeds/api/videos/" + videoID);
     }
 
-    private String getVideoTitle(WebPage entry) {
+    private static String getVideoTitleFromRawXML(WebPage entry) throws Exception {
         String content = entry.getContent();
         String toSearch = "<title type='text'>";
         int pos = content.indexOf(toSearch);
         if (pos == NOT_FOUND)
-            return "That link was seriously damaged.";
+            throw new Exception("Cannot find video title in the XML source.");
 
         int begin = pos + toSearch.length();
         int end = content.indexOf("</title>", begin);
         return content.substring(begin, end);
     }
 
-    public String getOutput() {
-        return output;
+    public static String getTitle(String videoID) {
+        // todo contains
+        return YoutubeCache.get(videoID);
     }
 
-    private void setOutput(String output) {
-        this.output = output;
+    private static void saveTitle(String videoID, String title) {
+        YoutubeCache.add(videoID, title);
     }
 
     public static void setVideoIDIfPresent(String message) {
         String newVideoID = getVideoIDOrEmptyString(message);
-        if ( newVideoID.length() > 0 )
-            videoID = newVideoID;
+        if ( newVideoID.length() > 0 && !YoutubeCache.contains(newVideoID) )
+            downloadParseTitle(newVideoID);
     }
 
     private static String getVideoIDOrEmptyString(String message) {
@@ -70,6 +61,10 @@ public class Youtube {
 
     public static boolean isYoutubeMessage(String message) {
         return message.equals("y");
+    }
+
+    public static String getLastUsedTitle() {
+        return YoutubeCache.getLastTitle();
     }
 
 }
