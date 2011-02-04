@@ -62,7 +62,7 @@ public class Bash {
         }
     }
 
-    public WebPage loadWebPage() throws Exception {
+    private WebPage loadWebPage() throws Exception {
         return WebPage.loadWebPage("http://bash.org/?random1");
     }
 
