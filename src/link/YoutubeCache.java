@@ -14,7 +14,6 @@ public class YoutubeCache {
     }
 
     public static void add(String videoID, String title) {
-        lastUsedVideoID = videoID;
         if ( !contains(videoID) )
             links.put(videoID, title);
     }
@@ -25,7 +24,11 @@ public class YoutubeCache {
 
     public static String get(String videoID) {
         String title = links.get(videoID);
-        return (title == null) ? "" : title;
+        return (title == null) ? "Unknown video ID" : title;
+    }
+
+    public static void setLastUsed(String videoID) {
+        lastUsedVideoID = videoID;
     }
 
     public static String getLastTitle() {

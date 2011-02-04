@@ -34,19 +34,16 @@ public class Youtube {
         return content.substring(begin, end);
     }
 
-    public static String getTitle(String videoID) {
-        // todo contains
-        return YoutubeCache.get(videoID);
-    }
-
     private static void saveTitle(String videoID, String title) {
         YoutubeCache.add(videoID, title);
     }
 
     public static void setVideoIDIfPresent(String message) {
         String newVideoID = getVideoIDOrEmptyString(message);
-        if ( newVideoID.length() > 0 && !YoutubeCache.contains(newVideoID) )
+        if ( newVideoID.length() > 0 ) {
             downloadParseTitle(newVideoID);
+            YoutubeCache.setLastUsed(newVideoID);
+        }
     }
 
     private static String getVideoIDOrEmptyString(String message) {
