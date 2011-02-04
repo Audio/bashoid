@@ -47,13 +47,26 @@ public class Youtube {
     }
 
     private static String getVideoIDOrEmptyString(String message) {
-        String toSearch = "youtube.com/watch?v=";
-        int pos = message.indexOf(toSearch);
-        if (pos == NOT_FOUND)
+        int beginPosition = getPositionWhenVideoIDStarts(message);
+        if (beginPosition == NOT_FOUND)
             return "";
 
-        int begin = pos + toSearch.length();
-        return message.substring(begin, begin + VIDEO_ID_LENGTH);
+        return message.substring(beginPosition, beginPosition + VIDEO_ID_LENGTH);
+    }
+
+    private static int getPositionWhenVideoIDStarts(String message) {
+        int standardPosition = videoIDPositionInStandardURL(message);
+        return (standardPosition == NOT_FOUND) ? videoIDPositionInShortenURL(message) : standardPosition;
+    }
+
+    private static int videoIDPositionInStandardURL(String message) {
+        int position = message.indexOf("youtube.com/watch?v=");
+        return (position != NOT_FOUND) ? position + 20 : NOT_FOUND;
+    }
+
+    private static int videoIDPositionInShortenURL(String message) {
+        int position = message.indexOf("youtu.be/");
+        return (position != NOT_FOUND) ? position + 9 : NOT_FOUND;
     }
 
     public static boolean isYoutubeMessage(String message) {
