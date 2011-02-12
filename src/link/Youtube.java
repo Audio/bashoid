@@ -40,7 +40,7 @@ public class Youtube {
 
     public static void setVideoIDIfPresent(String message) {
         String newVideoID = getVideoIDOrEmptyString(message);
-        if ( newVideoID.length() > 0 ) {
+        if ( !newVideoID.equals("") ) {
             downloadParseTitle(newVideoID);
             YoutubeCache.setLastUsed(newVideoID);
         }
@@ -55,18 +55,13 @@ public class Youtube {
     }
 
     private static int getPositionWhenVideoIDStarts(String message) {
-        int standardPosition = videoIDPositionInStandardURL(message);
-        return (standardPosition == NOT_FOUND) ? videoIDPositionInShortenURL(message) : standardPosition;
+        int pos = videoIDPosition(message, "youtube.com/watch?v=");
+        return (pos == NOT_FOUND) ? videoIDPosition(message, "youtu.be/") : pos;
     }
 
-    private static int videoIDPositionInStandardURL(String message) {
-        int position = message.indexOf("youtube.com/watch?v=");
-        return (position != NOT_FOUND) ? position + 20 : NOT_FOUND;
-    }
-
-    private static int videoIDPositionInShortenURL(String message) {
-        int position = message.indexOf("youtu.be/");
-        return (position != NOT_FOUND) ? position + 9 : NOT_FOUND;
+    private static int videoIDPosition(String message, final String URL_PATTERN) {
+        int position = message.indexOf(URL_PATTERN);
+        return (position != NOT_FOUND) ? position + URL_PATTERN.length() : NOT_FOUND;
     }
 
     public static boolean isYoutubeMessage(String message) {
