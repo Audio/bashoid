@@ -25,6 +25,11 @@ public class Bashoid extends PircBot {
     }
 
     @Override
+    protected void onAction(String sender, String login, String hostname, String target, String action) {
+        Youtube.setVideoIDIfPresent(action);
+    }
+
+    @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         if ( Bash.isBashMessage(message) )
             sendBash(channel, sender);
