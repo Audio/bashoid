@@ -1,6 +1,7 @@
 package bashoid;
 
 import bash.Bash;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import link.Youtube;
 import org.jibble.pircbot.*;
@@ -12,6 +13,15 @@ public class Bashoid extends PircBot {
         setName("bashoid");
         setAutoNickChange(true);
         setMessageDelay(0);
+        trySetUTFEncoding();
+    }
+
+    private void trySetUTFEncoding() {
+        try {
+            setEncoding("UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("Cannot set UTF-8 encoding.");
+        }
     }
 
     @Override

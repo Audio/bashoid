@@ -24,10 +24,10 @@ public class WebPage {
         return url;
     }
 
-    public static WebPage loadWebPage(String address) throws Exception {
+    public static WebPage loadWebPage(String address, String encoding) throws Exception {
         URL url = new URL(address);
         InputStream is = url.openStream();
-        BufferedReader reader = new BufferedReader( new InputStreamReader(is) );
+        BufferedReader reader = new BufferedReader( new InputStreamReader(is, encoding) );
 
         String line, lines = "";
         while (( line = reader.readLine() ) != null)

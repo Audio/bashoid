@@ -63,7 +63,7 @@ public class Bash {
     }
 
     private WebPage loadWebPage() throws Exception {
-        return WebPage.loadWebPage("http://bash.org/?random1");
+        return WebPage.loadWebPage("http://bash.org/?random1", "ISO-8859-1");
     }
 
     private void sortQuotesByScore() {

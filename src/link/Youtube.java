@@ -19,7 +19,7 @@ public class Youtube {
     }
 
     private static WebPage loadVideoEntry(String videoID) throws Exception {
-        return WebPage.loadWebPage("http://gdata.youtube.com/feeds/api/videos/" + videoID);
+        return WebPage.loadWebPage("http://gdata.youtube.com/feeds/api/videos/" + videoID, "UTF-8");
     }
 
     private static String getVideoTitleFromRawXML(WebPage entry) throws Exception {
