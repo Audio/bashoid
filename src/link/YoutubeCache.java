@@ -27,8 +27,10 @@ public class YoutubeCache {
 
     public static void setLastUsed(String videoID) {
         for (LinkInfo li : links)
-            if ( li.isSameAs(videoID) )
+            if ( li.isSameAs(videoID) ) {
                 lastUsedVideoID = li;
+                lastUsedVideoID.setTimeOfLastUsageToNow();
+            }
     }
 
     public static LinkInfo getLastInfo() throws Exception {

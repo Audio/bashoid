@@ -27,12 +27,17 @@ public class LinkInfo {
         return title;
     }
 
-    public long timeOfLastUsage() {
-        return timestamp;
+    public String formattedTimeOfLastUsage() {
+        long diff = now() - timestamp;
+        return diff + " seconds";
     }
 
     public void setTimeOfLastUsageToNow() {
-        timestamp = System.currentTimeMillis() / 1000L;
+        timestamp = now();
+    }
+
+    private long now() {
+        return System.currentTimeMillis() / 1000L;
     }
 
     public boolean isSameAs(String anotherID) {
