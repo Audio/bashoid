@@ -25,11 +25,11 @@ public class YoutubeCache {
         return false;
     }
 
-    public static void setLastUsed(String videoID) {
+    public static void setLastUsed(String videoID, String author) {
         for (LinkInfo li : links)
             if ( li.isSameAs(videoID) ) {
                 lastUsedVideoID = li;
-                lastUsedVideoID.setTimeOfLastUsageToNow();
+                lastUsedVideoID.setAuthorAndResetTime(author);
             }
     }
 

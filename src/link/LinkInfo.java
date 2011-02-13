@@ -10,9 +10,8 @@ public class LinkInfo {
 
     public LinkInfo(String videoID, String author, String title) {
         this.videoID = videoID;
-        this.author = author;
         this.title = title;
-        setTimeOfLastUsageToNow();
+        setAuthorAndResetTime(author);
     }
 
     public String videoID() {
@@ -32,7 +31,8 @@ public class LinkInfo {
         return diff + " seconds";
     }
 
-    public void setTimeOfLastUsageToNow() {
+    public void setAuthorAndResetTime(String newAuthor) {
+        author = newAuthor;
         timestamp = now();
     }
 

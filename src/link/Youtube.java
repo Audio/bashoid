@@ -38,7 +38,7 @@ public class Youtube {
         String newVideoID = getVideoIDOrEmptyString(message);
         if ( !newVideoID.equals("") ) {
             saveToCacheIfNeeded(newVideoID, author);
-            YoutubeCache.setLastUsed(newVideoID);
+            YoutubeCache.setLastUsed(newVideoID, author);
         }
     }
 
