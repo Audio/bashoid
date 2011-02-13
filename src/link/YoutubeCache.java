@@ -1,38 +1,41 @@
 package link;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 
 public class YoutubeCache {
 
-    private static HashMap<String, String> links;
-    private static String lastUsedVideoID;
+    private static ArrayList<LinkInfo> links;
+    private static LinkInfo lastUsedVideoID;
 
     static {
-        links = new HashMap<String, String>();
-        lastUsedVideoID = "";
+        links = new ArrayList<LinkInfo>();
     }
 
-    public static void add(String videoID, String title) {
-        if ( !contains(videoID) )
-            links.put(videoID, title);
+    public static void add(LinkInfo info) {
+        links.add(info);
     }
 
     public static boolean contains(String videoID) {
-        return links.containsKey(videoID);
-    }
+        for (LinkInfo li : links) {
+            if ( li.isSameAs(videoID) )
+                return true;
+        }
 
-    public static String get(String videoID) {
-        String title = links.get(videoID);
-        return (title == null) ? "Unknown video ID" : title;
+        return false;
     }
 
     public static void setLastUsed(String videoID) {
-        lastUsedVideoID = videoID;
+        for (LinkInfo li : links)
+            if ( li.isSameAs(videoID) )
+                lastUsedVideoID = li;
     }
 
-    public static String getLastTitle() {
-        return get(lastUsedVideoID);
+    public static LinkInfo getLastInfo() throws Exception {
+        if (lastUsedVideoID == null)
+            throw new Exception("No YouTube link has been shared yet");
+
+        return lastUsedVideoID;
     }
 
 }

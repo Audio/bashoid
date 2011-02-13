@@ -26,7 +26,7 @@ public class Bashoid extends PircBot {
 
     @Override
     protected void onAction(String sender, String login, String hostname, String target, String action) {
-        Youtube.setVideoIDIfPresent(action);
+        Youtube.setVideoIDIfPresent(action, sender);
     }
 
     @Override
@@ -38,10 +38,10 @@ public class Bashoid extends PircBot {
             sendAction(channel, "slaps " + sender + " with Ozzy Osbourne.");
 
         else if ( Youtube.isYoutubeMessage(message) )
-            sendMessage(channel, Youtube.getLastUsedTitle() );
+            sendMessage(channel, Youtube.getLastUsedLinkInfo() );
 
         else
-            Youtube.setVideoIDIfPresent(message);
+            Youtube.setVideoIDIfPresent(message, sender);
     }
 
     @Override

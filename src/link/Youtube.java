@@ -8,11 +8,11 @@ public class Youtube {
     private static final int VIDEO_ID_LENGTH = 11;
     private static final int NOT_FOUND = -1;
 
-    public static void downloadParseTitle(String videoID) {
+    public static void downloadParseSave(String videoID, String author) {
         try {
             WebPage entry = loadVideoEntry(videoID);
             String title = getVideoTitleFromRawXML(entry);
-            saveTitle(videoID, title);
+            YoutubeCache.add( new LinkInfo(videoID, author, title) );
         } catch (Exception e) {
             System.err.println( e.getMessage() );
         }
@@ -34,16 +34,17 @@ public class Youtube {
         return content.substring(begin, end);
     }
 
-    private static void saveTitle(String videoID, String title) {
-        YoutubeCache.add(videoID, title);
-    }
-
-    public static void setVideoIDIfPresent(String message) {
+    public static void setVideoIDIfPresent(String message, String author) {
         String newVideoID = getVideoIDOrEmptyString(message);
         if ( !newVideoID.equals("") ) {
-            downloadParseTitle(newVideoID);
+            saveToCacheIfNeeded(newVideoID, author);
             YoutubeCache.setLastUsed(newVideoID);
         }
+    }
+
+    private static void saveToCacheIfNeeded(String videoID, String autor) {
+        if ( !YoutubeCache.contains(videoID) )
+            downloadParseSave(videoID, autor);
     }
 
     private static String getVideoIDOrEmptyString(String message) {
@@ -68,8 +69,14 @@ public class Youtube {
         return message.equals("y");
     }
 
-    public static String getLastUsedTitle() {
-        return YoutubeCache.getLastTitle();
+    public static String getLastUsedLinkInfo() {
+        try {
+            LinkInfo li = YoutubeCache.getLastInfo();
+            return "http://youtu.be/" + li.videoID() + " [" + li.title()
+                    + "], shared by " + li.author()  + " <some time> ago";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
     }
 
 }
