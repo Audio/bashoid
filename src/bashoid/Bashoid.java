@@ -5,15 +5,21 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import link.Youtube;
 import org.jibble.pircbot.*;
+import utils.Config;
 
 
 public class Bashoid extends PircBot {
     
     public Bashoid() {
-        setName("bashoid");
+        setName( getNickFromConfig("bashoid") );
         setAutoNickChange(true);
         setMessageDelay(0);
         trySetUTFEncoding();
+    }
+
+    private String getNickFromConfig(String defaultNick) {
+        Config config = new Config();
+        return config.getValue("nickname", defaultNick);
     }
 
     private void trySetUTFEncoding() {
