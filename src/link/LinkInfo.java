@@ -3,7 +3,7 @@ package link;
 import utils.CurrentTime;
 
 
-public class LinkInfo {
+public final class LinkInfo {
 
     private String videoID;
     private String author;
