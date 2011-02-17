@@ -20,7 +20,7 @@ public class Cooldown {
     }
 
     public void start() {
-        whenStarted = currentTime();
+        whenStarted = CurrentTime.inSeconds();
     }
 
     public void stop() {
@@ -32,28 +32,24 @@ public class Cooldown {
         return whenStarted != NEVER;
     }
 
-    private long currentTime() {
-        return System.currentTimeMillis() / 1000L;
-    }
-
     private void setInactiveIfExpired() {
         if (whenStarted != NEVER && timeElapsed() > seconds)
             whenStarted = NEVER;
     }
 
     private long timeElapsed() {
-        return currentTime() - whenStarted;
+        return CurrentTime.inSeconds() - whenStarted;
     }
 
     public long remainingSeconds() {
         if ( !isActive() )
             return 0;
 
-        return whenStarted + seconds - currentTime();
+        return whenStarted + seconds - CurrentTime.inSeconds();
     }
 
     public long nextCooldownFromNow() {
-        return currentTime() + seconds;
+        return CurrentTime.inSeconds() + seconds;
     }
 
 }

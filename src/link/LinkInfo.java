@@ -1,5 +1,7 @@
 package link;
 
+import utils.CurrentTime;
+
 
 public class LinkInfo {
 
@@ -27,17 +29,13 @@ public class LinkInfo {
     }
 
     public String formattedTimeOfLastUsage() {
-        long diff = now() - timestamp;
+        long diff = CurrentTime.inSeconds() - timestamp;
         return diff + " seconds";
     }
 
     public void setAuthorAndResetTime(String newAuthor) {
         author = newAuthor;
-        timestamp = now();
-    }
-
-    private long now() {
-        return System.currentTimeMillis() / 1000L;
+        timestamp = CurrentTime.inSeconds();
     }
 
     public boolean isSameAs(String anotherID) {

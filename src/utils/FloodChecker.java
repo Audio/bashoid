@@ -40,17 +40,12 @@ public class FloodChecker {
     }
 
     private static boolean isOld(Long time) {
-        return ( now() - time > ONE_MINUTE );
-    }
-
-    private static long now() {
-        // TODO z jednoho zdroje, stejne v CD a YT
-        return System.currentTimeMillis() / 1000L;
+        return ( CurrentTime.inSeconds() - time > ONE_MINUTE );
     }
 
     public static void logServed(String hostname) {
         ArrayList<Long> times = getTimesServed(hostname);
-        times.add( now() );
+        times.add( CurrentTime.inSeconds() );
         records.put(hostname, times);
     }
 
