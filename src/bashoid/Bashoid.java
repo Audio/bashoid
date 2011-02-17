@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import link.Youtube;
 import org.jibble.pircbot.*;
 import utils.Config;
+import utils.FloodChecker;
 
 
 public class Bashoid extends PircBot {
     
+    private enum MessageType {UNKNOWN, BASH, YOUTUBE, STATS};
+
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
         setAutoNickChange(true);
@@ -30,6 +33,17 @@ public class Bashoid extends PircBot {
         }
     }
 
+    private MessageType getType(String message) {
+        if ( Bash.isBashMessage(message) )
+            return MessageType.BASH;
+        else if ( Youtube.isYoutubeMessage(message) )
+            return MessageType.YOUTUBE;
+        else if ( message.equals(".stats") )
+            return MessageType.STATS;
+
+        return MessageType.UNKNOWN;
+    }
+
     @Override
     protected void onAction(String sender, String login, String hostname, String target, String action) {
         Youtube.setVideoIDIfPresent(action, sender);
@@ -37,17 +51,24 @@ public class Bashoid extends PircBot {
 
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
-        if ( Bash.isBashMessage(message) )
-            sendBash(channel, sender);
+        MessageType type = getType(message);
+        if ( type != MessageType.UNKNOWN && FloodChecker.canBeServed(hostname) ) {
+            switch (type) {
+                case BASH:
+                    sendBash(channel, sender);
+                    break;
+                case YOUTUBE:
+                    sendMessage(channel, Youtube.getLastUsedLinkInfo() );
+                    break;
+                case STATS:
+                    sendAction(channel, "slaps " + sender + " with Ozzy Osbourne.");
+                    break;
+                default:
+            }
+            FloodChecker.logServed(hostname);
+        }
 
-        else if ( message.equals(".stats") )
-            sendAction(channel, "slaps " + sender + " with Ozzy Osbourne.");
-
-        else if ( Youtube.isYoutubeMessage(message) )
-            sendMessage(channel, Youtube.getLastUsedLinkInfo() );
-
-        else
-            Youtube.setVideoIDIfPresent(message, sender);
+        Youtube.setVideoIDIfPresent(message, sender);
     }
 
     @Override
