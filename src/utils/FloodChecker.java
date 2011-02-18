@@ -2,6 +2,7 @@ package utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.ListIterator;
 
 
 public class FloodChecker {
@@ -31,12 +32,12 @@ public class FloodChecker {
     }
 
     private static ArrayList<Long> removeOldRecords(ArrayList<Long> times) {
-        ArrayList<Long> cleaned = new ArrayList<Long>();
-        for (Long time : times)
-            if ( !isOld(time) )
-                cleaned.add(time);
+        ListIterator it = times.listIterator();
+        while ( it.hasNext() )
+            if ( isOld( (Long) it.next() ))
+                it.remove();
 
-        return cleaned;
+        return times;
     }
 
     private static boolean isOld(Long time) {
