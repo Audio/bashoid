@@ -22,7 +22,7 @@ public class FloodChecker {
             return true;
 
         ArrayList<Long> times = records.get(hostname);
-        times = removeOldRecords(times);
+        removeOldRecords(times);
         records.put(hostname, times);
         return ( times.size() < MAX_SERVES_PER_TIME );
     }
@@ -31,13 +31,11 @@ public class FloodChecker {
         return records.containsKey(hostname);
     }
 
-    private static ArrayList<Long> removeOldRecords(ArrayList<Long> times) {
+    private static void removeOldRecords(ArrayList<Long> times) {
         ListIterator it = times.listIterator();
         while ( it.hasNext() )
             if ( isOld( (Long) it.next() ))
                 it.remove();
-
-        return times;
     }
 
     private static boolean isOld(Long time) {
