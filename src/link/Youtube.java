@@ -73,8 +73,8 @@ public class Youtube {
         try {
             LinkInfo li = YoutubeCache.getLastInfo();
             return li.title() + " | http://youtu.be/" + li.videoID() + " | "
-                              + "shared by " + li.author()  + " "
-                              + li.formattedTimeOfLastUsage() + " ago";
+                              + "shared by " + li.author()  + " at "
+                              + li.formattedTimeOfLastUsage();
         } catch (Exception e) {
             return e.getMessage();
         }

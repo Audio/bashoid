@@ -1,6 +1,6 @@
 package link;
 
-import utils.CurrentTime;
+import java.util.Calendar;
 
 
 public final class LinkInfo {
@@ -29,13 +29,14 @@ public final class LinkInfo {
     }
 
     public String formattedTimeOfLastUsage() {
-        long diff = CurrentTime.inSeconds() - timestamp;
-        return diff + " seconds";
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(timestamp);
+        return c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE);
     }
 
     public void setAuthorAndResetTime(String newAuthor) {
         author = newAuthor;
-        timestamp = CurrentTime.inSeconds();
+        timestamp = System.currentTimeMillis();
     }
 
     public boolean isSameAs(String anotherID) {
