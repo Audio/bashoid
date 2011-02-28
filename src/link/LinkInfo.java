@@ -1,5 +1,6 @@
 package link;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 
@@ -31,7 +32,8 @@ public final class LinkInfo {
     public String formattedTimeOfLastUsage() {
         Calendar c = Calendar.getInstance();
         c.setTimeInMillis(timestamp);
-        return c.get(Calendar.HOUR_OF_DAY) + ":" + c.get(Calendar.MINUTE);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+        return df.format( c.getTime() );
     }
 
     public void setAuthorAndResetTime(String newAuthor) {
