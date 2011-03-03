@@ -13,7 +13,7 @@ public class FloodChecker {
 
     static {
         ONE_MINUTE = 60;
-        MAX_SERVES_PER_TIME = 5;
+        MAX_SERVES_PER_TIME = 3;
         records = new HashMap<String, ArrayList<Long>>();
     }
 
