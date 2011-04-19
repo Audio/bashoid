@@ -5,19 +5,27 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import link.Youtube;
 import org.jibble.pircbot.*;
+import period.PeriodicEvent;
+import period.PeriodicListener;
+import period.PeriodicMessage;
 import utils.Config;
 import utils.FloodChecker;
 
 
-public class Bashoid extends PircBot {
-    
+public class Bashoid extends PircBot implements PeriodicListener {
+
     private enum MessageType {UNKNOWN, BASH, YOUTUBE, STATS};
+    private PeriodicMessage periodicMessage;
+
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
         setAutoNickChange(true);
         setMessageDelay(0);
         trySetUTFEncoding();
+
+        periodicMessage = new PeriodicMessage();
+        periodicMessage.addEventListener(this);
     }
 
     private String getNickFromConfig(String defaultNick) {
@@ -42,6 +50,13 @@ public class Bashoid extends PircBot {
             return MessageType.STATS;
 
         return MessageType.UNKNOWN;
+    }
+
+    @Override
+    public void sendPeriodicMessage(PeriodicEvent event) {
+        String[] channels = getChannels();
+        for (String channel : channels)
+            sendMessage(channel, event.getMessage() );
     }
 
     @Override
