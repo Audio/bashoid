@@ -1,6 +1,7 @@
 package period;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.TimerTask;
 
 
@@ -15,7 +16,8 @@ public class PeriodicGenerator extends TimerTask {
 
     @Override
     public void run() {
-        PeriodicEvent event = new PeriodicEvent(this, "g << \"!wowbot wowbot wakeup!\"");
+        String message = "g << \"!wowbot wowbot " + new Random().nextInt() + "\"";
+        PeriodicEvent event = new PeriodicEvent(this, message);
         for(PeriodicListener l : listeners)
             l.sendPeriodicMessage(event);
     }
