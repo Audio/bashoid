@@ -16,7 +16,7 @@ public class PeriodicGenerator extends TimerTask {
 
     @Override
     public void run() {
-        String message = "g << \"!wowbot wowbot " + new Random().nextInt() + "\"";
+        String message = "Hey, I'm still alive!";
         PeriodicEvent event = new PeriodicEvent(this, message);
         for(PeriodicListener l : listeners)
             l.sendPeriodicMessage(event);

@@ -24,8 +24,9 @@ public class Bashoid extends PircBot implements PeriodicListener {
         setMessageDelay(0);
         trySetUTFEncoding();
 
-        periodicMessage = new PeriodicMessage();
-        periodicMessage.addEventListener(this);
+        // currently not needed
+        // periodicMessage = new PeriodicMessage();
+        // periodicMessage.addEventListener(this);
     }
 
     private String getNickFromConfig(String defaultNick) {
