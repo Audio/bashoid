@@ -34,12 +34,14 @@ public class Youtube {
         return content.substring(begin, end);
     }
 
-    public static void setVideoIDIfPresent(String message, String author) {
+    public static boolean setVideoIDIfPresent(String message, String author) {
         String newVideoID = getVideoIDOrEmptyString(message);
-        if ( !newVideoID.equals("") ) {
+        boolean isVideoPresent = !newVideoID.equals("");
+        if (isVideoPresent) {
             saveToCacheIfNeeded(newVideoID, author);
             YoutubeCache.setLastUsed(newVideoID, author);
         }
+        return isVideoPresent;
     }
 
     private static void saveToCacheIfNeeded(String videoID, String autor) {
@@ -65,16 +67,15 @@ public class Youtube {
         return (position != NOT_FOUND) ? position + URL_PATTERN.length() : NOT_FOUND;
     }
 
-    public static boolean isYoutubeMessage(String message) {
-        return message.equals("y");
-    }
-
-    public static String getLastUsedLinkInfo() {
+    public static String getLastUsedLinkInfo(boolean shortVersion) {
         try {
             LinkInfo li = YoutubeCache.getLastInfo();
-            return li.title() + " | http://youtu.be/" + li.videoID() + " | "
-                              + "shared by " + li.author()  + " at "
-                              + li.formattedTimeOfLastUsage();
+            if (shortVersion)
+                return "YouTube: " + li.title();
+            else
+                return li.title() + " | http://youtu.be/" + li.videoID() + " | "
+                                  + "shared by " + li.author()  + " at "
+                                  + li.formattedTimeOfLastUsage();
         } catch (Exception e) {
             return e.getMessage();
         }
