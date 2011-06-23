@@ -1,5 +1,6 @@
 package link;
 
+import utils.Formatter;
 import utils.WebPage;
 
 
@@ -31,7 +32,7 @@ public class Youtube {
 
         int begin = pos + toSearch.length();
         int end = content.indexOf("</title>", begin);
-        return content.substring(begin, end);
+        return Formatter.removeHTML( content.substring(begin, end) );
     }
 
     public static boolean setVideoIDIfPresent(String message, String author) {
