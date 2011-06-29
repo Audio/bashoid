@@ -14,7 +14,7 @@ import utils.FloodChecker;
 
 public class Bashoid extends PircBot implements PeriodicListener {
 
-    private enum MessageType {UNKNOWN, BASH, STATS};
+    private enum MessageType {UNKNOWN, BASH, STATS, MEGGIE};
     private PeriodicMessage periodicMessage;
 
 
@@ -42,11 +42,13 @@ public class Bashoid extends PircBot implements PeriodicListener {
         }
     }
 
-    private MessageType getType(String message) {
+    private MessageType getType(String sender, String message) {
         if ( Bash.isBashMessage(message) )
             return MessageType.BASH;
         else if ( message.equals(".stats") )
             return MessageType.STATS;
+        else if ( sender.indexOf("meggie") > -1 && message.indexOf("co?") > -1 )
+            return MessageType.MEGGIE;
 
         return MessageType.UNKNOWN;
     }
@@ -65,7 +67,7 @@ public class Bashoid extends PircBot implements PeriodicListener {
 
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
-        MessageType type = getType(message);
+        MessageType type = getType(sender, message);
         if ( type != MessageType.UNKNOWN && FloodChecker.canBeServed(hostname) ) {
             switch (type) {
                 case BASH:
@@ -73,6 +75,9 @@ public class Bashoid extends PircBot implements PeriodicListener {
                     break;
                 case STATS:
                     sendAction(channel, "slaps " + sender + " with Ozzy Osbourne.");
+                    break;
+                case MEGGIE:
+                    sendMessage(channel, "meggie: nic!");
                     break;
                 default:
             }

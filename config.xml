@@ -2,7 +2,7 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
   <comment>Configuration file for bashoid, https://github.com/Audio/bashoid</comment>
-  <entry key="server">irc.mmoirc.com</entry>
-  <entry key="channel">#abraka</entry>
+  <entry key="server">irc.rizon.net</entry>
+  <entry key="channel">#valhalla</entry>
   <entry key="nickname">bashoid</entry>
 </properties>
