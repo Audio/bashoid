@@ -10,7 +10,7 @@ public class Topic {
     private static String MESSAGE_PREFIX = "Valhalla forum: ";
 
     private static String loadSubject(int topicId) throws Exception {
-        WebPage page = WebPage.loadWebPage("http://localhost/forum.api.php?topicId=" + topicId, "UTF-8");
+        WebPage page = WebPage.loadWebPage("http://valhalla-team.com/forum.api.php?topicId=" + topicId, "UTF-8");
         return page.getContent();
     }
 
