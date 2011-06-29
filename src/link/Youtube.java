@@ -51,14 +51,14 @@ public class Youtube {
     }
 
     private static String getVideoIDOrEmptyString(String message) {
-        int beginPosition = getPositionWhenVideoIDStarts(message);
+        int beginPosition = getPositionWhereVideoIDStarts(message);
         if (beginPosition == NOT_FOUND)
             return "";
 
         return message.substring(beginPosition, beginPosition + VIDEO_ID_LENGTH);
     }
 
-    private static int getPositionWhenVideoIDStarts(String message) {
+    private static int getPositionWhereVideoIDStarts(String message) {
         int pos = videoIDPosition(message, "youtube.com/watch?v=");
         return (pos == NOT_FOUND) ? videoIDPosition(message, "youtu.be/") : pos;
     }
