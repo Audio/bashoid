@@ -15,7 +15,7 @@ import utils.FloodChecker;
 
 public class Bashoid extends PircBot implements PeriodicListener {
 
-    private enum MessageType {UNKNOWN, BASH, STATS, MEGGIE, TOPIC};
+    private enum MessageType {UNKNOWN, BASH, STATS, MEGGIE, TOPIC, YOUTUBE};
     private PeriodicMessage periodicMessage;
 
 
@@ -52,6 +52,8 @@ public class Bashoid extends PircBot implements PeriodicListener {
             return MessageType.MEGGIE;
         else if ( Topic.isTopicMessage(message) )
             return MessageType.TOPIC;
+        else if ( Youtube.isYoutubeMessage(message) )
+            return MessageType.YOUTUBE;
 
         return MessageType.UNKNOWN;
     }
@@ -65,7 +67,7 @@ public class Bashoid extends PircBot implements PeriodicListener {
 
     @Override
     protected void onAction(String sender, String login, String hostname, String target, String action) {
-        Youtube.setVideoIDIfPresent(action, sender);
+        onMessage(target, sender, login, hostname, action);
     }
 
     @Override
@@ -85,13 +87,13 @@ public class Bashoid extends PircBot implements PeriodicListener {
                 case TOPIC:
                     sendMessage(channel, Topic.getTopicSubject(message) );
                     break;
+                case YOUTUBE:
+                    sendMessage(channel, Youtube.getLinkInfo(message) );
+                    break;
                 default:
             }
             FloodChecker.logServed(hostname);
         }
-
-        if ( Youtube.setVideoIDIfPresent(message, sender) )
-            sendMessage(channel, Youtube.getLastUsedLinkInfo(true) );
     }
 
     @Override

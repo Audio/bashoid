@@ -6,7 +6,6 @@ import java.util.ArrayList;
 public class YoutubeCache {
 
     private static ArrayList<LinkInfo> links;
-    private static LinkInfo lastUsedVideoID;
 
     static {
         links = new ArrayList<LinkInfo>();
@@ -17,27 +16,15 @@ public class YoutubeCache {
     }
 
     public static boolean contains(String videoID) {
-        for (LinkInfo li : links) {
-            if ( li.isSameAs(videoID) )
-                return true;
-        }
-
-        return false;
+        return getInfo(videoID) != null;
     }
 
-    public static void setLastUsed(String videoID, String author) {
+    public static LinkInfo getInfo(String videoID) {
         for (LinkInfo li : links)
-            if ( li.isSameAs(videoID) ) {
-                lastUsedVideoID = li;
-                lastUsedVideoID.setAuthorAndResetTime(author);
-            }
-    }
+            if ( li.hasVideoID(videoID) )
+                return li;
 
-    public static LinkInfo getLastInfo() throws Exception {
-        if (lastUsedVideoID == null)
-            throw new Exception("No YouTube link has been shared yet");
-
-        return lastUsedVideoID;
+        return null;
     }
 
 }
