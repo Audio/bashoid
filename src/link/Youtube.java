@@ -1,11 +1,13 @@
 package link;
 
+import java.util.ArrayList;
 import utils.Formatter;
 import utils.WebPage;
 
 
 public class Youtube {
 
+    private static ArrayList<LinkInfo> cache = new ArrayList<>();
     private static final int VIDEO_ID_LENGTH = 11;
     private static final int NOT_FOUND = -1;
 
@@ -13,7 +15,7 @@ public class Youtube {
         try {
             WebPage entry = loadVideoEntry(videoID);
             String title = getVideoTitleFromRawXML(entry);
-            YoutubeCache.add( new LinkInfo(videoID, title) );
+            cache.add( new LinkInfo(videoID, title) );
         } catch (Exception e) {
             System.err.println( e.getMessage() );
         }
@@ -36,7 +38,7 @@ public class Youtube {
     }
 
     private static void downloadIfNeeded(String videoID) {
-        if ( !YoutubeCache.contains(videoID) )
+        if ( !cacheContains(videoID) )
             downloadParseSave(videoID);
     }
 
@@ -58,6 +60,18 @@ public class Youtube {
         return (position != NOT_FOUND) ? position + URL_PATTERN.length() : NOT_FOUND;
     }
 
+    private static boolean cacheContains(String videoID) {
+        return getCachedInfo(videoID) != null;
+    }
+
+    private static LinkInfo getCachedInfo(String videoID) {
+        for (LinkInfo li : cache)
+            if ( li.hasVideoID(videoID) )
+                return li;
+
+        return null;
+    }
+
     public static boolean isYoutubeMessage(String message) {
         return !getVideoIDOrEmptyString(message).equals("");
     }
@@ -66,7 +80,7 @@ public class Youtube {
         try {
         String newVideoID = getVideoIDOrEmptyString(message);
         downloadIfNeeded(newVideoID);
-        LinkInfo li = YoutubeCache.getInfo(newVideoID);
+        LinkInfo li = getCachedInfo(newVideoID);
         return "YouTube: " + li.title();
         } catch (Exception e) {
             System.out.println( e.getMessage() );
