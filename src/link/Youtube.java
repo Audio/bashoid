@@ -7,7 +7,7 @@ import utils.WebPage;
 
 public class Youtube {
 
-    private static ArrayList<LinkInfo> cache = new ArrayList<>();
+    private static ArrayList<LinkInfo> cache = new ArrayList<LinkInfo>();
     private static final int VIDEO_ID_LENGTH = 11;
     private static final int NOT_FOUND = -1;
 
