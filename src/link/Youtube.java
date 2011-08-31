@@ -11,14 +11,10 @@ public class Youtube {
     private static final int VIDEO_ID_LENGTH = 11;
     private static final int NOT_FOUND = -1;
 
-    private static void downloadParseSave(String videoID) {
-        try {
-            WebPage entry = loadVideoEntry(videoID);
-            String title = getVideoTitleFromRawXML(entry);
-            cache.add( new LinkInfo(videoID, title) );
-        } catch (Exception e) {
-            System.err.println( e.getMessage() );
-        }
+    private static void downloadParseSave(String videoID) throws Exception {
+        WebPage entry = loadVideoEntry(videoID);
+        String title = getVideoTitleFromRawXML(entry);
+        cache.add( new LinkInfo(videoID, title) );
     }
 
     private static WebPage loadVideoEntry(String videoID) throws Exception {
@@ -37,7 +33,7 @@ public class Youtube {
         return Formatter.removeHTML( content.substring(begin, end) );
     }
 
-    private static void downloadIfNeeded(String videoID) {
+    private static void downloadIfNeeded(String videoID) throws Exception {
         if ( !cacheContains(videoID) )
             downloadParseSave(videoID);
     }
