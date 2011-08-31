@@ -1,7 +1,7 @@
 package utils;
 
 
-public class Constants {
+public abstract class Constants {
     
     public static final int NOT_FOUND = -1;
 
