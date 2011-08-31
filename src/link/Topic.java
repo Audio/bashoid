@@ -2,10 +2,11 @@ package link;
 
 import utils.WebPage;
 
+import static utils.Constants.*;
+
 
 public class Topic {
 
-    private static final int NOT_FOUND = -1;
     private static String URL_MASK = "http://forum.valhalla-team.com/index.php?topic=";
     private static String MESSAGE_PREFIX = "Valhalla forum: ";
 

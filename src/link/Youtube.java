@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import utils.Formatter;
 import utils.WebPage;
 
+import static utils.Constants.*;
+
 
 public class Youtube {
 
     private static ArrayList<LinkInfo> cache = new ArrayList<LinkInfo>();
     private static final int VIDEO_ID_LENGTH = 11;
-    private static final int NOT_FOUND = -1;
 
     private static void downloadParseSave(String videoID) throws Exception {
         WebPage entry = loadVideoEntry(videoID);

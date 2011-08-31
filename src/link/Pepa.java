@@ -3,10 +3,11 @@ package link;
 import java.net.URLEncoder;
 import utils.WebPage;
 
+import static utils.Constants.*;
+
 
 public class Pepa {
 
-    private static final int NOT_FOUND = -1;
 
     private static String loadResponse(String query) throws Exception {
         String postData = URLEncoder.encode("strText", "windows-1250") + "=" + URLEncoder.encode(query, "windows-1250");
