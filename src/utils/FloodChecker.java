@@ -8,13 +8,17 @@ import java.util.ListIterator;
 public class FloodChecker {
 
     private static final long ONE_MINUTE;
-    private static final long MAX_SERVES_PER_TIME;
+    private static final long MAX_SERVES_PER_MINUTE;
     private static HashMap<String, ArrayList<Long>> records;
 
     static {
         ONE_MINUTE = 60;
-        MAX_SERVES_PER_TIME = 3;
+        MAX_SERVES_PER_MINUTE = 5;
         records = new HashMap<String, ArrayList<Long>>();
+    }
+
+    public static long maxServesPerMinute() {
+        return MAX_SERVES_PER_MINUTE;
     }
 
     public static boolean canBeServed(String hostname) {
@@ -24,7 +28,7 @@ public class FloodChecker {
         ArrayList<Long> times = records.get(hostname);
         removeOldRecords(times);
         records.put(hostname, times);
-        return ( times.size() < MAX_SERVES_PER_TIME );
+        return ( times.size() < MAX_SERVES_PER_MINUTE );
     }
 
     private static boolean isInLog(String hostname) {
