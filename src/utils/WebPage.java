@@ -42,11 +42,11 @@ public class WebPage {
     }
 
     private static void writePostData(String postData, URLConnection connection) throws IOException {
-            connection.setDoOutput(true);
-            OutputStreamWriter writter = new OutputStreamWriter( connection.getOutputStream() );
-            writter.write(postData);
-            writter.flush();
-            writter.close();
+        connection.setDoOutput(true);
+        OutputStreamWriter writter = new OutputStreamWriter( connection.getOutputStream() );
+        writter.write(postData);
+        writter.flush();
+        writter.close();
     }
 
     private static String readResponse(URLConnection connection, String encoding) throws IOException {
