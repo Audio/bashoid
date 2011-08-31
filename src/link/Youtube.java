@@ -78,10 +78,10 @@ public class Youtube {
 
     public static String getLinkInfo(String message) {
         try {
-        String newVideoID = getVideoIDOrEmptyString(message);
-        downloadIfNeeded(newVideoID);
-        LinkInfo li = getCachedInfo(newVideoID);
-        return "YouTube: " + li.title();
+            String newVideoID = getVideoIDOrEmptyString(message);
+            downloadIfNeeded(newVideoID);
+            LinkInfo li = getCachedInfo(newVideoID);
+            return "YouTube: " + li.title();
         } catch (Exception e) {
             System.out.println( e.getMessage() );
             return "";
