@@ -1,4 +1,4 @@
-package link;
+package pepa;
 
 import java.net.URLEncoder;
 import utils.WebPage;
@@ -7,7 +7,6 @@ import static utils.Constants.*;
 
 
 public class Pepa {
-
 
     private static String loadResponse(String query) throws Exception {
         String postData = URLEncoder.encode("strText", "windows-1250") + "=" + URLEncoder.encode(query, "windows-1250");
@@ -20,7 +19,7 @@ public class Pepa {
         String toSearch = "<input type=\"hidden\" name=\"arrSent[0]\" value=\"";
         int pos = content.indexOf(toSearch);
         if (pos == NOT_FOUND)
-            throw new Exception("Cannot find video title in the XML source.");
+            throw new Exception("Cannot... nothing!");
 
         int begin = pos + toSearch.length();
         int end = content.indexOf("\">", begin);
