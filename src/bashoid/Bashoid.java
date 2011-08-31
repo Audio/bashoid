@@ -69,7 +69,10 @@ public class Bashoid extends PircBot implements PeriodicListener {
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         MessageType type = getType(sender, message);
-        if ( type != MessageType.UNKNOWN && FloodChecker.canBeServed(hostname) ) {
+        if ( !FloodChecker.canBeServed(hostname) ) {
+            sendNotice(sender, "Prekrocen maximalni pocet pozadavku za minutu: " + FloodChecker.maxServesPerMinute() );
+        } else if (type != MessageType.UNKNOWN) {
+
             switch (type) {
                 case BASH:
                     sendBash(channel, sender);
@@ -82,7 +85,9 @@ public class Bashoid extends PircBot implements PeriodicListener {
                     break;
                 default:
             }
+
             FloodChecker.logServed(hostname);
+
         }
     }
 
