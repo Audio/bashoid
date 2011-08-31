@@ -101,7 +101,7 @@ public class Bashoid extends PircBot implements PeriodicListener {
     protected void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
         if ( recipientNick.equals( getNick() ) ) {
             joinChannel(channel);
-            sendMessage(channel, Colors.BOLD + "sorry...");
+            sendMessage(channel, kickerNick + ": polib si");
         }
     }
 
