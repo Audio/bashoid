@@ -3,6 +3,7 @@ package bashoid;
 import bash.Bash;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import link.Pepa;
 import link.Topic;
 import link.Youtube;
 import org.jibble.pircbot.*;
@@ -15,7 +16,7 @@ import utils.FloodChecker;
 
 public class Bashoid extends PircBot implements PeriodicListener {
 
-    private enum MessageType {UNKNOWN, BASH, TOPIC, YOUTUBE};
+    private enum MessageType {UNKNOWN, BASH, TOPIC, YOUTUBE, PEPA};
     private PeriodicMessage periodicMessage;
 
 
@@ -50,6 +51,8 @@ public class Bashoid extends PircBot implements PeriodicListener {
             return MessageType.TOPIC;
         else if ( Youtube.isYoutubeMessage(message) )
             return MessageType.YOUTUBE;
+        else if ( Pepa.isPepaMessage(message) )
+            return MessageType.PEPA;
 
         return MessageType.UNKNOWN;
     }
@@ -82,6 +85,9 @@ public class Bashoid extends PircBot implements PeriodicListener {
                     break;
                 case YOUTUBE:
                     sendMessage(channel, Youtube.getLinkInfo(message) );
+                    break;
+                case PEPA:
+                    sendMessage(channel, Pepa.getResponse(message, sender) );
                     break;
                 default:
             }
