@@ -1,34 +1,19 @@
 package bash;
 
+import bashoid.Addon;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import utils.Cooldown;
 import utils.Formatter;
 import utils.WebPage;
 
 
-public class Bash {
+public class Bash extends Addon {
 
     private ArrayList<Quote> quotes;
-    private ArrayList<String> output;
-    private boolean errorOccured;
+    private Cooldown cooldown = new Cooldown(120);
 
-    private static Cooldown cooldown;
-
-    static {
-        cooldown = new Cooldown(120);
-    }
-
-    public Bash() {
-        if ( isOnCooldown() )
-            setErrorOutputBecauseOfCooldown();
-        else
-            downloadParseOutput();
-    }
-
-    public boolean errorOccured() {
-        return errorOccured;
-    }
 
     private boolean isOnCooldown() {
         return cooldown.isActive();
@@ -86,12 +71,11 @@ public class Bash {
         String quoteContent = removeHTML( quote.getContent() );
         String url = "-- http://bash.org/?" + quote.getTextId() + " -- Next bash in " + getNextBashTime();
 
-        output = new ArrayList<String>();
         String[] lines = quoteContent.split("\n");
         for ( String line : lines )
-            output.add( line.trim() );
+            reaction.add( line.trim() );
 
-        output.add(url);
+        reaction.add(url);
     }
 
     private void setErrorOutputBecauseOfCooldown() {
@@ -101,16 +85,20 @@ public class Bash {
     }
 
     private void setErrorOutput(String reason) {
-        output = new ArrayList<String>();
-        output.add(reason);
+        reaction.add(reason);
         errorOccured = true;
     }
 
-    public ArrayList<String> getOutput() {
-        return output;
+    @Override
+    protected void setReaction(String message, String author) {
+        if ( isOnCooldown() )
+            setErrorOutputBecauseOfCooldown();
+        else
+            downloadParseOutput();
     }
 
-    public static boolean isBashMessage(String message) {
+    @Override
+    public boolean shouldReact(String message) {
         return message.equals("bash");
     }
 
@@ -142,6 +130,11 @@ public class Bash {
 
     private String getWordInSingularOrPluralForm(String word, long count) {
         return (count > 1) ? word + "s" : word;
+    }
+
+    @Override
+    public boolean errorOccurred() {
+        return errorOccured;
     }
 
 }

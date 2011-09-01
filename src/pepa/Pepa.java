@@ -1,20 +1,22 @@
 package pepa;
 
+import java.util.List;
+import bashoid.Addon;
 import java.net.URLEncoder;
 import utils.WebPage;
 
 import static utils.Constants.*;
 
 
-public class Pepa {
+public class Pepa extends Addon {
 
-    private static String loadResponse(String query) throws Exception {
+    private String loadResponse(String query) throws Exception {
         String postData = URLEncoder.encode("strText", "windows-1250") + "=" + URLEncoder.encode(query, "windows-1250");
         WebPage entry = WebPage.loadWebPage("http://pepa.vyskup.com/index.php", "windows-1250", postData);
         return getReponseFromRawHTML(entry);
     }
 
-    private static String getReponseFromRawHTML(WebPage entry) throws Exception {
+    private String getReponseFromRawHTML(WebPage entry) throws Exception {
         String content = entry.getContent();
         String toSearch = "<input type=\"hidden\" name=\"arrSent[0]\" value=\"";
         int pos = content.indexOf(toSearch);
@@ -26,24 +28,31 @@ public class Pepa {
         return content.substring(begin, end);
     }
 
-    private static String getQuery(String message) {
+    private String getQuery(String message) {
         int beginPosition = message.indexOf(' ');
         return message.substring(beginPosition);
     }
 
-    public static boolean isPepaMessage(String message) {
+    @Override
+    public boolean shouldReact(String message) {
         return message.startsWith("bashoid") && message.indexOf(' ') != NOT_FOUND;
     }
 
-    public static String getResponse(String message, String author) {
+    @Override
+    protected void setReaction(String message, String author) {
         try {
             String query = getQuery(message);
             String response = loadResponse(query);
-            return author + ": " + response;
+            reaction.add(author + ": " + response);
         } catch (Exception e) {
             System.out.println( e.getMessage() );
-            return author + ": java.NevimCoNatoRictException";
+            reaction.add(author + ": java.NevimCoNatoRictException"); // TODO errorOccurred
         }
+    }
+
+    @Override
+    public boolean errorOccurred() {
+        return false; // TODO
     }
 
 }

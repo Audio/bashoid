@@ -1,27 +1,29 @@
 package topic;
 
+import bashoid.Addon;
+import java.util.List;
 import utils.WebPage;
 
 import static utils.Constants.*;
 
 
-public class Topic {
+public class Topic extends Addon {
 
-    private static String URL_MASK = "http://forum.valhalla-team.com/index.php?topic=";
-    private static String MESSAGE_PREFIX = "Valhalla forum: ";
+    private static final String URL_MASK = "http://forum.valhalla-team.com/index.php?topic=";
+    private static final String MESSAGE_PREFIX = "Valhalla forum: ";
 
-    private static String loadSubject(int topicId) throws Exception {
+    private String loadSubject(int topicId) throws Exception {
         WebPage page = WebPage.loadWebPage("http://valhalla-team.com/forum.api.php?topicId=" + topicId, "UTF-8");
         return page.getContent();
     }
 
-    private static int getTopicId(String message) {
+    private int getTopicId(String message) {
         int pos = message.indexOf(URL_MASK) + URL_MASK.length();
         String sub = message.substring(pos);
         return getNumbersFromBeginning(sub);
     }
 
-    private static int getNumbersFromBeginning(String str) {
+    private int getNumbersFromBeginning(String str) {
         int length = str.length();
         char[] input = str.toCharArray();
         String output = "";
@@ -36,20 +38,27 @@ public class Topic {
         return Integer.parseInt(output);
     }
 
-    public static boolean isTopicMessage(String message) {
+    @Override
+    public boolean shouldReact(String message) {
         return message.indexOf(URL_MASK) != NOT_FOUND;
     }
 
-    public static String getTopicSubject(String message) {
+    @Override
+    protected void setReaction(String message, String author) {
         String subject;
         try {
             int topicId = getTopicId(message);
             subject = loadSubject(topicId);
         } catch (Exception e) {
-            subject = "???";
+            subject = "???"; // TODO errorOccurred
         }
 
-        return MESSAGE_PREFIX + subject;
+        reaction.add(MESSAGE_PREFIX + subject);
+    }
+
+    @Override
+    public boolean errorOccurred() {
+        return false; // TODO
     }
 
 }

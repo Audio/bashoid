@@ -1,11 +1,8 @@
 package bashoid;
 
-import bash.Bash;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import pepa.Pepa;
-import topic.Topic;
-import youtube.Youtube;
+import java.util.List;
 import org.jibble.pircbot.*;
 import period.PeriodicEvent;
 import period.PeriodicListener;
@@ -16,8 +13,8 @@ import utils.FloodChecker;
 
 public class Bashoid extends PircBot implements PeriodicListener {
 
-    private enum MessageType {UNKNOWN, BASH, TOPIC, YOUTUBE, PEPA};
     private PeriodicMessage periodicMessage;
+    private ArrayList<Addon> addons = new ArrayList<Addon>();
 
 
     public Bashoid() {
@@ -25,6 +22,7 @@ public class Bashoid extends PircBot implements PeriodicListener {
         setAutoNickChange(true);
         setMessageDelay(0);
         trySetUTFEncoding();
+        registerAddons();
 
         // currently not needed
         // periodicMessage = new PeriodicMessage();
@@ -44,17 +42,11 @@ public class Bashoid extends PircBot implements PeriodicListener {
         }
     }
 
-    private MessageType getType(String sender, String message) {
-        if ( Bash.isBashMessage(message) )
-            return MessageType.BASH;
-        else if ( Topic.isTopicMessage(message) )
-            return MessageType.TOPIC;
-        else if ( Youtube.isYoutubeMessage(message) )
-            return MessageType.YOUTUBE;
-        else if ( Pepa.isPepaMessage(message) )
-            return MessageType.PEPA;
-
-        return MessageType.UNKNOWN;
+    private void registerAddons() {
+        addons.add( new bash.Bash() );
+        addons.add( new pepa.Pepa() );
+        addons.add( new topic.Topic() );
+        addons.add( new youtube.Youtube() );
     }
 
     @Override
@@ -71,30 +63,28 @@ public class Bashoid extends PircBot implements PeriodicListener {
 
     @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
-        MessageType type = getType(sender, message);
-        if ( !FloodChecker.canBeServed(hostname) ) {
-            sendNotice(sender, "Prekrocen maximalni pocet pozadavku za minutu: " + FloodChecker.maxServesPerMinute() );
-        } else if (type != MessageType.UNKNOWN) {
+        onMessage( new Message(channel, sender, login, hostname, message) );
+    }
 
-            switch (type) {
-                case BASH:
-                    sendBash(channel, sender);
-                    break;
-                case TOPIC:
-                    sendMessage(channel, Topic.getTopicSubject(message) );
-                    break;
-                case YOUTUBE:
-                    sendMessage(channel, Youtube.getLinkInfo(message) );
-                    break;
-                case PEPA:
-                    sendMessage(channel, Pepa.getResponse(message, sender) );
-                    break;
-                default:
+    protected void onMessage(Message message) {
+        if ( !FloodChecker.canBeServed(message.hostname) ) {
+            sendNotice(message.author, "Prekrocen maximalni pocet pozadavku za minutu: " + FloodChecker.maxServesPerMinute() );
+        } else {
+
+            boolean hasReacted = false;
+
+            for (Addon a : addons) {
+                if ( a.shouldReact(message.text) ) {
+                    sendAddonOutput(a, message);
+                    hasReacted = true;
+                }
             }
 
-            FloodChecker.logServed(hostname);
+            if (hasReacted)
+                FloodChecker.logServed(message.hostname);
 
         }
+
     }
 
     @Override
@@ -105,22 +95,22 @@ public class Bashoid extends PircBot implements PeriodicListener {
         }
     }
 
-    protected void sendListOfMessages(String target, ArrayList<String> output) {
+    private void sendAddonOutput(Addon addon, Message message) {
+        List<String> reaction = addon.generateReaction(message.text, message.author);
+        if ( addon.errorOccurred() )
+            sendListOfNotices(message.author, reaction);
+        else
+            sendListOfMessages(message.channel, reaction);
+    }
+
+    protected void sendListOfMessages(String target, List<String> output) {
         for ( String line : output )
             sendMessage(target, line);
     }
 
-    protected void sendListOfNotices(String target, ArrayList<String> output) {
+    protected void sendListOfNotices(String target, List<String> output) {
         for ( String line : output )
             sendNotice(target, line);
-    }
-
-    private void sendBash(String channel, String sender) {
-        Bash b = new Bash();
-        if ( b.errorOccured() )
-            sendListOfNotices(sender, b.getOutput() );
-        else
-            sendListOfMessages(channel, b.getOutput() );
     }
 
 }
