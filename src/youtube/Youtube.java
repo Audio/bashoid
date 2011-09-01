@@ -84,13 +84,8 @@ public class Youtube extends Addon {
             LinkInfo li = getCachedInfo(newVideoID);
             reaction.add("YouTube: " + li.title() );
         } catch (Exception e) {
-            System.out.println( e.getMessage() );
+            setError();
         }
-    }
-
-    @Override
-    public boolean errorOccurred() {
-        return false; // TODO
     }
 
 }

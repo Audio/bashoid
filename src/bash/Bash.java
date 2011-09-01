@@ -3,7 +3,6 @@ package bash;
 import bashoid.Addon;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import utils.Cooldown;
 import utils.Formatter;
 import utils.WebPage;
@@ -29,7 +28,7 @@ public class Bash extends Addon {
             takeOneQuoteAndSetOutput();
             cooldown.start();
         } catch (Exception e) {
-            setErrorOutput("Bash.org is unreachable.");
+            setError("Bash.org is unreachable.");
         }
     }
 
@@ -81,12 +80,7 @@ public class Bash extends Addon {
     private void setErrorOutputBecauseOfCooldown() {
         String error = "I'm currently relaxing. I'll be back in "
                      + timeToString( cooldown.remainingSeconds() ) + ".";
-        setErrorOutput(error);
-    }
-
-    private void setErrorOutput(String reason) {
-        reaction.add(reason);
-        errorOccured = true;
+        setError(error);
     }
 
     @Override
@@ -130,11 +124,6 @@ public class Bash extends Addon {
 
     private String getWordInSingularOrPluralForm(String word, long count) {
         return (count > 1) ? word + "s" : word;
-    }
-
-    @Override
-    public boolean errorOccurred() {
-        return errorOccured;
     }
 
 }

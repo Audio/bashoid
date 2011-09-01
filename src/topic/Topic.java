@@ -1,7 +1,6 @@
 package topic;
 
 import bashoid.Addon;
-import java.util.List;
 import utils.WebPage;
 
 import static utils.Constants.*;
@@ -45,20 +44,12 @@ public class Topic extends Addon {
 
     @Override
     protected void setReaction(String message, String author) {
-        String subject;
         try {
             int topicId = getTopicId(message);
-            subject = loadSubject(topicId);
+            reaction.add(MESSAGE_PREFIX + loadSubject(topicId) );
         } catch (Exception e) {
-            subject = "???"; // TODO errorOccurred
+            setError();
         }
-
-        reaction.add(MESSAGE_PREFIX + subject);
-    }
-
-    @Override
-    public boolean errorOccurred() {
-        return false; // TODO
     }
 
 }

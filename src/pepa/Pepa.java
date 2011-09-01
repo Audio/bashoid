@@ -1,6 +1,5 @@
 package pepa;
 
-import java.util.List;
 import bashoid.Addon;
 import java.net.URLEncoder;
 import utils.WebPage;
@@ -45,14 +44,8 @@ public class Pepa extends Addon {
             String response = loadResponse(query);
             reaction.add(author + ": " + response);
         } catch (Exception e) {
-            System.out.println( e.getMessage() );
-            reaction.add(author + ": java.NevimCoNatoRictException"); // TODO errorOccurred
+            setError();
         }
-    }
-
-    @Override
-    public boolean errorOccurred() {
-        return false; // TODO
     }
 
 }
