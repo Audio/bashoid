@@ -17,6 +17,7 @@ public abstract class Addon {
 
     public final List<String> generateReaction(String message, String author) {
         reaction.clear();
+        errorOccured = false;
         setReaction(message, author);
         return reaction;
     }

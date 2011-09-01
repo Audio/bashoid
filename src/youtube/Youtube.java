@@ -1,6 +1,5 @@
 package youtube;
 
-import java.util.List;
 import bashoid.Addon;
 import java.util.ArrayList;
 import utils.Formatter;
