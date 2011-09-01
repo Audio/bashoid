@@ -7,7 +7,7 @@ import java.util.List;
 public abstract class Addon {
 
     protected List<String> reaction = new ArrayList<String>();
-    protected boolean errorOccured;
+    protected boolean errorOccurred;
 
     protected final static String MESSAGE_FAIL = "Addon has failed.";
 
@@ -17,7 +17,7 @@ public abstract class Addon {
 
     public final List<String> generateReaction(String message, String author) {
         reaction.clear();
-        errorOccured = false;
+        errorOccurred = false;
         setReaction(message, author);
         return reaction;
     }
@@ -29,11 +29,11 @@ public abstract class Addon {
     protected final void setError(String reason) {
         reaction.clear();
         reaction.add(reason);
-        errorOccured = true;
+        errorOccurred = true;
     }
 
     public final boolean errorOccurred() {
-        return errorOccured;
+        return errorOccurred;
     }
 
 }
