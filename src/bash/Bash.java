@@ -29,7 +29,7 @@ public class Bash extends Addon {
             takeOneQuoteAndSetOutput();
             cooldown.start();
         } catch (Exception e) {
-            setErrorOutput("Bash.org is currently down.");
+            setErrorOutput("Bash.org is unreachable.");
         }
     }
 
