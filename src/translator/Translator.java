@@ -46,6 +46,7 @@ public class Translator extends Addon {
 
         toSearch = "\">";
         pos = sub.indexOf("<a href");
+        int comma = 0;
         while(pos != NOT_FOUND)
         {
             pos = sub.indexOf(toSearch, pos);
@@ -57,9 +58,15 @@ public class Translator extends Addon {
                 result = sub;
                 break;
             }
-            result += sub.substring(begin, end) + " ";
-
+            result += sub.substring(begin, end);
             pos = sub.indexOf("<a href", end);
+            if(comma != NOT_FOUND)
+            {
+                comma = sub.indexOf("<span class=\"comma\">", end);
+                if(comma != NOT_FOUND && comma < pos)
+                    result += ",";
+            }
+            result += " ";
         }
 
         return result;
