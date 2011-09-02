@@ -47,6 +47,7 @@ public class Bashoid extends PircBot implements PeriodicListener {
         addons.add( new pepa.Pepa() );
         addons.add( new topic.Topic() );
         addons.add( new youtube.Youtube() );
+        addons.add( new translator.Translator() );
     }
 
     @Override
