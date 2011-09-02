@@ -10,7 +10,7 @@ import static utils.Constants.*;
 public class Pepa extends Addon {
 
     private String loadResponse(String query) throws Exception {
-        String postData = URLEncoder.encode("strText", "windows-1250") + "=" + URLEncoder.encode(query, "windows-1250");
+        String postData = "strText=" + URLEncoder.encode(query, "windows-1250");
         WebPage entry = WebPage.loadWebPage("http://pepa.vyskup.com/index.php", "windows-1250", postData);
         return getReponseFromRawHTML(entry);
     }
