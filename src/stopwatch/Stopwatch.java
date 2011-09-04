@@ -73,7 +73,7 @@ public class Stopwatch extends Addon {
 
                 long time = parseTime(message, index);
                 if(time == 0)
-                    return "You need to set time";
+                    return "You need to set time in correct form (eg. 4h10m5s)";
 
                 long period = MINUTE;
                 index = message.indexOf(' ', index);
@@ -140,6 +140,7 @@ public class Stopwatch extends Addon {
                     result += " " + dv(time,MINUTE) + "s";
             }
         }
+        
         return result;
     }
 
@@ -182,7 +183,7 @@ public class Stopwatch extends Addon {
             }
             tmp += ch;
         }
-        return result;
+        return result < 0 ? 0 : result;
     }
 
     public static long dv(long num, long div)
