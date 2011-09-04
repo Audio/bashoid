@@ -10,12 +10,10 @@ import period.PeriodicMessage;
 import utils.Config;
 import utils.FloodChecker;
 
-
-public class Bashoid extends PircBot implements PeriodicListener {
+public class Bashoid extends PircBot implements PeriodicListener, MessageListener {
 
     private PeriodicMessage periodicMessage;
     private ArrayList<Addon> addons = new ArrayList<Addon>();
-
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
@@ -43,11 +41,18 @@ public class Bashoid extends PircBot implements PeriodicListener {
     }
 
     private void registerAddons() {
-        addons.add( new bash.Bash() );
-        addons.add( new pepa.Pepa() );
-        addons.add( new topic.Topic() );
-        addons.add( new youtube.Youtube() );
-        addons.add( new translator.Translator() );
+        addAddon( new bash.Bash() );
+        addAddon( new pepa.Pepa() );
+        addAddon( new topic.Topic() );
+        addAddon( new youtube.Youtube() );
+        addAddon( new translator.Translator() );
+        addAddon( new stopwatch.Stopwatch() );
+    }
+
+    private void addAddon(Addon addon)
+    {
+        addon.setMessageListener(this);
+        addons.add(addon);
     }
 
     @Override
@@ -55,6 +60,20 @@ public class Bashoid extends PircBot implements PeriodicListener {
         String[] channels = getChannels();
         for (String channel : channels)
             sendMessage(channel, event.getMessage() );
+    }
+
+    @Override
+    public void sendMessageListener(String target, String msg)
+    {
+        sendMessage(target, msg);
+    }
+
+    @Override
+    public void sendMessageToChannelsListener(String msg)
+    {
+        String[] channels = getChannels();
+        for (String channel : channels)
+            sendMessage(channel, msg );
     }
 
     @Override
