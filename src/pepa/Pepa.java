@@ -73,7 +73,8 @@ public class Pepa extends Addon {
 
     @Override
     public boolean shouldReact(String message) {
-        return message.startsWith("bashoid") && message.indexOf(' ') != NOT_FOUND;
+        String myNick = addonListener.getBotNickname();
+        return message.startsWith(myNick) && message.indexOf(' ') != NOT_FOUND;
     }
 
     @Override
