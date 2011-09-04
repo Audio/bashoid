@@ -49,8 +49,7 @@ public class Bashoid extends PircBot implements PeriodicListener, MessageListene
         addAddon( new stopwatch.Stopwatch() );
     }
 
-    private void addAddon(Addon addon)
-    {
+    private void addAddon(Addon addon) {
         addon.setMessageListener(this);
         addons.add(addon);
     }
@@ -63,14 +62,12 @@ public class Bashoid extends PircBot implements PeriodicListener, MessageListene
     }
 
     @Override
-    public void sendMessageListener(String target, String msg)
-    {
+    public void sendMessageListener(String target, String msg) {
         sendMessage(target, msg);
     }
 
     @Override
-    public void sendMessageToChannelsListener(String msg)
-    {
+    public void sendMessageToChannelsListener(String msg) {
         String[] channels = getChannels();
         for (String channel : channels)
             sendMessage(channel, msg );

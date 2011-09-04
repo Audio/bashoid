@@ -18,8 +18,7 @@ public final class PeriodicAddonUpdate {
         generator.addEventListener(pl);
     }
 
-    public void stop()
-    {
+    public void stop() {
         timer.cancel();
         timer = null;
         generator.clear();

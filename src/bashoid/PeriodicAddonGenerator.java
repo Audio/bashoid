@@ -18,8 +18,7 @@ public class PeriodicAddonGenerator extends TimerTask {
             l.periodicAddonUpdate();
     }
 
-    public void clear()
-    {
+    public void clear() {
         listeners.clear();
     }
 }
