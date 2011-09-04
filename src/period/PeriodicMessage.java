@@ -1,7 +1,6 @@
 package period;
 
 import bashoid.Addon;
-import bashoid.AddonListener;
 
 
 public final class PeriodicMessage extends Addon {
@@ -9,8 +8,7 @@ public final class PeriodicMessage extends Addon {
     private static final long TWENTY_MINUTES = 20 * 60 * 1000;
 
 
-    public PeriodicMessage(AddonListener listener) {
-        super(listener);
+    public PeriodicMessage() {
         setPeriodicUpdate(TWENTY_MINUTES);
     }
 

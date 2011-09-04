@@ -1,7 +1,6 @@
 package bash;
 
 import bashoid.Addon;
-import bashoid.AddonListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import utils.Cooldown;
@@ -14,10 +13,6 @@ public class Bash extends Addon {
     private ArrayList<Quote> quotes;
     private Cooldown cooldown = new Cooldown(120);
 
-
-    public Bash(AddonListener listener) {
-        super(listener);
-    }
 
     private boolean isOnCooldown() {
         return cooldown.isActive();

@@ -1,6 +1,5 @@
 package stopwatch;
 
-import bashoid.AddonListener;
 import bashoid.Addon;
 import java.util.ArrayList;
 
@@ -24,8 +23,8 @@ public class Stopwatch extends Addon {
     private String  stopwatchAuthor;
     private ArrayList<StopwatchTimer> timers = new ArrayList<StopwatchTimer>();
 
-    public Stopwatch(AddonListener listener) {
-        super(listener);
+    public Stopwatch()
+    {
         stopwatchRunning = false;
     }
 
