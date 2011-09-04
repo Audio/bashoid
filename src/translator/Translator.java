@@ -1,6 +1,6 @@
 package translator;
 
-import bashoid.MessageListener;
+import bashoid.AddonListener;
 import bashoid.Addon;
 import utils.WebPage;
 
@@ -16,7 +16,7 @@ public class Translator extends Addon {
     private static final byte langsCount = 8;
 
 
-    public Translator(MessageListener listener) {
+    public Translator(AddonListener listener) {
         super(listener);
     }
 

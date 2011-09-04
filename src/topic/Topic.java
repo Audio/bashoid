@@ -1,6 +1,6 @@
 package topic;
 
-import bashoid.MessageListener;
+import bashoid.AddonListener;
 import bashoid.Addon;
 import utils.WebPage;
 
@@ -13,7 +13,7 @@ public class Topic extends Addon {
     private static final String MESSAGE_PREFIX = "Valhalla forum: ";
 
 
-    public Topic(MessageListener listener) {
+    public Topic(AddonListener listener) {
         super(listener);
     }
 

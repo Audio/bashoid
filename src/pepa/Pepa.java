@@ -1,6 +1,6 @@
 package pepa;
 
-import bashoid.MessageListener;
+import bashoid.AddonListener;
 import bashoid.Addon;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -19,7 +19,7 @@ public class Pepa extends Addon {
     private static final String LAST_RESPONSE_KEY = "arrSent[0]";
 
 
-    public Pepa(MessageListener listener) {
+    public Pepa(AddonListener listener) {
         super(listener);
     }
 

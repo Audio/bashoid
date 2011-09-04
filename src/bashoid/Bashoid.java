@@ -8,7 +8,7 @@ import utils.Config;
 import utils.FloodChecker;
 
 
-public class Bashoid extends PircBot implements MessageListener {
+public class Bashoid extends PircBot implements AddonListener {
 
     private ArrayList<Addon> addons = new ArrayList<Addon>();
 
@@ -42,18 +42,6 @@ public class Bashoid extends PircBot implements MessageListener {
         addons.add( new topic.Topic(this) );
         addons.add( new translator.Translator(this) );
         addons.add( new youtube.Youtube(this) );
-    }
-
-    @Override
-    public void sendMessageListener(String target, String msg) {
-        sendMessage(target, msg);
-    }
-
-    @Override
-    public void sendMessageToChannelsListener(String msg) {
-        String[] channels = getChannels();
-        for (String channel : channels)
-            sendMessage(channel, msg );
     }
 
     @Override
@@ -93,6 +81,18 @@ public class Bashoid extends PircBot implements MessageListener {
             joinChannel(channel);
             sendMessage(channel, kickerNick + ": polib si");
         }
+    }
+
+    @Override
+    public void sendAddonMessage(String target, String msg) {
+        sendMessage(target, msg);
+    }
+
+    @Override
+    public void sendAddonMessageToChannels(String msg) {
+        String[] channels = getChannels();
+        for (String channel : channels)
+            sendMessage(channel, msg );
     }
 
     private void sendAddonOutput(Addon addon, Message message) {

@@ -1,6 +1,6 @@
 package youtube;
 
-import bashoid.MessageListener;
+import bashoid.AddonListener;
 import bashoid.Addon;
 import java.util.ArrayList;
 import utils.Formatter;
@@ -15,7 +15,7 @@ public class Youtube extends Addon {
     private ArrayList<LinkInfo> cache = new ArrayList<LinkInfo>();
 
 
-    public Youtube(MessageListener listener) {
+    public Youtube(AddonListener listener) {
         super(listener);
     }
 

@@ -1,7 +1,7 @@
 package bash;
 
 import bashoid.Addon;
-import bashoid.MessageListener;
+import bashoid.AddonListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import utils.Cooldown;
@@ -15,7 +15,7 @@ public class Bash extends Addon {
     private Cooldown cooldown = new Cooldown(120);
 
 
-    public Bash(MessageListener listener) {
+    public Bash(AddonListener listener) {
         super(listener);
     }
 
