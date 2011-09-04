@@ -1,7 +1,10 @@
 package pepa;
 
 import bashoid.Addon;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import utils.WebPage;
 
 import static utils.Constants.*;
@@ -9,22 +12,58 @@ import static utils.Constants.*;
 
 public class Pepa extends Addon {
 
+    private HashMap<String, String> formValues = new HashMap<String, String>();
+
+    private static final String ENCODING = "windows-1250";
+    private static final String LAST_RESPONSE_KEY = "arrSent[0]";
+
+
     private String loadResponse(String query) throws Exception {
-        String postData = "strText=" + URLEncoder.encode(query, "windows-1250");
-        WebPage entry = WebPage.loadWebPage("http://pepa.vyskup.com/index.php", "windows-1250", postData);
-        return getReponseFromRawHTML(entry);
+        String postData = generatePostData(query);
+        WebPage entry = WebPage.loadWebPage("http://pepa.vyskup.com/index.php", ENCODING, postData);
+        updateFormValues(entry);
+        return getLastResponse();
     }
 
-    private String getReponseFromRawHTML(WebPage entry) throws Exception {
-        String content = entry.getContent();
-        String toSearch = "<input type=\"hidden\" name=\"arrSent[0]\" value=\"";
-        int pos = content.indexOf(toSearch);
-        if (pos == NOT_FOUND)
-            throw new Exception("Cannot... nothing!");
+    private String generatePostData(String query) throws UnsupportedEncodingException {
+        String postData = "strText=" + URLEncoder.encode(query, ENCODING);
+        for (Map.Entry<String, String> formValue : formValues.entrySet() ) {
+            String key = formValue.getKey();
+            String value = formValue.getValue();
+            postData += "&" + key + "=" + URLEncoder.encode(value, ENCODING);
+        }
+        return postData;
+    }
 
-        int begin = pos + toSearch.length();
-        int end = content.indexOf("\">", begin);
-        return content.substring(begin, end);
+    private void updateFormValues(WebPage entry) {
+        String content = entry.getContent();
+        int beginAreaPos = content.indexOf("<form");
+        int endAreaPos = content.indexOf("</form>");
+
+        formValues.clear();
+        final String toSearch = "<input type=\"hidden";
+        do {
+
+            int beginTagPos = content.indexOf(toSearch, beginAreaPos);
+            if (beginTagPos == NOT_FOUND)
+                break;
+
+            int endTagPos = content.indexOf(">", beginTagPos);
+            String rawTag = content.substring(beginTagPos, endTagPos);
+
+            HiddenTag tag = new HiddenTag(rawTag);
+            formValues.put( tag.getName(), tag.getValue() );
+
+            beginAreaPos = endTagPos;
+
+        } while (beginAreaPos < endAreaPos);
+    }
+
+    private String getLastResponse() throws Exception {
+        if ( !formValues.containsKey(LAST_RESPONSE_KEY) )
+            throw new Exception("Last response was not found.");
+
+        return formValues.get(LAST_RESPONSE_KEY);
     }
 
     private String getQuery(String message) {
