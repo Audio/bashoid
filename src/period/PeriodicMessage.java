@@ -1,23 +1,31 @@
 package period;
 
-import java.util.Timer;
+import bashoid.Addon;
+import bashoid.MessageListener;
 
 
-public final class PeriodicMessage {
+public final class PeriodicMessage extends Addon {
 
-    private Timer timer;
-    private PeriodicGenerator generator;
-    private final long TWENTY_MINUTES = 20 * 60 * 1000;
+    private static final long TWENTY_MINUTES = 20 * 60 * 1000;
 
 
-    public PeriodicMessage() {
-        generator = new PeriodicGenerator();
-        timer = new Timer();
-        timer.scheduleAtFixedRate(generator, TWENTY_MINUTES, TWENTY_MINUTES);
+    public PeriodicMessage(MessageListener listener) {
+        super(listener);
+        setPeriodicUpdate(TWENTY_MINUTES);
     }
 
-    public void addEventListener(PeriodicListener pl) {
-        generator.addEventListener(pl);
+    @Override
+    public boolean shouldReact(String message) {
+        return false;
+    }
+
+    @Override
+    protected void setReaction(String message, String author) {
+    }
+
+    @Override
+    public void periodicAddonUpdate() {
+        sendMessageToChannels("Hey, I'm still alive!");
     }
 
 }

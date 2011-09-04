@@ -4,16 +4,12 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import org.jibble.pircbot.*;
-import period.PeriodicEvent;
-import period.PeriodicListener;
-import period.PeriodicMessage;
 import utils.Config;
 import utils.FloodChecker;
 
 
-public class Bashoid extends PircBot implements PeriodicListener, MessageListener {
+public class Bashoid extends PircBot implements MessageListener {
 
-    private PeriodicMessage periodicMessage;
     private ArrayList<Addon> addons = new ArrayList<Addon>();
 
 
@@ -23,10 +19,6 @@ public class Bashoid extends PircBot implements PeriodicListener, MessageListene
         setMessageDelay(0);
         trySetUTFEncoding();
         registerAddons();
-
-        // currently not needed
-        // periodicMessage = new PeriodicMessage();
-        // periodicMessage.addEventListener(this);
     }
 
     private String getNickFromConfig(String defaultNick) {
@@ -45,17 +37,11 @@ public class Bashoid extends PircBot implements PeriodicListener, MessageListene
     private void registerAddons() {
         addons.add( new bash.Bash(this) );
         addons.add( new pepa.Pepa(this) );
-        addons.add( new topic.Topic(this) );
-        addons.add( new youtube.Youtube(this) );
-        addons.add( new translator.Translator(this) );
+        addons.add( new period.PeriodicMessage(this) );
         addons.add( new stopwatch.Stopwatch(this) );
-    }
-
-    @Override
-    public void sendPeriodicMessage(PeriodicEvent event) {
-        String[] channels = getChannels();
-        for (String channel : channels)
-            sendMessage(channel, event.getMessage() );
+        addons.add( new topic.Topic(this) );
+        addons.add( new translator.Translator(this) );
+        addons.add( new youtube.Youtube(this) );
     }
 
     @Override
