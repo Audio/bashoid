@@ -115,4 +115,9 @@ public class Bashoid extends PircBot implements AddonListener {
             sendNotice(target, line);
     }
 
+    @Override
+    public String getBotNickname() {
+        return getNick();
+    }
+
 }
