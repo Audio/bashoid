@@ -1,5 +1,6 @@
 package topic;
 
+import bashoid.MessageListener;
 import bashoid.Addon;
 import utils.WebPage;
 
@@ -10,6 +11,11 @@ public class Topic extends Addon {
 
     private static final String URL_MASK = "http://forum.valhalla-team.com/index.php?topic=";
     private static final String MESSAGE_PREFIX = "Valhalla forum: ";
+
+
+    public Topic(MessageListener listener) {
+        super(listener);
+    }
 
     private String loadSubject(int topicId) throws Exception {
         WebPage page = WebPage.loadWebPage("http://valhalla-team.com/forum.api.php?topicId=" + topicId, "UTF-8");

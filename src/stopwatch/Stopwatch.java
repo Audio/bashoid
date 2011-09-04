@@ -1,10 +1,11 @@
 package stopwatch;
 
+import bashoid.MessageListener;
 import bashoid.Addon;
 import java.util.ArrayList;
-import java.util.List;
 
 import static utils.Constants.*;
+
 
 public class Stopwatch extends Addon {
 
@@ -23,8 +24,8 @@ public class Stopwatch extends Addon {
     private String  stopwatchAuthor;
     private ArrayList<StopwatchTimer> timers = new ArrayList<StopwatchTimer>();
 
-    public Stopwatch()
-    {
+    public Stopwatch(MessageListener listener) {
+        super(listener);
         stopwatchRunning = false;
     }
 

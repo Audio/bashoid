@@ -7,7 +7,7 @@ public abstract class Addon implements PeriodicAddonListener {
 
     protected List<String> reaction = new ArrayList<String>();
     protected boolean errorOccurred;
-    private MessageListener messageListener;
+    protected MessageListener messageListener;
     protected PeriodicAddonUpdate periodicAddonUpdate;
 
     protected final static String MESSAGE_FAIL = "Addon has failed.";
@@ -16,7 +16,7 @@ public abstract class Addon implements PeriodicAddonListener {
     public abstract boolean  shouldReact(String message);
     protected abstract void  setReaction(String message, String author);
 
-    public void setMessageListener(MessageListener listener) {
+    public Addon(MessageListener listener) {
         messageListener = listener;
     }
 

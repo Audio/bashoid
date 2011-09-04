@@ -1,7 +1,7 @@
 package translator;
 
+import bashoid.MessageListener;
 import bashoid.Addon;
-import java.net.URLEncoder;
 import utils.WebPage;
 
 import static utils.Constants.*;
@@ -14,6 +14,11 @@ public class Translator extends Addon {
         "cz", "en", "ru", "de", "fr", "it", "es", "sk"
     };
     private static final byte langsCount = 8;
+
+
+    public Translator(MessageListener listener) {
+        super(listener);
+    }
 
     private String loadTranslation(String query, String langFrom, String langTo) throws Exception {
         String address = "http://slovnik.seznam.cz/" + langFrom + "-" + langTo + "/?q=" + query;

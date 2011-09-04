@@ -43,17 +43,12 @@ public class Bashoid extends PircBot implements PeriodicListener, MessageListene
     }
 
     private void registerAddons() {
-        addAddon( new bash.Bash() );
-        addAddon( new pepa.Pepa() );
-        addAddon( new topic.Topic() );
-        addAddon( new youtube.Youtube() );
-        addAddon( new translator.Translator() );
-        addAddon( new stopwatch.Stopwatch() );
-    }
-
-    private void addAddon(Addon addon) {
-        addon.setMessageListener(this);
-        addons.add(addon);
+        addons.add( new bash.Bash(this) );
+        addons.add( new pepa.Pepa(this) );
+        addons.add( new topic.Topic(this) );
+        addons.add( new youtube.Youtube(this) );
+        addons.add( new translator.Translator(this) );
+        addons.add( new stopwatch.Stopwatch(this) );
     }
 
     @Override

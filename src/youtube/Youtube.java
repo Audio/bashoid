@@ -1,5 +1,6 @@
 package youtube;
 
+import bashoid.MessageListener;
 import bashoid.Addon;
 import java.util.ArrayList;
 import utils.Formatter;
@@ -12,6 +13,11 @@ public class Youtube extends Addon {
 
     private static final int VIDEO_ID_LENGTH = 11;
     private ArrayList<LinkInfo> cache = new ArrayList<LinkInfo>();
+
+
+    public Youtube(MessageListener listener) {
+        super(listener);
+    }
 
     private void downloadParseSave(String videoID) throws Exception {
         WebPage entry = loadVideoEntry(videoID);

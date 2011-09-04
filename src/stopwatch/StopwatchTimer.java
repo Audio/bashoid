@@ -1,6 +1,5 @@
 package stopwatch;
 
-import bashoid.Bashoid;
 
 public class StopwatchTimer
 {
