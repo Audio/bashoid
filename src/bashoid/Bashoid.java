@@ -10,10 +10,12 @@ import period.PeriodicMessage;
 import utils.Config;
 import utils.FloodChecker;
 
+
 public class Bashoid extends PircBot implements PeriodicListener, MessageListener {
 
     private PeriodicMessage periodicMessage;
     private ArrayList<Addon> addons = new ArrayList<Addon>();
+
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );

@@ -7,11 +7,13 @@ import java.util.Properties;
 public class Config {
 
     private String filename;
+
     private static Properties properties;
-    private static String defaultFilename = "config.xml";
+    private static final String DEFAULT_FILENAME = "config.xml";
+
 
     public Config() {
-        this(defaultFilename);
+        this(DEFAULT_FILENAME);
     }
 
     public Config(String filename) {
