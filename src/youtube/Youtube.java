@@ -50,12 +50,20 @@ public class Youtube extends Addon {
     }
 
     private int getPositionWhereVideoIDStarts(String message) {
-        int pos = videoIDPosition(message, "youtube.com/watch?v=");
-        return (pos == NOT_FOUND) ? videoIDPosition(message, "youtu.be/") : pos;
+        int pos = videoIDPosition(message, "youtu.be/");
+        if (pos != NOT_FOUND)
+            return pos;
+
+        pos = message.indexOf("youtube.com/watch");
+        return (pos != NOT_FOUND) ? videoIDPosition(message, "v=", pos) : NOT_FOUND;
     }
 
     private int videoIDPosition(String message, final String URL_PATTERN) {
-        int position = message.indexOf(URL_PATTERN);
+        return videoIDPosition(message, URL_PATTERN, 0);
+    }
+
+    private int videoIDPosition(String message, final String URL_PATTERN, int beginPosition) {
+        int position = message.indexOf(URL_PATTERN, beginPosition);
         return (position != NOT_FOUND) ? position + URL_PATTERN.length() : NOT_FOUND;
     }
 
