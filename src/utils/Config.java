@@ -7,8 +7,8 @@ import java.util.Properties;
 public class Config {
 
     private String filename;
-
     private Properties properties;
+
     private static final String DEFAULT_FILENAME = "config.xml";
 
 
