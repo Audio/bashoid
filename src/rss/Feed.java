@@ -3,6 +3,8 @@ package rss;
 import utils.WebPage;
 import java.util.ArrayList;
 
+import static utils.Constants.*;
+
 public class Feed
 {
     private static final String search = "<title>";
@@ -58,13 +60,13 @@ public class Feed
 
     private String findNextTitle(String content) {
         int index = content.indexOf(search, titleItr);
-        if(index == -1)
+        if(index == NOT_FOUND)
             return null;
 
         int begin = index + search.length();
 
         index = content.indexOf("</title>", begin);
-        if(index == -1)
+        if(index == NOT_FOUND)
             return null;
 
         titleItr = index;

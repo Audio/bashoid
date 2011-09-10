@@ -4,11 +4,15 @@ import bashoid.Addon;
 import utils.Config;
 import java.util.ArrayList;
 
+import static utils.Constants.*;
+
+
 public class RSS extends Addon {
 
-    private static final byte CMD_INVALID         = -1;
-    private static final byte CMD_LIST            = 1;
-    private static final byte CMD_SHOW            = 2;
+    private enum Cmds
+    {
+        CMD_INVALID,CMD_LIST,CMD_SHOW;
+    };
     private static final String configKeyName = "channelName";
     private static final String configKeyUrl = "channelUrl";
     private static final String configKeyCount = "showMsgsCount";
@@ -52,7 +56,7 @@ public class RSS extends Addon {
         }
     }
 
-    private String executeCmd(byte cmd, String message, String author) {
+    private String executeCmd(Cmds cmd, String message, String author) {
         if(feeds.isEmpty())
             return "No channels available";
 
@@ -69,7 +73,7 @@ public class RSS extends Addon {
                 String channel;
                 int index = message.indexOf(" ", message.indexOf("show"));
                 int end = message.indexOf(" ", index+1);
-                if(end == -1)
+                if(end == NOT_FOUND)
                     end = message.length();
 
                 channel = message.substring(index+1, end);
@@ -77,7 +81,7 @@ public class RSS extends Addon {
                     if(channel.equalsIgnoreCase(f.getName())) {
                         try {
                             ArrayList<String> messages = f.getLastMessages(showMsgsCount);
-                            sendMessage(author, "Last " +  showMsgsCount + " messages for rss channel \"" + channel + "\":");
+                            sendMessage(author, "Last " +  showMsgsCount + " messages for rss channel \"" + f.getName() + "\":");
                             for(String s : messages)
                                 sendMessage(author, s);
                         }
@@ -92,28 +96,28 @@ public class RSS extends Addon {
         return null;
     }
 
-    private byte getCommand(String message) {
+    private Cmds getCommand(String message) {
         int begin = message.indexOf(' ') + 1;
         int end = message.indexOf(' ', begin);
-        if(end == -1)
+        if(end == NOT_FOUND)
             end = message.length();
 
         String cmd = message.substring(begin, end);
 
-        if     (cmd.equals("list")) return CMD_LIST;
-        else if(cmd.equals("show")) return CMD_SHOW;
-        else                        return CMD_INVALID;
+        if     (cmd.equals("list")) return Cmds.CMD_LIST;
+        else if(cmd.equals("show")) return Cmds.CMD_SHOW;
+        else                        return Cmds.CMD_INVALID;
     }
 
     @Override
     public boolean shouldReact(String message) {
-         return message.startsWith("rss") && getCommand(message) != CMD_INVALID;
+         return message.startsWith("rss") && getCommand(message) != Cmds.CMD_INVALID;
     }
 
     @Override
     protected void setReaction(String message, String author) {
-        byte cmd = getCommand(message);
-        if(cmd == CMD_INVALID)
+        Cmds cmd = getCommand(message);
+        if(cmd == Cmds.CMD_INVALID)
             return;
         String result = executeCmd(cmd, message, author);
         if(result != null)
