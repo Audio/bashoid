@@ -47,12 +47,11 @@ public class RSS extends Addon {
         {
             try {
                 msg = f.check();
+                if(msg != null)
+                    sendMessageToChannels(msg);
             }
             catch(Exception e) {
             }
-
-            if(msg != null)
-                sendMessageToChannels(msg);
         }
     }
 
