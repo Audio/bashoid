@@ -9,8 +9,8 @@ public class StopwatchTimer
     private long remainingTime;
     private long period;
 
-    public StopwatchTimer(String author, long time, long period)
-    {
+
+    public StopwatchTimer(String author, long time, long period) {
         this.author = author;
         baseTime = time;
         remainingTime = time;
@@ -24,8 +24,7 @@ public class StopwatchTimer
     public String getResponse() { return response; }
     public long getBaseTime() { return baseTime; }
 
-    public boolean update()
-    {
+    public boolean update() {
         response = null;
         --remainingTime;
         if(remainingTime <= 0)

@@ -8,12 +8,9 @@ import static utils.Constants.*;
 
 public class Stopwatch extends Addon {
 
-    private static final byte CMD_INVALID         = -1;
-    private static final byte CMD_START_STOPWATCH = 1;
-    private static final byte CMD_STOP_STOPWATCH  = 2;
-    private static final byte CMD_GET_STOPWATCH   = 3;
-    private static final byte CMD_SET_TIMER       = 4;
-    private static final byte CMD_REMOVE_TIMER    = 5;
+    private enum Cmds {
+        CMD_INVALID, CMD_START_STOPWATCH, CMD_STOP_STOPWATCH, CMD_GET_STOPWATCH, CMD_SET_TIMER , CMD_REMOVE_TIMER;
+    };
 
     private static final short HOUR               = 3600;
     private static final short MINUTE             = 60;
@@ -23,15 +20,13 @@ public class Stopwatch extends Addon {
     private String  stopwatchAuthor;
     private ArrayList<StopwatchTimer> timers = new ArrayList<StopwatchTimer>();
 
-    public Stopwatch()
-    {
+
+    public Stopwatch() {
         stopwatchRunning = false;
     }
 
-    private String executeCmd(byte cmd, String message, String author)
-    {
-        switch(cmd)
-        {
+    private String executeCmd(Cmds cmd, String message, String author) {
+        switch(cmd) {
             case CMD_START_STOPWATCH:
                 if(stopwatchRunning)
                     return "Stopwatch is already running";
@@ -61,13 +56,12 @@ public class Stopwatch extends Addon {
             }
             case CMD_SET_TIMER:
             {
-                for(StopwatchTimer t : timers)
-                {
+                for(StopwatchTimer t : timers) {
                     if(author.equals(t.getAuth()))
                         return "You already have one timer";
                 }
                 int index = message.indexOf(' ');
-                if(index == -1)
+                if(index == NOT_FOUND)
                      return "You need to set time";
                 index = message.indexOf(' ', index+1)+1;
 
@@ -77,7 +71,7 @@ public class Stopwatch extends Addon {
 
                 long period = MINUTE;
                 index = message.indexOf(' ', index);
-                if(index != -1)
+                if(index != NOT_FOUND)
                     period = parseTime(message, index+1);
                 StopwatchTimer timer = new StopwatchTimer(author, time, period);
                 timers.add(timer);
@@ -88,10 +82,8 @@ public class Stopwatch extends Addon {
             {
                 StopwatchTimer tm = null;
                 ArrayList<StopwatchTimer> tmp = (ArrayList<StopwatchTimer>)timers.clone();
-                for(StopwatchTimer t : tmp)
-                {
-                    if(author.equals(t.getAuth()))
-                    {
+                for(StopwatchTimer t : tmp) {
+                    if(author.equals(t.getAuth())) {
                         tm = t;
                         timers.remove(timers.indexOf(t));
                     }
@@ -105,33 +97,26 @@ public class Stopwatch extends Addon {
         return null;
     }
 
-    private void startUpdate()
-    {
+    private void startUpdate() {
         if(periodicAddonUpdate == null)
             setPeriodicUpdate(1000);
     }
 
-    private void stopUpdate()
-    {
+    private void stopUpdate() {
         if(periodicAddonUpdate != null && !stopwatchRunning && timers.size() == 0)
             stopPeriodicUpdate();
     }
 
-    public static String timeToString(long time)
-    {
+    public static String timeToString(long time) {
         String result = "";
         if(time < MINUTE)
             result += time + "s";
-        else
-        {
-            if(time/MINUTE < MINUTE)
-            {
+        else {
+            if(time/MINUTE < MINUTE) {
                 result += (long)Math.floor(time/MINUTE) + "m";
                 if(dv(time,MINUTE) != 0)
                     result += " " + dv(time,MINUTE) + "s";
-            }
-            else
-            {
+            } else {
                 result += (long)Math.floor(time/HOUR) + "h";
                 if(dv(time,HOUR) >= MINUTE)
                     result += " " + (long)Math.floor(dv(time,3600)/MINUTE) + "m";
@@ -140,15 +125,14 @@ public class Stopwatch extends Addon {
                     result += " " + dv(time,MINUTE) + "s";
             }
         }
-        
+
         return result;
     }
 
-    private long parseTime(String message, int index)
-    {
+    private long parseTime(String message, int index) {
         long result = 0;
         int end = message.indexOf(' ', index);
-        if(end == -1)
+        if(end == NOT_FOUND)
             end = message.length();
 
         String time = message.substring(index, end);
@@ -160,17 +144,14 @@ public class Stopwatch extends Addon {
 
         String tmp = "";
         char ch;
-        for(byte i = 0; i < time.length(); ++i)
-        {
+        for(byte i = 0; i < time.length(); ++i) {
             ch = time.charAt(i);
-            if(tmp.length() != 0)
-            {
-                short mul = -1;
+            if(tmp.length() != 0) {
+                short mul = NOT_FOUND;
                 if     (ch == 'h' || ch == 'H') mul = HOUR;
                 else if(ch == 'm' || ch == 'M') mul = MINUTE;
                 else if(ch == 's' || ch == 'S') mul = 1;
-                if(mul != -1)
-                {
+                if(mul != NOT_FOUND) {
                     try{
                         result += Integer.decode(tmp)*mul;
                     }
@@ -186,35 +167,32 @@ public class Stopwatch extends Addon {
         return result < 0 ? 0 : result;
     }
 
-    public static long dv(long num, long div)
-    {
+    public static long dv(long num, long div) {
         return num - ((long)Math.floor(num/div)*div);
     }
 
-    private byte getCommand(String message)
-    {
+    private Cmds getCommand(String message) {
         int begin = message.indexOf(' ') + 1;
         int end = message.indexOf(' ', begin);
-        if(end == -1)
+        if(end == NOT_FOUND)
             end = message.length();
         String cmd = message.substring(begin, end);
 
         if(cmd.equals("start"))
-            return CMD_START_STOPWATCH;
+            return Cmds.CMD_START_STOPWATCH;
         else if(cmd.equals("stop"))
-            return CMD_STOP_STOPWATCH;
+            return Cmds.CMD_STOP_STOPWATCH;
         else if(cmd.equals("get"))
-            return CMD_GET_STOPWATCH;
-        else if(cmd.equals("timer"))
-        {
+            return Cmds.CMD_GET_STOPWATCH;
+        else if(cmd.equals("timer")) {
             begin = message.indexOf(' ', end);
-            if(begin == -1)
-                return CMD_INVALID;
-            return CMD_SET_TIMER;
+            if(begin == NOT_FOUND)
+                return Cmds.CMD_INVALID;
+            return Cmds.CMD_SET_TIMER;
         }
         else if(cmd.equals("rmtimer"))
-            return CMD_REMOVE_TIMER;
-        return CMD_INVALID;
+            return Cmds.CMD_REMOVE_TIMER;
+        return Cmds.CMD_INVALID;
     }
 
     @Override
@@ -225,8 +203,8 @@ public class Stopwatch extends Addon {
     @Override
     protected void setReaction(String message, String author) {
         try {
-            byte cmd = getCommand(message);
-            if(cmd == CMD_INVALID)
+            Cmds cmd = getCommand(message);
+            if(cmd == Cmds.CMD_INVALID)
                 return;
             String result = executeCmd(cmd, message, author);
             if(result != null)
@@ -238,16 +216,13 @@ public class Stopwatch extends Addon {
     }
 
     @Override
-    public void periodicAddonUpdate()
-    {
+    public void periodicAddonUpdate() {
         if(stopwatchRunning)
             ++stopwatchTime;
 
         ArrayList<StopwatchTimer> tmp = (ArrayList<StopwatchTimer>)timers.clone();
-        for(StopwatchTimer t : tmp)
-        {
-            if(!t.update())
-            {
+        for(StopwatchTimer t : tmp) {
+            if(!t.update()) {
                 timers.remove(timers.indexOf(t));
                 stopUpdate();
             }
