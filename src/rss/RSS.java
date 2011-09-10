@@ -87,6 +87,7 @@ public class RSS extends Addon {
                         catch(Exception e){
                             setError();
                         }
+                        break;
                     }
                 }
                 return null;
