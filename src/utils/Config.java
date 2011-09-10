@@ -8,7 +8,7 @@ public class Config {
 
     private String filename;
 
-    private static Properties properties;
+    private Properties properties;
     private static final String DEFAULT_FILENAME = "config.xml";
 
 
