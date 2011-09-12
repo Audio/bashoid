@@ -100,10 +100,12 @@ public class Bashoid extends PircBot implements AddonListener {
 
     private void sendAddonOutput(Addon addon, Message message) {
         List<String> reaction = addon.generateReaction(message.text, message.author);
-        if ( addon.errorOccurred() )
+        if ( addon.errorOccurred() ) {
+            displayAddonFailureIfIsSet( addon.getError() );
             sendListOfNotices(message.author, reaction);
-        else
+        } else {
             sendListOfMessages(message.channel, reaction);
+        }
     }
 
     protected void sendListOfMessages(String target, List<String> output) {
@@ -114,6 +116,11 @@ public class Bashoid extends PircBot implements AddonListener {
     protected void sendListOfNotices(String target, List<String> output) {
         for ( String line : output )
             sendNotice(target, line);
+    }
+
+    protected void displayAddonFailureIfIsSet(Exception e) {
+        if (e != null)
+            System.err.println( e.getMessage() );
     }
 
     @Override

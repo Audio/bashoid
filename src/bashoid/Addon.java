@@ -3,11 +3,13 @@ package bashoid;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public abstract class Addon implements PeriodicAddonListener {
 
     protected List<String> reaction = new ArrayList<String>();
     protected boolean errorOccurred;
     protected PeriodicAddonUpdate periodicAddonUpdate;
+    protected Exception error;
 
     protected static AddonListener addonListener;
     protected final static String MESSAGE_FAIL = "Addon has failed.";
@@ -21,20 +23,38 @@ public abstract class Addon implements PeriodicAddonListener {
     }
 
     public final List<String> generateReaction(String message, String author) {
-        reaction.clear();
-        errorOccurred = false;
+        resetAddonStatus();
         setReaction(message, author);
         return reaction;
     }
 
+    protected final void resetAddonStatus() {
+        reaction.clear();
+        errorOccurred = false;
+        error = null;
+    }
+
     protected final void setError() {
-        setError(MESSAGE_FAIL);
+        setError(MESSAGE_FAIL, null);
+    }
+
+    protected final void setError(Exception e) {
+        setError(MESSAGE_FAIL, e);
     }
 
     protected final void setError(String reason) {
+        setError(reason, null);
+    }
+
+    protected final void setError(String reason, Exception e) {
         reaction.clear();
         reaction.add(reason);
         errorOccurred = true;
+        error = e;
+    }
+
+    public final Exception getError() {
+        return error;
     }
 
     public final boolean errorOccurred() {
