@@ -101,8 +101,7 @@ public class Translator extends Addon {
                 reaction.add(response);
             }
         } catch (Exception e) {
-            //System.err.println(e); --debug
-            setError();
+            setError(e);
         }
     }
 

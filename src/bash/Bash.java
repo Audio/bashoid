@@ -28,7 +28,7 @@ public class Bash extends Addon {
             takeOneQuoteAndSetOutput();
             cooldown.start();
         } catch (Exception e) {
-            setError("Bash.org is unreachable.");
+            setError("Bash.org is unreachable.", e);
         }
     }
 

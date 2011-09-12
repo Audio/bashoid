@@ -210,8 +210,7 @@ public class Stopwatch extends Addon {
             if(result != null)
                 reaction.add(result);
         } catch (Exception e) {
-            // System.err.println(e); --debug
-            setError();
+            setError(e);
         }
     }
 

@@ -84,7 +84,7 @@ public class Pepa extends Addon {
             String response = loadResponse(query);
             reaction.add(author + ": " + response);
         } catch (Exception e) {
-            setError();
+            setError(e);
         }
     }
 

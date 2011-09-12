@@ -85,7 +85,7 @@ public class RSS extends Addon {
                                 sendMessage(author, s);
                         }
                         catch(Exception e){
-                            setError();
+                            setError(e);
                         }
                         break;
                     }

@@ -49,7 +49,7 @@ public class Topic extends Addon {
             int topicId = getTopicId(message);
             reaction.add(MESSAGE_PREFIX + loadSubject(topicId) );
         } catch (Exception e) {
-            setError();
+            setError(e);
         }
     }
 

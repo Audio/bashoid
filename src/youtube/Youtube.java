@@ -92,7 +92,7 @@ public class Youtube extends Addon {
             LinkInfo li = getCachedInfo(newVideoID);
             reaction.add("YouTube: " + li.title() );
         } catch (Exception e) {
-            setError();
+            setError(e);
         }
     }
 
