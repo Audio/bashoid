@@ -48,7 +48,7 @@ public class RSS extends Addon {
         for(Feed f : feeds)
         {
             try {
-                msgs = f.check();
+                msgs = f.check(showMsgsCount);
                 if( !msgs.isEmpty() )
                     for (String msg : msgs)
                         sendMessageToChannels(msg);

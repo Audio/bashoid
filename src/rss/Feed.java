@@ -25,18 +25,18 @@ public class Feed
 
     public String getName() { return name; }
 
-    public List<String> check() throws Exception {
+    public List<String> check(byte maxMsgsCount) throws Exception {
         WebPage entry = WebPage.loadWebPage(address, "UTF-8");
         String content = entry.getContent();
 
         String feedName;
-        String message = "";
+        String message = " ";
         String firstMessage = null;
         List<String> newEntries = new ArrayList<String>();
 
         titleItr = 0;
 
-        while ( !message.equals(lastMessage) ) {
+        for (byte count = 0; !message.equals(lastMessage) && count <= maxMsgsCount; ++count) {
             feedName = findNextTitle(content);
             message = findNextTitle(content);
 
