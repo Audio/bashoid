@@ -3,6 +3,7 @@ package rss;
 import bashoid.Addon;
 import utils.Config;
 import java.util.ArrayList;
+import java.util.List;
 
 import static utils.Constants.*;
 
@@ -11,7 +12,7 @@ public class RSS extends Addon {
 
     private enum Cmds
     {
-        CMD_INVALID,CMD_LIST,CMD_SHOW;
+        INVALID, LIST, SHOW;
     };
     private static final String configKeyName = "channelName";
     private static final String configKeyUrl = "channelUrl";
@@ -19,6 +20,7 @@ public class RSS extends Addon {
 
     private ArrayList<Feed> feeds = new ArrayList<Feed>();
     private byte showMsgsCount;
+
 
     public RSS() {
         setPeriodicUpdate(60000);
@@ -42,15 +44,17 @@ public class RSS extends Addon {
     }
 
     private void checkFeeds() {
-        String msg = null;
+        List<String> msgs = null;
         for(Feed f : feeds)
         {
             try {
-                msg = f.check();
-                if(msg != null)
-                    sendMessageToChannels(msg);
+                msgs = f.check();
+                if( !msgs.isEmpty() )
+                    for (String msg : msgs)
+                        sendMessageToChannels(msg);
             }
             catch(Exception e) {
+                setError(e);
             }
         }
     }
@@ -60,14 +64,14 @@ public class RSS extends Addon {
             return "No channels available";
 
         switch(cmd) {
-            case CMD_LIST:
+            case LIST:
             {
                 String msg = "";
                 for(Feed f : feeds)
                     msg += f.getName() + " ";
                 return msg;
             }
-            case CMD_SHOW:
+            case SHOW:
             {
                 String channel;
                 int index = message.indexOf(" ", message.indexOf("show"));
@@ -104,20 +108,20 @@ public class RSS extends Addon {
 
         String cmd = message.substring(begin, end);
 
-        if     (cmd.equals("list")) return Cmds.CMD_LIST;
-        else if(cmd.equals("show")) return Cmds.CMD_SHOW;
-        else                        return Cmds.CMD_INVALID;
+        if     (cmd.equals("list")) return Cmds.LIST;
+        else if(cmd.equals("show")) return Cmds.SHOW;
+        else                        return Cmds.INVALID;
     }
 
     @Override
     public boolean shouldReact(String message) {
-         return message.startsWith("rss") && getCommand(message) != Cmds.CMD_INVALID;
+         return message.startsWith("rss") && getCommand(message) != Cmds.INVALID;
     }
 
     @Override
     protected void setReaction(String message, String author) {
         Cmds cmd = getCommand(message);
-        if(cmd == Cmds.CMD_INVALID)
+        if(cmd == Cmds.INVALID)
             return;
         String result = executeCmd(cmd, message, author);
         if(result != null)

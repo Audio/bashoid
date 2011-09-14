@@ -2,17 +2,20 @@ package rss;
 
 import utils.WebPage;
 import java.util.ArrayList;
+import java.util.List;
 
 import static utils.Constants.*;
 
+
 public class Feed
 {
-    private static final String search = "<title>";
+    private static final String SEARCH = "<title>";
 
     private String address;
     private String lastMessage;
     private String name;
     private int titleItr;
+
 
     public Feed(String name, String address) {
         this.address = address;
@@ -22,23 +25,34 @@ public class Feed
 
     public String getName() { return name; }
 
-    public String check() throws Exception {
+    public List<String> check() throws Exception {
         WebPage entry = WebPage.loadWebPage(address, "UTF-8");
         String content = entry.getContent();
 
         String feedName;
-        String message;
+        String message = "";
+        String firstMessage = null;
+        List<String> newEntries = new ArrayList<String>();
 
         titleItr = 0;
 
-        feedName = findNextTitle(content);
-        message = findNextTitle(content);
+        while ( !message.equals(lastMessage) ) {
+            feedName = findNextTitle(content);
+            message = findNextTitle(content);
 
-        if(message == null || feedName == null || message.equals(lastMessage))
-            return null;
+            if(message == null || feedName == null)
+                break;
 
-        lastMessage = message;
-        return name + ": " + message;
+            if (firstMessage != null)
+                firstMessage = message;
+
+            newEntries.add(name + ": " + message);
+        };
+
+        if (firstMessage != null)
+            lastMessage = firstMessage;
+
+        return newEntries;
     }
 
     public ArrayList<String> getLastMessages(int count) throws Exception {
@@ -59,11 +73,11 @@ public class Feed
     }
 
     private String findNextTitle(String content) {
-        int index = content.indexOf(search, titleItr);
+        int index = content.indexOf(SEARCH, titleItr);
         if(index == NOT_FOUND)
             return null;
 
-        int begin = index + search.length();
+        int begin = index + SEARCH.length();
 
         index = content.indexOf("</title>", begin);
         if(index == NOT_FOUND)
