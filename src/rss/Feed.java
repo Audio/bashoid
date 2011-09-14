@@ -36,14 +36,14 @@ public class Feed
 
         titleItr = 0;
 
-        for (byte count = 0; !message.equals(lastMessage) && count <= maxMsgsCount; ++count) {
+        for (byte count = 1; count <= maxMsgsCount; ++count) {
             feedName = findNextTitle(content);
             message = findNextTitle(content);
 
-            if(message == null || feedName == null)
+            if(message == null || feedName == null || message.equals(lastMessage))
                 break;
 
-            if (firstMessage != null)
+            if (firstMessage == null)
                 firstMessage = message;
 
             newEntries.add(name + ": " + message);
