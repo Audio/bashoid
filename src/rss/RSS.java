@@ -20,6 +20,7 @@ public class RSS extends Addon {
 
     private ArrayList<Feed> feeds = new ArrayList<Feed>();
     private byte showMsgsCount;
+    private boolean firstRun = true;
 
 
     public RSS() {
@@ -45,10 +46,11 @@ public class RSS extends Addon {
 
     private void checkFeeds() {
         List<String> msgs = null;
+        byte maxCount = (firstRun) ? 1 : showMsgsCount;
         for(Feed f : feeds)
         {
             try {
-                msgs = f.check(showMsgsCount);
+                msgs = f.check(maxCount);
                 if( !msgs.isEmpty() )
                     for (String msg : msgs)
                         sendMessageToChannels(msg);
@@ -57,6 +59,7 @@ public class RSS extends Addon {
                 setError(e);
             }
         }
+        firstRun = false;
     }
 
     private String executeCmd(Cmds cmd, String message, String author) {
