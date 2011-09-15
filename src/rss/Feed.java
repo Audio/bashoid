@@ -29,18 +29,20 @@ public class Feed
         WebPage entry = WebPage.loadWebPage(address, "UTF-8");
         String content = entry.getContent();
 
-        String feedName;
-        String message = " ";
+        String message;
         String firstMessage = null;
         List<String> newEntries = new ArrayList<String>();
 
         titleItr = 0;
 
+        String feedName = findNextTitle(content);
+        if (feedName == null)
+            return newEntries;
+
         for (byte count = 1; count <= maxMsgsCount; ++count) {
-            feedName = findNextTitle(content);
             message = findNextTitle(content);
 
-            if(message == null || feedName == null || message.equals(lastMessage))
+            if(message == null || message.equals(lastMessage))
                 break;
 
             if (firstMessage == null)
