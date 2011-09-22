@@ -6,15 +6,14 @@ import java.util.List;
 
 import static utils.Constants.*;
 
-
 public class Feed
 {
-    private static final String SEARCH = "<title>";
+    protected static final String SEARCH = "<title>";
 
-    private String address;
-    private String lastMessage;
-    private String name;
-    private int titleItr;
+    protected String address;
+    protected String lastMessage;
+    protected String name;
+    protected int titleItr;
 
 
     public Feed(String name, String address) {
@@ -74,7 +73,7 @@ public class Feed
         return list;
     }
 
-    private String findNextTitle(String content) {
+    protected String findNextTitle(String content) {
         int index = content.indexOf(SEARCH, titleItr);
         if(index == NOT_FOUND)
             return null;

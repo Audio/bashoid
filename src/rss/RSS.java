@@ -36,6 +36,8 @@ public class RSS extends Addon {
             feeds.add(new Feed(name, url));
         }
 
+        feeds.add(new EzFeed());
+
         try {
             showMsgsCount = Integer.valueOf(config.getValue(configKeyCount, "5")).byteValue();
         }
