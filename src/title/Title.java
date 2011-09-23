@@ -1,9 +1,9 @@
 package title;
 
 import bashoid.Addon;
+import utils.Formatter;
 import utils.WebPage;
-
-import static utils.Constants.*;
+import utils.XMLParser;
 
 
 public class Title extends Addon {
@@ -18,17 +18,10 @@ public class Title extends Addon {
 
     private String getTitleFromRawHTML(WebPage entry) throws Exception {
         String content = entry.getContent();
-        String toSearch = "<title>";
-        int pos = content.indexOf(toSearch);
-        if (pos == NOT_FOUND)
-            throw new Exception("Cannot find title in the HTML source.");
-
-        int begin = pos + toSearch.length();
-        int end = content.indexOf("</title>", begin);
-        return content.substring(begin, end);
+        String title = XMLParser.getSnippet(content, "<title>", "</title>");
+        return Formatter.removeHTML(title);
     }
 
-    
     private String getUrl(String message) {
         return message.substring(2);
     }

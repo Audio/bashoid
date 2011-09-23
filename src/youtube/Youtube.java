@@ -4,6 +4,7 @@ import bashoid.Addon;
 import java.util.ArrayList;
 import utils.Formatter;
 import utils.WebPage;
+import utils.XMLParser;
 
 import static utils.Constants.*;
 
@@ -26,14 +27,8 @@ public class Youtube extends Addon {
 
     private String getVideoTitleFromRawXML(WebPage entry) throws Exception {
         String content = entry.getContent();
-        String toSearch = "<title type='text'>";
-        int pos = content.indexOf(toSearch);
-        if (pos == NOT_FOUND)
-            throw new Exception("Cannot find video title in the XML source.");
-
-        int begin = pos + toSearch.length();
-        int end = content.indexOf("</title>", begin);
-        return Formatter.removeHTML( content.substring(begin, end) );
+        String title = XMLParser.getSnippet(content, "<title type='text'>", "</title>");
+        return Formatter.removeHTML(title);
     }
 
     private void downloadIfNeeded(String videoID) throws Exception {

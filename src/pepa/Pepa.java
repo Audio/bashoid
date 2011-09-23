@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import utils.WebPage;
+import utils.XMLParser;
 
 import static utils.Constants.*;
 
@@ -35,28 +36,22 @@ public class Pepa extends Addon {
         return postData;
     }
 
-    private void updateFormValues(WebPage entry) {
-        String content = entry.getContent();
-        int beginAreaPos = content.indexOf("<form");
-        int endAreaPos = content.indexOf("</form>");
-
+    private void updateFormValues(WebPage entry) throws Exception {
+        String content = XMLParser.getSnippet( entry.getContent(), "<form", "</form>");
         formValues.clear();
-        final String toSearch = "<input type=\"hidden";
-        do {
 
-            int beginTagPos = content.indexOf(toSearch, beginAreaPos);
-            if (beginTagPos == NOT_FOUND)
+        String rawTag;
+        String beginTag = "<input type=\"hidden";
+        for(int i = 0; true; i += beginTag.length() ) {
+            try {
+                rawTag = XMLParser.getSnippet(content, i, beginTag, ">");
+            } catch (Exception e) {
                 break;
-
-            int endTagPos = content.indexOf(">", beginTagPos);
-            String rawTag = content.substring(beginTagPos, endTagPos);
+            }
 
             HiddenTag tag = new HiddenTag(rawTag);
             formValues.put( tag.getName(), tag.getValue() );
-
-            beginAreaPos = endTagPos;
-
-        } while (beginAreaPos < endAreaPos);
+        }
     }
 
     private String getLastResponse() throws Exception {
