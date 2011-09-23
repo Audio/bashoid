@@ -4,17 +4,10 @@
     <property name="build.dir" value="build"/>
     <property name="classes.dir" value="${build.dir}/classes"/>
     <property name="sources.dir" value="src"/>
-    <property name="test.dir" value="test"/>
     <property name="jar.dir" value="${build.dir}/jar"/>
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="pircbot.jar" />
-    </path>
-
-    <path id="classpath.test">
-        <pathelement location="${lib.dir}/junit-4.8.2.jar" />
-        <pathelement location="${classes.dir}" />
-        <path refid="classpath" />
     </path>
 
     <target name="clean">
@@ -24,7 +17,6 @@
     <target name="compile">
         <mkdir dir="${classes.dir}" />
         <javac srcdir="${sources.dir}" destdir="${classes.dir}" classpathref="classpath" includeantruntime="no" />
-        <javac srcdir="${test.dir}" destdir="${classes.dir}" classpathref="classpath.test" includeantruntime="no" />
     </target>
 
     <target name="jar" depends="compile">
@@ -43,18 +35,6 @@
                 <path location="${jar.dir}/bashoid.jar"/>
             </classpath>
         </java>
-    </target>
-
-    <target name="test" depends="compile">
-        <junit haltonfailure="yes" haltonerror="yes">
-            <classpath refid="classpath.test" />
-            <formatter type="brief" usefile="false" />
-            <batchtest fork="yes">
-                <fileset dir="${classes.dir}">
-                    <include name="**/*Test.class" />
-                </fileset>
-            </batchtest>
-        </junit>
     </target>
 
 </project>
