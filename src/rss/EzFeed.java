@@ -1,6 +1,7 @@
 package rss;
 
 import utils.WebPage;
+import utils.XMLParser;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -17,6 +18,7 @@ public class EzFeed extends Feed
     private ArrayList<String> series;
     private Date lastDate;
     private DateFormat dateFormatter;
+    private boolean checked;
 
     public EzFeed() {
         super("EZTV", "http://rss.thepiratebay.org/user/d17c6a45441ce0bc0c057f19057f95e1");
@@ -24,6 +26,7 @@ public class EzFeed extends Feed
         releases = new ArrayList<String>();
         series = new ArrayList<String>();
         lastDate = new Date(0);
+        checked = false;
         dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ", Locale.ENGLISH);
 
         // move to config?
@@ -68,17 +71,22 @@ public class EzFeed extends Feed
             if(link == null)
                 continue;
 
-            newEntries.add(message + " | " + link);
+            if(checked)
+                newEntries.add(message + " | " + link);
             releases.add(message + " | " + link);
         }
 
         lastDate = buildDate;
+        checked = true;
 
         return newEntries;
     }
 
     @Override
     public ArrayList<String> getLastMessages(int count) throws Exception {
+        if(!checked)
+            check((byte)0);
+
         ArrayList<String> list = new ArrayList<String>();
         int size = releases.size();
         if(size == 0)
@@ -96,17 +104,12 @@ public class EzFeed extends Feed
     }
 
     private String findNextTag(String content, String tag, String endTag) {
-        int index = content.indexOf(tag, titleItr);
-        if(index == NOT_FOUND)
+        try {
+            String title = XMLParser.getSnippet(content, titleItr, tag, endTag);
+            return title;
+        } catch (Exception e) {
             return null;
-
-        int begin = index + tag.length();
-
-        index = content.indexOf(endTag, begin);
-        if(index == NOT_FOUND)
-            return null;
-
-        return content.substring(begin, index);
+        }
     }
 
     private boolean isShowTracked(String title) {
