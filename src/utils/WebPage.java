@@ -48,10 +48,12 @@ public class WebPage {
             return realEncoding;
 
         String type = connection.getContentType();
-        final String CHARSET_ATTRIBUTE = "charset=";
-        int pos = type.indexOf(CHARSET_ATTRIBUTE);
-        if (pos != NOT_FOUND)
-            return type.substring(pos + CHARSET_ATTRIBUTE.length() );
+        if (type != null) {
+            final String CHARSET_ATTRIBUTE = "charset=";
+            int pos = type.indexOf(CHARSET_ATTRIBUTE);
+            if (pos != NOT_FOUND)
+                return type.substring(pos + CHARSET_ATTRIBUTE.length() );
+        }
 
         return presetEncoding;
     }
