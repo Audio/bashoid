@@ -41,10 +41,9 @@ public class Pepa extends Addon {
         formValues.clear();
 
         String rawTag;
-        String beginTag = "<input type=\"hidden";
-        for(int i = 0; true; i += beginTag.length() ) {
+        for(int i = 0; true; i = XMLParser.getNextOccurrenceIndex() ) {
             try {
-                rawTag = XMLParser.getSnippet(content, i, beginTag, ">");
+                rawTag = XMLParser.getSnippet(content, i, "<input type=\"hidden", ">");
             } catch (Exception e) {
                 break;
             }

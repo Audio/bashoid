@@ -5,6 +5,13 @@ import static utils.Constants.*;
 
 public class XMLParser {
 
+    protected static int nextOccurrenceIndex;
+
+
+    public static int getNextOccurrenceIndex() {
+        return nextOccurrenceIndex;
+    }
+
     public static String getSnippet(String content, String tagStart, String tagStop) throws Exception {
         return getSnippet(content, 0, tagStart, tagStop);
     }
@@ -16,6 +23,7 @@ public class XMLParser {
 
         start += tagStart.length();
         int stop = content.indexOf(tagStop, start);
+        nextOccurrenceIndex = stop + tagStop.length();
         return (stop == NOT_FOUND) ? content.substring(start) : content.substring(start, stop);
     }
 

@@ -1,10 +1,10 @@
 package rss;
 
-import utils.WebPage;
 import java.util.ArrayList;
 import java.util.List;
+import utils.WebPage;
+import utils.XMLParser;
 
-import static utils.Constants.*;
 
 public class Feed
 {
@@ -74,17 +74,12 @@ public class Feed
     }
 
     protected String findNextTitle(String content) {
-        int index = content.indexOf(SEARCH, titleItr);
-        if(index == NOT_FOUND)
+        try {
+            String title = XMLParser.getSnippet(content, titleItr, SEARCH, "</title>");
+            titleItr = XMLParser.getNextOccurrenceIndex();
+            return title;
+        } catch (Exception e) {
             return null;
-
-        int begin = index + SEARCH.length();
-
-        index = content.indexOf("</title>", begin);
-        if(index == NOT_FOUND)
-            return null;
-
-        titleItr = index;
-        return content.substring(begin, index);
+        }
     }
 };
