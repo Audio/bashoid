@@ -33,7 +33,7 @@ public class Title extends Addon {
             String url = getUrl(message);
             reaction.add( loadTitle(url) );
         } catch (ParseException pe) {
-            setError("Give page does NOT contain the title tag.", pe);
+            setError("Given page does NOT contain the title tag.", pe);
         } catch (Exception e) {
             setError("Cannot load given URL.", e);
         }

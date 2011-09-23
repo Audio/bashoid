@@ -4,6 +4,8 @@ import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
+import static utils.Constants.*;
+
 
 public class WebPage {
 
@@ -31,11 +33,27 @@ public class WebPage {
         URL url = new URL(address);
         URLConnection conn = url.openConnection();
 
+        encoding = findRealEncoding(encoding, conn);
+
         if (postData != null)
             writePostData(postData, conn);
 
         String response = readResponse(conn, encoding);
         return new WebPage(address, response);
+    }
+
+    private static String findRealEncoding(String presetEncoding, URLConnection connection) {
+        String realEncoding = connection.getContentEncoding();
+        if (realEncoding != null)
+            return realEncoding;
+
+        String type = connection.getContentType();
+        final String CHARSET_ATTRIBUTE = "charset=";
+        int pos = type.indexOf(CHARSET_ATTRIBUTE);
+        if (pos != NOT_FOUND)
+            return type.substring(pos + CHARSET_ATTRIBUTE.length() );
+
+        return presetEncoding;
     }
 
     private static void writePostData(String postData, URLConnection connection) throws IOException {
