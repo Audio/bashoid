@@ -8,9 +8,6 @@ import utils.XMLParser;
 
 public class Title extends Addon {
 
-    private static final String MESSAGE_PREFIX = "t http://";
-
-
     private String loadTitle(String url) throws Exception {
         WebPage page = WebPage.loadWebPage(url, "UTF-8");
         return getTitleFromRawHTML(page);
@@ -28,7 +25,7 @@ public class Title extends Addon {
 
     @Override
     public boolean shouldReact(String message) {
-        return message.startsWith(MESSAGE_PREFIX);
+        return message.startsWith("t http");
     }
 
     @Override
