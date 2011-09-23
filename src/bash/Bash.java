@@ -1,11 +1,11 @@
 package bash;
 
 import bashoid.Addon;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
-import utils.Cooldown;
-import utils.Formatter;
-import utils.WebPage;
+import utils.*;
 
 
 public class Bash extends Addon {
@@ -27,12 +27,14 @@ public class Bash extends Addon {
             shuffleQuotes();
             takeOneQuoteAndSetOutput();
             cooldown.start();
-        } catch (Exception e) {
-            setError("Bash.org is unreachable.", e);
+        } catch (IOException ioe) {
+            setError("Bash.org is unreachable.", ioe);
+        } catch (ParseException pe) {
+            setError("Error while parsing the source.", pe);
         }
     }
 
-    private WebPage loadWebPage() throws Exception {
+    private WebPage loadWebPage() throws IOException {
         return WebPage.loadWebPage("http://bash.org/?random1", "ISO-8859-1");
     }
 

@@ -3,6 +3,7 @@ package pepa;
 import bashoid.Addon;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 import utils.WebPage;
@@ -36,7 +37,7 @@ public class Pepa extends Addon {
         return postData;
     }
 
-    private void updateFormValues(WebPage entry) throws Exception {
+    private void updateFormValues(WebPage entry) throws ParseException {
         String content = XMLParser.getSnippet( entry.getContent(), "<form", "</form>");
         formValues.clear();
 

@@ -1,5 +1,6 @@
 package bash;
 
+
 public class Quote implements Comparable<Quote> {
 
     private int    id;

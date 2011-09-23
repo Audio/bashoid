@@ -202,16 +202,12 @@ public class Stopwatch extends Addon {
 
     @Override
     protected void setReaction(String message, String author) {
-        try {
-            Cmds cmd = getCommand(message);
-            if(cmd == Cmds.CMD_INVALID)
-                return;
-            String result = executeCmd(cmd, message, author);
-            if(result != null)
-                reaction.add(result);
-        } catch (Exception e) {
-            setError(e);
-        }
+        Cmds cmd = getCommand(message);
+        if(cmd == Cmds.CMD_INVALID)
+            return;
+        String result = executeCmd(cmd, message, author);
+        if(result != null)
+            reaction.add(result);
     }
 
     @Override

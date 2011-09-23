@@ -1,9 +1,10 @@
 package rss;
 
 import bashoid.Addon;
-import utils.Config;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import utils.Config;
 
 import static utils.Constants.*;
 
@@ -57,7 +58,7 @@ public class RSS extends Addon {
                     for (String msg : msgs)
                         sendMessageToChannels(msg);
             }
-            catch(Exception e) {
+            catch(IOException e) {
                 setError(e);
             }
         }
@@ -93,7 +94,7 @@ public class RSS extends Addon {
                             for(String s : messages)
                                 sendMessage(author, s);
                         }
-                        catch(Exception e){
+                        catch(IOException e){
                             setError(e);
                         }
                         break;

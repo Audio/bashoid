@@ -1,16 +1,13 @@
 package rss;
 
+import java.io.IOException;
+import java.text.*;
+import java.util.*;
 import utils.WebPage;
 import utils.XMLParser;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import static utils.Constants.*;
+
 
 public class EzFeed extends Feed
 {
@@ -19,6 +16,7 @@ public class EzFeed extends Feed
     private Date lastDate;
     private DateFormat dateFormatter;
     private boolean checked;
+
 
     public EzFeed() {
         super("EZTV", "http://rss.thepiratebay.org/user/d17c6a45441ce0bc0c057f19057f95e1");
@@ -40,7 +38,7 @@ public class EzFeed extends Feed
     }
 
     @Override
-    public List<String> check(byte maxMsgsCount) throws Exception {
+    public List<String> check(byte maxMsgsCount) throws IOException {
         WebPage entry = WebPage.loadWebPage(address, "UTF-8");
         String content = entry.getContent();
 
@@ -83,7 +81,7 @@ public class EzFeed extends Feed
     }
 
     @Override
-    public ArrayList<String> getLastMessages(int count) throws Exception {
+    public ArrayList<String> getLastMessages(int count) throws IOException {
         if(!checked)
             check((byte)0);
 
@@ -105,9 +103,8 @@ public class EzFeed extends Feed
 
     private String findNextTag(String content, String tag, String endTag) {
         try {
-            String title = XMLParser.getSnippet(content, titleItr, tag, endTag);
-            return title;
-        } catch (Exception e) {
+            return XMLParser.getSnippet(content, titleItr, tag, endTag);
+        } catch (ParseException e) {
             return null;
         }
     }

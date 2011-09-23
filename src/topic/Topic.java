@@ -1,6 +1,7 @@
 package topic;
 
 import bashoid.Addon;
+import java.io.IOException;
 import utils.WebPage;
 
 import static utils.Constants.*;
@@ -12,7 +13,7 @@ public class Topic extends Addon {
     private static final String MESSAGE_PREFIX = "Valhalla forum: ";
 
 
-    private String loadSubject(int topicId) throws Exception {
+    private String loadSubject(int topicId) throws IOException {
         WebPage page = WebPage.loadWebPage("http://valhalla-team.com/forum.api.php?topicId=" + topicId, "UTF-8");
         return page.getContent();
     }
@@ -48,8 +49,8 @@ public class Topic extends Addon {
         try {
             int topicId = getTopicId(message);
             reaction.add(MESSAGE_PREFIX + loadSubject(topicId) );
-        } catch (Exception e) {
-            setError(e);
+        } catch (IOException ioe) {
+            setError(ioe);
         }
     }
 

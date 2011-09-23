@@ -1,9 +1,6 @@
 package utils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -26,11 +23,11 @@ public class WebPage {
         return url;
     }
 
-    public static WebPage loadWebPage(String address, String encoding) throws Exception {
+    public static WebPage loadWebPage(String address, String encoding) throws IOException {
         return loadWebPage(address, encoding, null);
     }
 
-    public static WebPage loadWebPage(String address, String encoding, String postData) throws Exception {
+    public static WebPage loadWebPage(String address, String encoding, String postData) throws IOException {
         URL url = new URL(address);
         URLConnection conn = url.openConnection();
 

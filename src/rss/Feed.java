@@ -1,5 +1,7 @@
 package rss;
 
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import utils.WebPage;
@@ -24,7 +26,7 @@ public class Feed
 
     public String getName() { return name; }
 
-    public List<String> check(byte maxMsgsCount) throws Exception {
+    public List<String> check(byte maxMsgsCount) throws IOException {
         WebPage entry = WebPage.loadWebPage(address, "UTF-8");
         String content = entry.getContent();
 
@@ -56,7 +58,7 @@ public class Feed
         return newEntries;
     }
 
-    public ArrayList<String> getLastMessages(int count) throws Exception {
+    public ArrayList<String> getLastMessages(int count) throws IOException {
         WebPage entry = WebPage.loadWebPage(address, "UTF-8");
         String content = entry.getContent();
 
@@ -78,7 +80,7 @@ public class Feed
             String title = XMLParser.getSnippet(content, titleItr, SEARCH, "</title>");
             titleItr = XMLParser.getNextOccurrenceIndex();
             return title;
-        } catch (Exception e) {
+        } catch (ParseException e) {
             return null;
         }
     }

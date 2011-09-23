@@ -1,9 +1,8 @@
 package title;
 
 import bashoid.Addon;
-import utils.Formatter;
-import utils.WebPage;
-import utils.XMLParser;
+import java.text.ParseException;
+import utils.*;
 
 
 public class Title extends Addon {
@@ -13,7 +12,7 @@ public class Title extends Addon {
         return getTitleFromRawHTML(page);
     }
 
-    private String getTitleFromRawHTML(WebPage entry) throws Exception {
+    private String getTitleFromRawHTML(WebPage entry) throws ParseException {
         String content = entry.getContent();
         String title = XMLParser.getSnippet(content, "<title>", "</title>");
         return Formatter.removeHTML(title);
@@ -33,8 +32,10 @@ public class Title extends Addon {
         try {
             String url = getUrl(message);
             reaction.add( loadTitle(url) );
+        } catch (ParseException pe) {
+            setError("Give page does NOT contain the title tag.", pe);
         } catch (Exception e) {
-            setError(e);
+            setError("Cannot load given URL.", e);
         }
     }
 

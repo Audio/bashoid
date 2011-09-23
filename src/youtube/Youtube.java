@@ -1,10 +1,10 @@
 package youtube;
 
 import bashoid.Addon;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
-import utils.Formatter;
-import utils.WebPage;
-import utils.XMLParser;
+import utils.*;
 
 import static utils.Constants.*;
 
@@ -21,11 +21,11 @@ public class Youtube extends Addon {
         cache.add( new LinkInfo(videoID, title) );
     }
 
-    private WebPage loadVideoEntry(String videoID) throws Exception {
+    private WebPage loadVideoEntry(String videoID) throws IOException {
         return WebPage.loadWebPage("http://gdata.youtube.com/feeds/api/videos/" + videoID, "UTF-8");
     }
 
-    private String getVideoTitleFromRawXML(WebPage entry) throws Exception {
+    private String getVideoTitleFromRawXML(WebPage entry) throws ParseException {
         String content = entry.getContent();
         String title = XMLParser.getSnippet(content, "<title type='text'>", "</title>");
         return Formatter.removeHTML(title);

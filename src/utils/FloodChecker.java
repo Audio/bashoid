@@ -1,8 +1,6 @@
 package utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.ListIterator;
+import java.util.*;
 
 
 public class FloodChecker {
