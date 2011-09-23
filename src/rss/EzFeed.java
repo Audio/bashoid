@@ -43,18 +43,21 @@ public class EzFeed extends Feed
 
         String message;
         String link;
+        Date curDate;
         List<String> newEntries = new ArrayList<String>();
 
         titleItr = 0;
 
         String feedName = findNextTitle(content);
-        if (feedName == null)
+        Date buildDate = getDate(content);
+        if (feedName == null || buildDate == null)
             return newEntries;
+        
 
         while(true) {
             message = findNextTitle(content);
-
-            if(message == null || isOld(content))
+            curDate = getDate(content);
+            if(message == null || curDate == null || curDate.before(lastDate))
                 break;
 
             if(!isShowTracked(message))
@@ -69,7 +72,7 @@ public class EzFeed extends Feed
             releases.add(message + " | " + link);
         }
 
-        lastDate = new Date();
+        lastDate = buildDate;
 
         return newEntries;
     }
@@ -113,10 +116,10 @@ public class EzFeed extends Feed
         return false;
     }
 
-    private boolean isOld(String content) {
+    private Date getDate(String content) {
         String time = findNextTag(content, "<pubDate>", "</pubDate>");
         if(time == null)
-            return false;
+            return null;
         
         Date date = null;
         try{
@@ -125,8 +128,6 @@ public class EzFeed extends Feed
         catch(ParseException e){
         }
     
-        if(date == null || date.before(lastDate))
-            return true;
-        return false;
+        return date;
     }
 };
