@@ -33,11 +33,10 @@ public class WebPage {
         URL url = new URL(address);
         URLConnection conn = url.openConnection();
 
-        encoding = findRealEncoding(encoding, conn);
-
         if (postData != null)
             writePostData(postData, conn);
 
+        encoding = findRealEncoding(encoding, conn);
         String response = readResponse(conn, encoding);
         return new WebPage(address, response);
     }
