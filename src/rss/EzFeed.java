@@ -58,10 +58,10 @@ public class EzFeed extends Feed
         while(true) {
             message = findNextTitle(content);
             curDate = getDate(content);
-            if(message == null || curDate == null || curDate.before(lastDate))
+            if(message == null || curDate == null)
                 break;
 
-            if(!isShowTracked(message))
+            if(!isShowTracked(message) || curDate.before(lastDate))
                 continue;
             
             link = findNextTag(content, "<link>", "</link>");
