@@ -51,7 +51,7 @@ public class EzFeed extends Feed
 
         while(true) {
             message = findNextTag(content, "<title><![CDATA[", "]]></title>", true);
-            System.err.println(message);
+
             if(message == null || isIn(message))
                 break;
 
