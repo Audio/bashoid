@@ -113,7 +113,7 @@ public class EzFeed extends Feed
 
     private boolean isIn(String title) {
         for(String s : releases)
-            if(s.equals(title))
+            if(s.indexOf(title) != NOT_FOUND)
                 return true;
         return false;
     }
