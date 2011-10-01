@@ -85,12 +85,10 @@ public class Bashoid extends PircBot implements AddonListener {
         }
     }
 
-    //@Override
     public void sendAddonMessage(String target, String msg) {
         sendMessage(target, msg);
     }
 
-    //@Override
     public void sendAddonMessageToChannels(String msg) {
         String[] channels = getChannels();
         for (String channel : channels)
@@ -122,7 +120,6 @@ public class Bashoid extends PircBot implements AddonListener {
             System.err.println( e.getMessage() );
     }
 
-   // @Override
     public String getBotNickname() {
         return getNick();
     }
