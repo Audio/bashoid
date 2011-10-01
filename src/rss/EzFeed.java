@@ -13,19 +13,14 @@ public class EzFeed extends Feed
 {
     private ArrayList<String> releases;
     private ArrayList<String> series;
-    private Date lastDate;
-    private DateFormat dateFormatter;
     private boolean checked;
 
-
     public EzFeed() {
-        super("EZTV", "http://rss.thepiratebay.org/user/d17c6a45441ce0bc0c057f19057f95e1");
+        super("EZTV", "http://www.ezrss.it/feed/");
 
         releases = new ArrayList<String>();
         series = new ArrayList<String>();
-        lastDate = new Date(0);
         checked = false;
-        dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ", Locale.ENGLISH);
 
         // move to config?
         series.add("Castle");
@@ -35,6 +30,7 @@ public class EzFeed extends Feed
         series.add("Game of Thrones");
         series.add("The Big Bang Theory"); 
         series.add("How I Met Your Mother");
+        series.add("House");
     }
 
     @Override
@@ -44,27 +40,25 @@ public class EzFeed extends Feed
 
         String message;
         String link;
-        Date curDate;
         List<String> newEntries = new ArrayList<String>();
 
         titleItr = 0;
 
         String feedName = findNextTitle(content);
-        Date buildDate = getDate(content);
-        if (feedName == null || buildDate == null)
+        if (feedName == null)
             return newEntries;
         
 
         while(true) {
-            message = findNextTitle(content);
-            curDate = getDate(content);
-            if(message == null || curDate == null)
+            message = findNextTag(content, "<title><![CDATA[", "]]></title>", true);
+            System.err.println(message);
+            if(message == null || isIn(message))
                 break;
 
-            if(!isShowTracked(message) || curDate.before(lastDate))
+            if(!isShowTracked(message))
                 continue;
             
-            link = findNextTag(content, "<link>", "</link>");
+            link = findNextTag(content, "<link>", "</link>", false);
             
             if(link == null)
                 continue;
@@ -73,8 +67,6 @@ public class EzFeed extends Feed
                 newEntries.add(message + " | " + link);
             releases.add(message + " | " + link);
         }
-
-        lastDate = buildDate;
         checked = true;
 
         return newEntries;
@@ -101,9 +93,12 @@ public class EzFeed extends Feed
         return list;
     }
 
-    private String findNextTag(String content, String tag, String endTag) {
+    private String findNextTag(String content, String tag, String endTag, boolean changeItr) {
         try {
-            return XMLParser.getSnippet(content, titleItr, tag, endTag);
+            String str = XMLParser.getSnippet(content, titleItr, tag, endTag);
+            if(changeItr)
+                titleItr = XMLParser.getNextOccurrenceIndex();
+            return str;
         } catch (ParseException e) {
             return null;
         }
@@ -116,18 +111,10 @@ public class EzFeed extends Feed
         return false;
     }
 
-    private Date getDate(String content) {
-        String time = findNextTag(content, "<pubDate>", "</pubDate>");
-        if(time == null)
-            return null;
-        
-        Date date = null;
-        try{
-            date = dateFormatter.parse(time);
-        }
-        catch(ParseException e){
-        }
-    
-        return date;
+    private boolean isIn(String title) {
+        for(String s : releases)
+            if(s.equals(title))
+                return true;
+        return false;
     }
 };
