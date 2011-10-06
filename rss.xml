@@ -10,4 +10,7 @@
 
   <entry key="channelName2">MaNGOS</entry>
   <entry key="channelUrl2">https://github.com/mangos/mangos/commits/master.atom</entry>
+
+  <entry key="channelName3">TrinityCore</entry>
+  <entry key="channelUrl3">https://github.com/TrinityCore/TrinityCore/commits/master.atom</entry>
 </properties>
