@@ -3,6 +3,7 @@ package topic;
 import bashoid.Addon;
 import java.io.IOException;
 import utils.WebPage;
+import utils.Formatter;
 
 import static utils.Constants.*;
 
@@ -15,7 +16,7 @@ public class Topic extends Addon {
 
     private String loadSubject(int topicId) throws IOException {
         WebPage page = WebPage.loadWebPage("http://valhalla-team.com/forum.api.php?topicId=" + topicId, "UTF-8");
-        return page.getContent();
+        return Formatter.removeHTML( page.getContent() );
     }
 
     private int getTopicId(String message) {
