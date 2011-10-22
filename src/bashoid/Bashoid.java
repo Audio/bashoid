@@ -1,5 +1,7 @@
 package bashoid;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,8 @@ import utils.FloodChecker;
 public class Bashoid extends PircBot implements AddonListener {
 
     private ArrayList<Addon> addons = new ArrayList<Addon>();
-
+    private ArrayList<String> help = new ArrayList<String>();
+    private String helpCmd;
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
@@ -19,11 +22,31 @@ public class Bashoid extends PircBot implements AddonListener {
         setMessageDelay(0);
         trySetUTFEncoding();
         registerAddons();
+        helpCmd = getHelpCmdFromConfig("!help");
+        loadHelp();
     }
 
     private String getNickFromConfig(String defaultNick) {
         Config config = new Config();
         return config.getValue("nickname", defaultNick);
+    }
+
+    private String getHelpCmdFromConfig(String defaultCmd) {
+        Config config = new Config();
+        return config.getValue("helpCommand", defaultCmd);
+    }
+
+    private void loadHelp() {
+        try {
+            BufferedReader in = new BufferedReader(new FileReader("help.txt"));
+            String strLine;
+            while ((strLine = in.readLine()) != null) {
+                help.add(strLine);
+            }
+            in.close();
+        }
+        catch(Exception e) {
+        }
     }
 
     private void trySetUTFEncoding() {
@@ -62,19 +85,26 @@ public class Bashoid extends PircBot implements AddonListener {
         boolean canBeServed = FloodChecker.canBeServed(message.hostname);
         boolean hasReacted = false;
 
-        for (Addon a : addons) {
-            if ( canBeServed && a.shouldReact(message.text) ) {
-                sendAddonOutput(a, message);
-                hasReacted = true;
-            } else if ( a.shouldReact(message.text) ) {
-                sendNotice(message.author, "Max requests per minute: " + FloodChecker.maxServesPerMinute() );
-                break;
+        if(!canBeServed) {
+            sendNotice(message.author, "Max requests per minute: " + FloodChecker.maxServesPerMinute() );
+            return;
+        }
+
+        if(message.text.equals(helpCmd)) {
+            for (String s : help)
+                sendMessage(message.author, s);
+            hasReacted = true;
+        } else {
+            for (Addon a : addons) {
+                if (a.shouldReact(message.text) ) {
+                    sendAddonOutput(a, message);
+                    hasReacted = true;
+                }
             }
         }
 
         if (hasReacted)
             FloodChecker.logServed(message.hostname);
-
     }
 
     @Override

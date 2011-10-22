@@ -1,0 +1,13 @@
+==== Bash ====
+bash - prints random entry from http://bash.org
+==== Pepa ====
+*bot's name*: *message_to_pepa* - Talk with pepa! (example: "Bashoid: Hi there!")
+==== RSS ====
+rss list - list available channels
+rss show *channel_name* - sends you log of last messages for that *channel_name*
+==== Stopwatch ====
+stopwatch start | stop | get - stopwatch control
+stopwatch timer *time* *notify_period* - starts timer for *time* and will notify every *notify_period. Time can be in 4h30m4s format or just seconds
+stopwatch rmtimer - removes active timer
+==== Web page title ====
+t *url* - shows content of *url*'s <title> tag
