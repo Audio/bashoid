@@ -1,7 +1,5 @@
 package bashoid;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +11,6 @@ import utils.FloodChecker;
 public class Bashoid extends PircBot implements AddonListener {
 
     private ArrayList<Addon> addons = new ArrayList<Addon>();
-    private ArrayList<String> help = new ArrayList<String>();
-    private String helpCmd;
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
@@ -22,31 +18,11 @@ public class Bashoid extends PircBot implements AddonListener {
         setMessageDelay(0);
         trySetUTFEncoding();
         registerAddons();
-        helpCmd = getHelpCmdFromConfig("!help");
-        loadHelp();
     }
 
     private String getNickFromConfig(String defaultNick) {
         Config config = new Config();
         return config.getValue("nickname", defaultNick);
-    }
-
-    private String getHelpCmdFromConfig(String defaultCmd) {
-        Config config = new Config();
-        return config.getValue("helpCommand", defaultCmd);
-    }
-
-    private void loadHelp() {
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("help.txt"));
-            String strLine;
-            while ((strLine = in.readLine()) != null) {
-                help.add(strLine);
-            }
-            in.close();
-        }
-        catch(Exception e) {
-        }
     }
 
     private void trySetUTFEncoding() {
@@ -61,6 +37,7 @@ public class Bashoid extends PircBot implements AddonListener {
         Addon.setAddonListener(this);
 
         addons.add( new bash.Bash() );
+        addons.add( new help.Help() );
         addons.add( new pepa.Pepa() );
         addons.add( new rss.RSS() );
         // addons.add( new period.PeriodicMessage() );
@@ -90,16 +67,10 @@ public class Bashoid extends PircBot implements AddonListener {
             return;
         }
 
-        if(message.text.equals(helpCmd)) {
-            for (String s : help)
-                sendMessage(message.author, s);
-            hasReacted = true;
-        } else {
-            for (Addon a : addons) {
-                if (a.shouldReact(message.text) ) {
-                    sendAddonOutput(a, message);
-                    hasReacted = true;
-                }
+        for (Addon a : addons) {
+            if (a.shouldReact(message.text) ) {
+                sendAddonOutput(a, message);
+                hasReacted = true;
             }
         }
 

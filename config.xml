@@ -5,4 +5,5 @@
   <entry key="server">irc.rizon.net</entry>
   <entry key="channel">#valhalla</entry>
   <entry key="nickname">bashoid</entry>
+  <entry key="helpCommand">!help</entry>
 </properties>
