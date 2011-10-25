@@ -4,6 +4,8 @@ import bashoid.Addon;
 import java.text.ParseException;
 import utils.*;
 
+import static utils.Constants.*;
+
 
 public class Title extends Addon {
 
@@ -19,7 +21,12 @@ public class Title extends Addon {
     }
 
     private String getUrl(String message) {
-        return message.substring(2);
+        message = message.substring(2);
+        int pos;
+        if ((pos = message.indexOf(" ") ) != NOT_FOUND)
+            message = message.substring(0, pos);
+
+        return message;
     }
 
     @Override
