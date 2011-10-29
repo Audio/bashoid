@@ -5,9 +5,6 @@
 
   <entry key="showMsgsCount">5</entry>
 
-  <entry key="channelName1">Catcore</entry>
-  <entry key="channelUrl1">http://git.valhalla-team.com/?a=rss-log&amp;p=catcore-public</entry>
-
   <entry key="channelName2">MaNGOS</entry>
   <entry key="channelUrl2">https://github.com/mangos/mangos/commits/master.atom</entry>
 
