@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import utils.WebPage;
 import utils.XMLParser;
-
+import utils.Formatter;
 
 public class Feed
 {
@@ -49,6 +49,8 @@ public class Feed
             if (firstMessage == null)
                 firstMessage = message;
 
+            message = Formatter.removeHTML(message);
+
             newEntries.add(name + ": " + message);
         };
 
@@ -70,7 +72,7 @@ public class Feed
             String msg = findNextTitle(content);
             if(msg == null)
                 break;
-            list.add(msg);
+            list.add(Formatter.removeHTML(msg));
         }
         return list;
     }

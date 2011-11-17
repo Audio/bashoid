@@ -5,6 +5,7 @@ import java.text.*;
 import java.util.*;
 import utils.WebPage;
 import utils.XMLParser;
+import utils.Formatter;
 
 import static utils.Constants.*;
 
@@ -62,6 +63,8 @@ public class EzFeed extends Feed
             
             if(link == null)
                 continue;
+
+            message = Formatter.removeHTML(message);
 
             if(checked)
                 newEntries.add(message + " | " + link);
