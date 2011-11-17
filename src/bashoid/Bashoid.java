@@ -62,15 +62,15 @@ public class Bashoid extends PircBot implements AddonListener {
         boolean canBeServed = FloodChecker.canBeServed(message.hostname);
         boolean hasReacted = false;
 
-        if(!canBeServed) {
-            sendNotice(message.author, "Max requests per minute: " + FloodChecker.maxServesPerMinute() );
-            return;
-        }
-
         for (Addon a : addons) {
             if (a.shouldReact(message.text) ) {
-                sendAddonOutput(a, message);
-                hasReacted = true;
+                if(!canBeServed) {
+                    sendNotice(message.author, "Max requests per minute: " + FloodChecker.maxServesPerMinute() );
+                    break;
+                } else {
+                    sendAddonOutput(a, message);
+                    hasReacted = true;
+                }
             }
         }
 
