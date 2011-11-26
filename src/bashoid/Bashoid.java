@@ -86,6 +86,10 @@ public class Bashoid extends PircBot implements AddonListener {
         }
     }
 
+    public void sendAddonAction(String target, String msg) {
+        sendAction(target, msg);
+    }
+
     public void sendAddonMessage(String target, String msg) {
         sendMessage(target, msg);
     }

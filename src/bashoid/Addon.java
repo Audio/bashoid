@@ -74,6 +74,10 @@ public abstract class Addon implements PeriodicAddonListener {
     public void periodicAddonUpdate() {
     }
 
+    protected void sendAction(String target, String msg) {
+        addonListener.sendAddonAction(target, msg);
+    }
+
     protected void sendMessage(String target, String msg) {
         addonListener.sendAddonMessage(target, msg);
     }
