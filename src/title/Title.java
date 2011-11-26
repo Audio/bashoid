@@ -1,5 +1,6 @@
 package title;
 
+import bashoid.Message;
 import bashoid.Addon;
 import java.text.ParseException;
 import utils.*;
@@ -30,14 +31,14 @@ public class Title extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-        return message.startsWith("t http");
+    public boolean shouldReact(Message message) {
+        return message.text.startsWith("t http");
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
         try {
-            String url = getUrl(message);
+            String url = getUrl(message.text);
             reaction.add( loadTitle(url) );
         } catch (ParseException pe) {
             setError("Given page does NOT contain the title tag.", pe);

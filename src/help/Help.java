@@ -4,9 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import bashoid.Addon;
+import bashoid.Message;
 import utils.Config;
-
-import static utils.Constants.*;
 
 
 public class Help extends Addon {
@@ -33,13 +32,13 @@ public class Help extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-        return message.equals(helpCmd);
+    public boolean shouldReact(Message message) {
+        return message.text.equals(helpCmd);
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
         for(String s : help)
-            sendMessage(author, s);
+            sendMessage(message.author, s);
     }
 }

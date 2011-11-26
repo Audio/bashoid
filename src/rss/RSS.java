@@ -1,5 +1,6 @@
 package rss;
 
+import bashoid.Message;
 import bashoid.Addon;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -120,16 +121,16 @@ public class RSS extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-         return message.startsWith("rss") && getCommand(message) != Cmds.INVALID;
+    public boolean shouldReact(Message message) {
+         return message.text.startsWith("rss") && getCommand(message.text) != Cmds.INVALID;
     }
 
     @Override
-    protected void setReaction(String message, String author) {
-        Cmds cmd = getCommand(message);
+    protected void setReaction(Message message) {
+        Cmds cmd = getCommand(message.text);
         if(cmd == Cmds.INVALID)
             return;
-        String result = executeCmd(cmd, message, author);
+        String result = executeCmd(cmd, message.text, message.author);
         if(result != null)
             reaction.add(result);
     }

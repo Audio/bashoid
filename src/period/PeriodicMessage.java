@@ -1,6 +1,7 @@
 package period;
 
 import bashoid.Addon;
+import bashoid.Message;
 
 
 public final class PeriodicMessage extends Addon {
@@ -13,12 +14,12 @@ public final class PeriodicMessage extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
+    public boolean shouldReact(Message message) {
         return false;
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
     }
 
     @Override

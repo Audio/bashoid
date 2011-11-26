@@ -15,16 +15,16 @@ public abstract class Addon implements PeriodicAddonListener {
     protected final static String MESSAGE_FAIL = "Addon has failed.";
 
 
-    public abstract boolean  shouldReact(String message);
-    protected abstract void  setReaction(String message, String author);
+    public abstract boolean  shouldReact(Message message);
+    protected abstract void  setReaction(Message message);
 
     public static void setAddonListener(AddonListener listener) {
         addonListener = listener;
     }
 
-    public final List<String> generateReaction(String message, String author) {
+    public final List<String> generateReaction(Message message) {
         resetAddonStatus();
-        setReaction(message, author);
+        setReaction(message);
         return reaction;
     }
 

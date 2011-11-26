@@ -1,5 +1,6 @@
 package stopwatch;
 
+import bashoid.Message;
 import bashoid.Addon;
 import java.util.ArrayList;
 
@@ -196,16 +197,16 @@ public class Stopwatch extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-         return message.startsWith("stopwatch") && message.indexOf(' ') != NOT_FOUND;
+    public boolean shouldReact(Message message) {
+         return message.text.startsWith("stopwatch") && message.text.indexOf(' ') != NOT_FOUND;
     }
 
     @Override
-    protected void setReaction(String message, String author) {
-        Cmds cmd = getCommand(message);
+    protected void setReaction(Message message) {
+        Cmds cmd = getCommand(message.text);
         if(cmd == Cmds.CMD_INVALID)
             return;
-        String result = executeCmd(cmd, message, author);
+        String result = executeCmd(cmd, message.text, message.author);
         if(result != null)
             reaction.add(result);
     }

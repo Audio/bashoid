@@ -1,5 +1,6 @@
 package youtube;
 
+import bashoid.Message;
 import bashoid.Addon;
 import java.io.IOException;
 import java.text.ParseException;
@@ -75,14 +76,14 @@ public class Youtube extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-        return !getVideoIDOrEmptyString(message).equals("");
+    public boolean shouldReact(Message message) {
+        return !getVideoIDOrEmptyString(message.text).equals("");
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
         try {
-            String newVideoID = getVideoIDOrEmptyString(message);
+            String newVideoID = getVideoIDOrEmptyString(message.text);
             downloadIfNeeded(newVideoID);
             LinkInfo li = getCachedInfo(newVideoID);
             reaction.add("YouTube: " + li.title() );

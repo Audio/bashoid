@@ -1,6 +1,7 @@
 package slap;
 
 import bashoid.Addon;
+import bashoid.Message;
 
 
 public class Slap extends Addon {
@@ -10,15 +11,15 @@ public class Slap extends Addon {
 
 
     @Override
-    public boolean shouldReact(String message) {
-        return message.startsWith(MESSAGE_PREFIX)
-            && message.length() > MESSAGE_PREFIX.length() + 1
+    public boolean shouldReact(Message message) {
+        return message.text.startsWith(MESSAGE_PREFIX)
+            && message.text.length() > MESSAGE_PREFIX.length() + 1
             && Math.random() <= PROBABILITY_TO_SLAP;
     }
 
     @Override
-    protected void setReaction(String message, String author) {
-        sendAction(author, "slaps " + author);
+    protected void setReaction(Message message) {
+        sendAction(message.channel, "slaps " + message.author + " around a bit with a large trout");
     }
 
 }

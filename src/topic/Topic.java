@@ -1,5 +1,6 @@
 package topic;
 
+import bashoid.Message;
 import bashoid.Addon;
 import java.io.IOException;
 import utils.WebPage;
@@ -41,14 +42,14 @@ public class Topic extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-        return message.indexOf(URL_MASK) != NOT_FOUND;
+    public boolean shouldReact(Message message) {
+        return message.text.indexOf(URL_MASK) != NOT_FOUND;
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
         try {
-            int topicId = getTopicId(message);
+            int topicId = getTopicId(message.text);
             reaction.add(MESSAGE_PREFIX + loadSubject(topicId) );
         } catch (IOException ioe) {
             setError(ioe);

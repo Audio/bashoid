@@ -1,6 +1,7 @@
 package bash;
 
 import bashoid.Addon;
+import bashoid.Message;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class Bash extends Addon {
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
         if ( isOnCooldown() )
             setErrorOutputBecauseOfCooldown();
         else
@@ -94,8 +95,8 @@ public class Bash extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-        return message.equals("bash");
+    public boolean shouldReact(Message message) {
+        return message.text.equals("bash");
     }
 
     private String getNextBashTime() {

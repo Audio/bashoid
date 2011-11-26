@@ -1,5 +1,6 @@
 package translator;
 
+import bashoid.Message;
 import bashoid.Addon;
 import utils.WebPage;
 
@@ -85,19 +86,20 @@ public class Translator extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
-         return (message.length() > 8 && message.indexOf("to") == 3 && message.indexOf(' ') == 2
-                && message.indexOf(' ', 3) == 5);
+    public boolean shouldReact(Message message) {
+        String msg = message.text;
+        return (msg.length() > 8 && msg.indexOf("to") == 3 && msg.indexOf(' ') == 2
+                && msg.indexOf(' ', 3) == 5);
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
         try {
-            String langFrom = getLang(message, true);
-            String langTo = getLang(message, false);
+            String langFrom = getLang(message.text, true);
+            String langTo = getLang(message.text, false);
             if(isLangAllowed(langFrom) && isLangAllowed(langTo))
             {
-                String response = loadTranslation(message.substring(9), langFrom, langTo);
+                String response = loadTranslation(message.text.substring(9), langFrom, langTo);
                 reaction.add(response);
             }
         } catch (Exception e) {

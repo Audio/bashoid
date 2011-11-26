@@ -1,5 +1,6 @@
 package pepa;
 
+import bashoid.Message;
 import bashoid.Addon;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -67,17 +68,17 @@ public class Pepa extends Addon {
     }
 
     @Override
-    public boolean shouldReact(String message) {
+    public boolean shouldReact(Message message) {
         String myNick = addonListener.getBotNickname();
-        return message.startsWith(myNick) && message.indexOf(' ') != NOT_FOUND;
+        return message.text.startsWith(myNick) && message.text.indexOf(' ') != NOT_FOUND;
     }
 
     @Override
-    protected void setReaction(String message, String author) {
+    protected void setReaction(Message message) {
         try {
-            String query = getQuery(message);
+            String query = getQuery(message.text);
             String response = loadResponse(query);
-            reaction.add(author + ": " + response);
+            reaction.add(message.author + ": " + response);
         } catch (Exception e) {
             setError(e);
         }
