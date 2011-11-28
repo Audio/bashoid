@@ -30,7 +30,7 @@ public class Currency extends Addon {
     public boolean shouldReact(Message message) {
         String[] parts = message.text.split(" ");
         try {
-            Integer.parseInt(parts[0]);
+            Float.parseFloat(parts[0]);
         } catch (NumberFormatException e) {
             return false;
         }
