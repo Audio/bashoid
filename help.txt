@@ -1,4 +1,5 @@
 - Bash: bash - prints random entry from http://bash.org
+- Currency: convert currency (example: "20 czk to euro")
 - Pepa: *bot's name*: *message_to_pepa* - Talk with pepa! (example: "Bashoid: Hi there!")
 - RSS: rss list - list available channels || rss show *channel_name* - sends you log of last messages for that *channel_name*
 - Stopwatch: stopwatch start, stopwatch stop, stopwatch get - stopwatch control
