@@ -67,6 +67,9 @@ public class WebPage {
     }
 
     private static String readResponse(URLConnection connection, String encoding) throws IOException {
+        if ( !isValidContentType(connection) )
+            throw new IOException("Invalid content type for " + connection.getURL());
+
         BufferedReader reader = new BufferedReader( new InputStreamReader(connection.getInputStream(), encoding) );
 
         String line, lines = "";
@@ -75,6 +78,16 @@ public class WebPage {
 
         reader.close();
         return lines;
+    }
+
+    private static boolean isValidContentType(URLConnection connection) {
+        String type = connection.getContentType();
+        boolean isValid = true;
+        if (type != null && type.length() >= 5) {
+            String category = type.substring(0, 5);
+            isValid = !category.equals("image") && !category.equals("audio") && !category.equals("video");
+        }
+        return isValid;
     }
 
 }
