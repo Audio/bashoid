@@ -7,7 +7,7 @@ import bashoid.Message;
 public class Slap extends Addon {
 
     private static final String MESSAGE_PREFIX = "slaps ";
-    private static final double PROBABILITY_TO_SLAP = 0.1;
+    private static final double PROBABILITY_TO_SLAP = 0.02;
 
 
     @Override
