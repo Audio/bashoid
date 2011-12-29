@@ -16,14 +16,17 @@ public class Translator extends Addon {
     private static final byte langsCount = 8;
 
 
-    private String loadTranslation(String query, String langFrom, String langTo) throws Exception {
-        String address = "http://slovnik.seznam.cz/" + langFrom + "-" + langTo + "/?q=" + query;
-        WebPage entry = WebPage.loadWebPage(address, "UTF-8");
-        return getReponseFromRawHTML(entry);
+    private String getAddress(String query, String langFrom, String langTo) {
+        return "http://slovnik.seznam.cz/" + langFrom + "-" + langTo + "/?q=" + query;
     }
 
-    private String getReponseFromRawHTML(WebPage entry) throws Exception {
-        String content = entry.getContent();
+    private String loadPage(String address) throws Exception {
+        WebPage entry = WebPage.loadWebPage(address, "UTF-8");
+        return entry.getContent();
+    }
+
+    private String getTranslation(String address) throws Exception {
+        String content = loadPage(address);
 
         if(content.indexOf("nebylo nic nalezeno") != NOT_FOUND || content.indexOf("li jste hledat?") != NOT_FOUND)
             return "No translation found";
@@ -70,7 +73,7 @@ public class Translator extends Addon {
             result += " ";
         }
 
-        return result;
+        return result + "| " + address;
     }
 
     private String getLang(String message, boolean from) {
@@ -99,7 +102,7 @@ public class Translator extends Addon {
             String langTo = getLang(message.text, false);
             if(isLangAllowed(langFrom) && isLangAllowed(langTo))
             {
-                String response = loadTranslation(message.text.substring(9), langFrom, langTo);
+                String response = getTranslation(getAddress(message.text.substring(9), langFrom, langTo));
                 reaction.add(response);
             }
         } catch (Exception e) {
