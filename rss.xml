@@ -14,4 +14,15 @@
   <entry key="channelName3">TrinityCore</entry>
   <entry key="channelUrl3">https://github.com/TrinityCore/TrinityCore/commits/master.atom</entry>
 
+  <entry key="channelName4">Duckbox</entry>
+  <entry key="channelUrl4">http://gitorious.org/open-duckbox-project-sh4/tdt/commits/master/feed.atom</entry>
+
+  <entry key="channelName5">bashoid</entry>
+  <entry key="channelUrl5">https://github.com/Audio/bashoid/commits/master.atom</entry>
+
+  <entry key="channelName6">Serialoid</entry>
+  <entry key="channelUrl6">https://github.com/spammce/Serialoid/commits/master.atom</entry>
+
+  <entry key="channelName7">Lorris</entry>
+  <entry key="channelUrl7">https://github.com/Tasssadar/Lorris/commits/master.atom</entry>
 </properties>
