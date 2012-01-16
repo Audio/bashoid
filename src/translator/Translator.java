@@ -97,10 +97,12 @@ public class Translator extends Addon {
             String langFrom = getLang(message.text, true);
             String langTo = getLang(message.text, false);
             if (isLangAllowed(langFrom) && isLangAllowed(langTo)) {
-                String response = getTranslation(getAddress(message.text.substring(9), langFrom, langTo));
-                reaction.add(response);
-            } else {
-                reaction.add(NO_TRANSLATION);
+                if (langFrom.equals(langTo)) {
+                    reaction.add(NO_TRANSLATION);
+                } else {
+                    String response = getTranslation(getAddress(message.text.substring(9), langFrom, langTo));
+                    reaction.add(response);
+                }
             }
         } catch (Exception e) {
             setError(e);
