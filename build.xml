@@ -8,6 +8,7 @@
 
     <path id="classpath">
         <fileset dir="${lib.dir}" includes="pircbot.jar" />
+        <fileset dir="${lib.dir}" includes="jsoup-1.6.1.jar" />
     </path>
 
     <target name="clean">
