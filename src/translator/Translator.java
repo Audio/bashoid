@@ -1,14 +1,13 @@
 package translator;
 
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
+import org.jsoup.select.Elements;
 import bashoid.Message;
 import bashoid.Addon;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.ParseException;
-import java.util.ArrayList;
 import utils.WebPage;
-import utils.XMLParser;
 
 import static utils.Constants.*;
 
@@ -58,19 +57,17 @@ public class Translator extends Addon {
         }
     }
 
-    private String[] getAllPossibleTranslations(String content) throws ParseException {
-        content = XMLParser.getSnippet(content, "<div id=\"fastMeanings\">", "</div>");
-        String[] translations = content.split("<br />");
-
-        ArrayList<String> cleanedTranslations = new ArrayList<String>();
-        for (String trans : translations) {
-            trans = Jsoup.parse(trans).text();
-            trans.replaceFirst(" ,", ",");
-            if ( trans.length() > 0 )
-                cleanedTranslations.add(trans);
+    private String[] getAllPossibleTranslations(String content) {
+        Document doc = Jsoup.parse( content.replaceAll("<br />", "<span>#</span>") );
+        Element fastMeanings = doc.getElementById("fastMeanings");
+        if (fastMeanings != null) {
+            String text = fastMeanings.text().replaceAll(" ,", ",");
+            return text.substring(0, text.length() - 2).split(" # ");
+        } else {
+            Element moreResults = doc.getElementById("results");
+            Elements links = moreResults.getElementsByTag("a");
+            return links.text().split(" ");
         }
-
-        return (String[]) cleanedTranslations.toArray(new String[0]);
     }
 
     private String getLang(String message, boolean from) {
