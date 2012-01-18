@@ -3,6 +3,7 @@ package title;
 import bashoid.Message;
 import bashoid.Addon;
 import java.text.ParseException;
+import org.jsoup.Jsoup;
 import utils.*;
 
 import static utils.Constants.*;
@@ -16,8 +17,7 @@ public class Title extends Addon {
     }
 
     private String getTitleFromRawHTML(WebPage entry) throws ParseException {
-        String content = entry.getContent();
-        String title = XMLParser.getSnippet(content, "<title>", "</title>");
+        String title = Jsoup.parse( entry.getContent() ).title();
         return Formatter.removeHTML(title);
     }
 

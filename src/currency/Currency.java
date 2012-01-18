@@ -19,11 +19,8 @@ public class Currency extends Addon {
     }
 
     private String getResponseFromJSON(WebPage entry) throws ParseException {
-        String content = entry.getContent();
-        String currencyFrom = XMLParser.getSnippet(content, "lhs: \"", "\"");
-        String currencyTo = XMLParser.getSnippet(content, "rhs: \"", "\"");
-        boolean errorOccured = !XMLParser.getSnippet(content, "error: \"", "\"").isEmpty();
-        return !errorOccured ? currencyFrom + " = " + currencyTo : "Asi incorrect syntax nebo co.";
+        String[] p = entry.getContent().split(",");
+        return ( p[2].split("\"").length > 1 ) ? "Asi incorrect syntax nebo co." : p[0].split("\"")[1] + " = " + p[1].split("\"")[1];
     }
 
     @Override
