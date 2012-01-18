@@ -5,6 +5,7 @@ import bashoid.Addon;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import org.jsoup.Jsoup;
 import utils.*;
 
 import static utils.Constants.*;
@@ -27,8 +28,7 @@ public class Youtube extends Addon {
     }
 
     private String getVideoTitleFromRawXML(WebPage entry) throws ParseException {
-        String content = entry.getContent();
-        String title = XMLParser.getSnippet(content, "<title type='text'>", "</title>");
+        String title = Jsoup.parse( entry.getContent() ).title();
         return Formatter.removeHTML(title);
     }
 
