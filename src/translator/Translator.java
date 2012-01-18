@@ -1,12 +1,12 @@
 package translator;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.*;
-import org.jsoup.select.Elements;
 import bashoid.Message;
 import bashoid.Addon;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.*;
+import org.jsoup.select.Elements;
 import utils.WebPage;
 
 import static utils.Constants.*;
