@@ -1,14 +1,16 @@
 package pepa;
 
-import bashoid.Message;
 import bashoid.Addon;
+import bashoid.Message;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import utils.WebPage;
-import utils.XMLParser;
 
 import static utils.Constants.*;
 
@@ -39,20 +41,11 @@ public class Pepa extends Addon {
     }
 
     private void updateFormValues(WebPage entry) throws ParseException {
-        String content = XMLParser.getSnippet( entry.getContent(), "<form", "</form>");
         formValues.clear();
-
-        String rawTag;
-        for(int i = 0; true; i = XMLParser.getNextOccurrenceIndex() ) {
-            try {
-                rawTag = XMLParser.getSnippet(content, i, "<input type=\"hidden", ">");
-            } catch (Exception e) {
-                break;
-            }
-
-            HiddenTag tag = new HiddenTag(rawTag);
-            formValues.put( tag.getName(), tag.getValue() );
-        }
+        Element form = Jsoup.parse( entry.getContent() ).getElementsByTag("form").first();
+        Elements inputs = form.getElementsByAttributeValue("type", "hidden");
+        for (Element input : inputs)
+            formValues.put( input.attr("name"), input.val() );
     }
 
     private String getLastResponse() throws Exception {
