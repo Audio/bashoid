@@ -1,40 +1,35 @@
 package bash;
 
-import java.text.ParseException;
 import java.util.ArrayList;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import utils.WebPage;
-import utils.XMLParser;
 
 
 public class Parser {
 
-    static ArrayList<Quote> getQuotes(WebPage page, final int COUNT, int start) throws ParseException {
+    static ArrayList<Quote> getQuotes(WebPage page) {
         ArrayList<Quote> quotes = new ArrayList<Quote>();
-        String content = page.getContent();
+        Element container = Jsoup.parse( page.getContent() ).getElementsByAttribute("valign").first();
+        Elements headers = container.getElementsByClass("quote");
+        Elements bodies = container.getElementsByClass("qt");
 
+        final int COUNT = headers.size();
         for (int i = 0; i < COUNT; ++i) {
-            String html = getQuoteHTML(start, content);
-            int end = start + html.length();
-            quotes.add( getQuote(html) );
-            start = end;
+            String[] body = bodies.get(i).html().split("<br />");
+            Element header = headers.get(i);
+
+            String quoteId = header.getElementsByTag("b").first().text().substring(1);
+            int id = Integer.parseInt(quoteId);
+
+            String quoteScore = header.ownText().substring(1, header.ownText().length() - 1);
+            int score = Integer.parseInt(quoteScore);
+
+            quotes.add( new Quote(body, score, id) );
         }
 
         return quotes;
-    }
-
-    private static String getQuoteHTML(int startPosition, String content) throws ParseException {
-        return XMLParser.getSnippet(content, startPosition, "class=\"quote\"", "class=\"quote\"");
-    }
-
-    private static Quote getQuote(String quoteHTML) throws ParseException {
-        String quoteId    = XMLParser.getSnippet(quoteHTML, 100, "rox=", "\"");
-        String quoteScore = XMLParser.getSnippet(quoteHTML, 120, "+</a>(", ")");
-        String quoteText  = XMLParser.getSnippet(quoteHTML, 300, "class=\"qt\">", "</p>");
-
-        int id = Integer.parseInt(quoteId);
-        int score = Integer.parseInt(quoteScore);
-
-        return new Quote(quoteText, score, id);
     }
 
 }

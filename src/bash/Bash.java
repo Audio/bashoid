@@ -3,7 +3,6 @@ package bash;
 import bashoid.Addon;
 import bashoid.Message;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import utils.*;
@@ -22,7 +21,7 @@ public class Bash extends Addon {
     private void downloadParseOutput() {
         try {
             WebPage page = loadWebPage();
-            quotes = Parser.getQuotes(page, 50, 2500);
+            quotes = Parser.getQuotes(page);
             sortQuotesByScore();
             takeOnlyTopTenQuotes();
             shuffleQuotes();
@@ -30,8 +29,6 @@ public class Bash extends Addon {
             cooldown.start();
         } catch (IOException ioe) {
             setError("Bash.org is unreachable.", ioe);
-        } catch (ParseException pe) {
-            setError("Error while parsing the source.", pe);
         }
     }
 
@@ -44,7 +41,7 @@ public class Bash extends Addon {
     }
 
     private void takeOnlyTopTenQuotes() {
-        quotes.subList(10, 50).clear();
+        quotes.subList(10, quotes.size() ).clear();
     }
 
     private void shuffleQuotes() {
@@ -65,18 +62,12 @@ public class Bash extends Addon {
         return quotes.get(0);
     }
 
-    private String removeHTML(String htmlToPlain) {
-        return Formatter.removeHTML(htmlToPlain);
-    }
-
     private void setOutput(Quote quote) {
-        String quoteContent = removeHTML( quote.getContent() );
-        String url = "-- http://bash.org/?" + quote.getTextId() + " -- Next bash in " + getNextBashTime();
-
-        String[] lines = quoteContent.split("\n");
+        String[] lines = quote.getContent();
         for ( String line : lines )
-            reaction.add( line.trim() );
+            reaction.add( Formatter.removeHTML(line) );
 
+        String url = "-- http://bash.org/?" + quote.getTextId() + " -- Next bash in " + getNextBashTime();
         reaction.add(url);
     }
 
