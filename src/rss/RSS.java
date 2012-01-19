@@ -55,7 +55,7 @@ public class RSS extends Addon {
         {
             try {
                 msgs = f.check(maxCount);
-                if( !msgs.isEmpty() )
+                if( !msgs.isEmpty() && !firstRun )
                     for (String msg : msgs)
                         sendMessageToChannels(msg);
             }
