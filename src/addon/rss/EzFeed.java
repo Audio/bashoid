@@ -1,4 +1,4 @@
-package rss;
+package addon.rss;
 
 
 public class EzFeed extends Feed {

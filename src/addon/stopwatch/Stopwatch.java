@@ -1,4 +1,4 @@
-package stopwatch;
+package addon.stopwatch;
 
 import bashoid.Message;
 import bashoid.Addon;

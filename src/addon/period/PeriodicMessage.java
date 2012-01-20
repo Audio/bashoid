@@ -1,4 +1,4 @@
-package period;
+package addon.period;
 
 import bashoid.Addon;
 import bashoid.Message;

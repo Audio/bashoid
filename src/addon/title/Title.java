@@ -1,4 +1,4 @@
-package title;
+package addon.title;
 
 import bashoid.Message;
 import bashoid.Addon;

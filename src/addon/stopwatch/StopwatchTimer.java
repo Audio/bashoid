@@ -1,4 +1,4 @@
-package stopwatch;
+package addon.stopwatch;
 
 
 public class StopwatchTimer

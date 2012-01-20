@@ -1,4 +1,4 @@
-package translator;
+package addon.translator;
 
 import bashoid.Message;
 import bashoid.Addon;

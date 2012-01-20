@@ -1,4 +1,4 @@
-package bash;
+package addon.bash;
 
 
 public class Quote implements Comparable<Quote> {

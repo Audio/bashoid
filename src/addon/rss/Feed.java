@@ -1,4 +1,4 @@
-package rss;
+package addon.rss;
 
 import java.io.IOException;
 import java.util.ArrayList;

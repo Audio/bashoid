@@ -1,4 +1,4 @@
-package pepa;
+package addon.pepa;
 
 import bashoid.Addon;
 import bashoid.Message;

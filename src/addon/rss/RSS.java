@@ -1,4 +1,4 @@
-package rss;
+package addon.rss;
 
 import bashoid.Addon;
 import bashoid.Message;

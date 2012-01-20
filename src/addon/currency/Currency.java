@@ -1,4 +1,4 @@
-package currency;
+package addon.currency;
 
 import bashoid.Message;
 import bashoid.Addon;

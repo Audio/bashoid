@@ -1,4 +1,4 @@
-package bash;
+package addon.bash;
 
 import java.util.ArrayList;
 import org.jsoup.Jsoup;

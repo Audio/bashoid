@@ -1,4 +1,4 @@
-package youtube;
+package addon.youtube;
 
 import bashoid.Message;
 import bashoid.Addon;

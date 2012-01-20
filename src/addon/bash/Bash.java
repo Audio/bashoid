@@ -1,4 +1,4 @@
-package bash;
+package addon.bash;
 
 import bashoid.Addon;
 import bashoid.Message;

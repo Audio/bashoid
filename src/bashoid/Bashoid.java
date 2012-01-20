@@ -36,17 +36,17 @@ public class Bashoid extends PircBot implements AddonListener {
     private void registerAddons() {
         Addon.setAddonListener(this);
 
-        addons.add( new bash.Bash() );
-        addons.add( new currency.Currency() );
-        addons.add( new help.Help() );
-        addons.add( new pepa.Pepa() );
-        addons.add( new rss.RSS() );
+        addons.add( new addon.bash.Bash() );
+        addons.add( new addon.currency.Currency() );
+        addons.add( new addon.help.Help() );
+        addons.add( new addon.pepa.Pepa() );
+        addons.add( new addon.rss.RSS() );
         // addons.add( new period.PeriodicMessage() );
-        addons.add( new slap.Slap() );
-        addons.add( new stopwatch.Stopwatch() );
-        addons.add( new title.Title() );
-        addons.add( new translator.Translator() );
-        addons.add( new youtube.Youtube() );
+        addons.add( new addon.slap.Slap() );
+        addons.add( new addon.stopwatch.Stopwatch() );
+        addons.add( new addon.title.Title() );
+        addons.add( new addon.translator.Translator() );
+        addons.add( new addon.youtube.Youtube() );
     }
 
     @Override

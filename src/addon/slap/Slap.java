@@ -1,4 +1,4 @@
-package slap;
+package addon.slap;
 
 import bashoid.Addon;
 import bashoid.Message;

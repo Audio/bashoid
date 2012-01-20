@@ -1,4 +1,4 @@
-package youtube;
+package addon.youtube;
 
 
 public final class LinkInfo {
