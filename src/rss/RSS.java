@@ -1,7 +1,7 @@
 package rss;
 
-import bashoid.Message;
 import bashoid.Addon;
+import bashoid.Message;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +12,14 @@ import static utils.Constants.*;
 
 public class RSS extends Addon {
 
-    private enum Cmds
-    {
+    private enum Cmds {
         INVALID, LIST, SHOW;
     };
     private static final String configKeyName = "channelName";
     private static final String configKeyUrl = "channelUrl";
     private static final String configKeyCount = "showMsgsCount";
 
-    private ArrayList<Feed> feeds = new ArrayList<Feed>();
+    private List<Feed> feeds = new ArrayList<Feed>();
     private byte showMsgsCount;
     private boolean firstRun = true;
 
@@ -42,24 +41,22 @@ public class RSS extends Addon {
 
         try {
             showMsgsCount = Integer.valueOf(config.getValue(configKeyCount, "5")).byteValue();
-        }
-        catch(NumberFormatException e) {
+        } catch(NumberFormatException e) {
             showMsgsCount = 5;
         }
+
+        checkFeeds();
     }
 
     private void checkFeeds() {
         List<String> msgs = null;
-        byte maxCount = (firstRun) ? 1 : showMsgsCount;
-        for(Feed f : feeds)
-        {
+        for(Feed f : feeds) {
             try {
-                msgs = f.check(maxCount);
+                msgs = f.check(showMsgsCount);
                 if( !msgs.isEmpty() && !firstRun )
                     for (String msg : msgs)
                         sendMessageToChannels(msg);
-            }
-            catch(IOException e) {
+            } catch(IOException e) {
                 setError(e);
             }
         }
@@ -89,15 +86,10 @@ public class RSS extends Addon {
                 channel = message.substring(index+1, end);
                 for(Feed f : feeds) {
                     if(channel.equalsIgnoreCase(f.getName())) {
-                        try {
-                            ArrayList<String> messages = f.getLastMessages(showMsgsCount);
-                            sendMessage(author, "Last " +  showMsgsCount + " messages for rss channel \"" + f.getName() + "\":");
-                            for(String s : messages)
-                                sendMessage(author, s);
-                        }
-                        catch(IOException e){
-                            setError(e);
-                        }
+                        List<String> messages = f.getLastMessages(showMsgsCount);
+                        sendMessage(author, "Last " +  showMsgsCount + " messages for rss channel \"" + f.getName() + "\":");
+                        for(String s : messages)
+                            sendMessage(author, s);
                         break;
                     }
                 }
