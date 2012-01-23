@@ -18,6 +18,7 @@ public class RSS extends Addon {
     private static final String configKeyName = "channelName";
     private static final String configKeyUrl = "channelUrl";
     private static final String configKeyCount = "showMsgsCount";
+    private static final int MESSAGE_MAX_LENGTH = 450;
 
     private List<Feed> feeds = new ArrayList<Feed>();
     private byte showMsgsCount;
@@ -54,8 +55,7 @@ public class RSS extends Addon {
             try {
                 msgs = f.check(showMsgsCount);
                 if( !msgs.isEmpty() && !firstRun )
-                    for (String msg : msgs)
-                        sendMessageToChannels(msg);
+                    sendChainedMessages(f, msgs);
             } catch(IOException e) {
                 setError(e);
             }
@@ -110,6 +110,33 @@ public class RSS extends Addon {
         if     (cmd.equals("list")) return Cmds.LIST;
         else if(cmd.equals("show")) return Cmds.SHOW;
         else                        return Cmds.INVALID;
+    }
+
+    private void sendChainedMessages(Feed feed, List<String> messages) {
+        List<String> outputLines = new ArrayList<String>();
+        String chain = feed.getName() + ": ";
+        final String SEPARATOR = " | ";
+        boolean isFirstMessageInChain = true;
+
+        for (String message : messages) {
+            if ( message.length() > MESSAGE_MAX_LENGTH ) {
+                sendMessageToChannels(chain);
+                sendMessageToChannels(message);
+                chain = "";
+                isFirstMessageInChain = true;
+            } else if ( message.length() + chain.length() > MESSAGE_MAX_LENGTH ) {
+                sendMessageToChannels(chain);
+                chain = message;
+                isFirstMessageInChain = false;
+            } else {
+                if (!isFirstMessageInChain)
+                    chain += SEPARATOR;
+                chain += message;
+            }
+        }
+
+        if ( chain.length() > 0 )
+            sendMessageToChannels(chain);
     }
 
     @Override

@@ -58,7 +58,7 @@ public class Feed {
                 String output = title;
                 if (displayLinks)
                     output += " | " + link;
-                newTitles.add(name + ": " + output);
+                newTitles.add(output);
 
                 if (newestTitle == null)
                     newestTitle = title;
