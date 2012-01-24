@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.TimerTask;
 
 
-public class PeriodicAddonGenerator extends TimerTask {
+public class PeriodicAddonTask extends TimerTask {
     private ArrayList<PeriodicAddonListener> listeners = new ArrayList();
 
     public void addEventListener(PeriodicAddonListener pl) {

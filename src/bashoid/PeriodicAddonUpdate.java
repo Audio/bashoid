@@ -6,10 +6,10 @@ import java.util.Timer;
 public final class PeriodicAddonUpdate {
 
     private Timer timer;
-    private PeriodicAddonGenerator generator;
+    private PeriodicAddonTask generator;
 
     public PeriodicAddonUpdate(long period) {
-        generator = new PeriodicAddonGenerator();
+        generator = new PeriodicAddonTask();
         timer = new Timer();
         timer.scheduleAtFixedRate(generator, period, period);
     }
