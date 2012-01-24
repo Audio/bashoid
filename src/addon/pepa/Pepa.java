@@ -17,7 +17,7 @@ import static utils.Constants.*;
 
 public class Pepa extends Addon {
 
-    private HashMap<String, String> formValues = new HashMap<String, String>();
+    private HashMap<String, String> formValues = new HashMap<>();
 
     private static final String ENCODING = "windows-1250";
     private static final String LAST_RESPONSE_KEY = "arrSent[0]";

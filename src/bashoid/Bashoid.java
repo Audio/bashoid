@@ -10,7 +10,7 @@ import utils.FloodChecker;
 
 public class Bashoid extends PircBot implements AddonListener {
 
-    private ArrayList<Addon> addons = new ArrayList<Addon>();
+    private ArrayList<Addon> addons = new ArrayList<>();
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );

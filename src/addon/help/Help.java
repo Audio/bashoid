@@ -9,7 +9,7 @@ import utils.Config;
 
 
 public class Help extends Addon {
-    private ArrayList<String> help = new ArrayList<String>();
+    private ArrayList<String> help = new ArrayList<>();
     private String helpCmd;
 
     public Help() {

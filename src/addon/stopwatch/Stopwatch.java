@@ -19,7 +19,7 @@ public class Stopwatch extends Addon {
     private long    stopwatchTime;
     private boolean stopwatchRunning;
     private String  stopwatchAuthor;
-    private ArrayList<StopwatchTimer> timers = new ArrayList<StopwatchTimer>();
+    private ArrayList<StopwatchTimer> timers = new ArrayList<>();
 
 
     public Stopwatch() {

@@ -6,7 +6,7 @@ import java.util.List;
 
 public abstract class Addon implements PeriodicAddonListener {
 
-    protected List<String> reaction = new ArrayList<String>();
+    protected List<String> reaction = new ArrayList<>();
     protected boolean errorOccurred;
     protected PeriodicAddonUpdate periodicAddonUpdate;
     protected Exception error;

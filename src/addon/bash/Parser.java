@@ -10,7 +10,7 @@ import utils.WebPage;
 public class Parser {
 
     static ArrayList<Quote> getQuotes(WebPage page) {
-        ArrayList<Quote> quotes = new ArrayList<Quote>();
+        ArrayList<Quote> quotes = new ArrayList<>();
         Element container = Jsoup.parse( page.getContent() ).getElementsByAttribute("valign").first();
         Elements headers = container.getElementsByClass("quote");
         Elements bodies = container.getElementsByClass("qt");
