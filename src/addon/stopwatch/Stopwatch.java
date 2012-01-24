@@ -136,7 +136,7 @@ public class Stopwatch extends Addon {
         if(end == NOT_FOUND)
             end = message.length();
 
-        String time = message.substring(index, end);
+        String time = message.substring(index, end).toLowerCase();
         try{
             result = Integer.decode(time);
             return result;
@@ -149,9 +149,9 @@ public class Stopwatch extends Addon {
             ch = time.charAt(i);
             if(tmp.length() != 0) {
                 short mul = NOT_FOUND;
-                if     (ch == 'h' || ch == 'H') mul = HOUR;
-                else if(ch == 'm' || ch == 'M') mul = MINUTE;
-                else if(ch == 's' || ch == 'S') mul = 1;
+                if     (ch == 'h') mul = HOUR;
+                else if(ch == 'm') mul = MINUTE;
+                else if(ch == 's') mul = 1;
                 if(mul != NOT_FOUND) {
                     try{
                         result += Integer.decode(tmp)*mul;

@@ -1,8 +1,8 @@
 package addon.stopwatch;
 
 
-public class StopwatchTimer
-{
+public class StopwatchTimer {
+
     private String author;
     private String response;
     private long baseTime;
@@ -20,15 +20,22 @@ public class StopwatchTimer
             this.period = 60;
     }
 
-    public String getAuth() { return author; }
-    public String getResponse() { return response; }
-    public long getBaseTime() { return baseTime; }
+    public String getAuth() {
+        return author;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public long getBaseTime() {
+        return baseTime;
+    }
 
     public boolean update() {
         response = null;
         --remainingTime;
-        if(remainingTime <= 0)
-        {
+        if(remainingTime <= 0) {
             response = "Removing timer, " + Stopwatch.timeToString(baseTime) + " has elapsed";
             return false;
         }
