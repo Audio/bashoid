@@ -132,6 +132,7 @@ public class RSS extends Addon {
                 if (!isFirstMessageInChain)
                     chain += SEPARATOR;
                 chain += message;
+                isFirstMessageInChain = false;
             }
         }
 
