@@ -34,9 +34,9 @@ public class FloodChecker {
     }
 
     private static void removeOldRecords(ArrayList<Long> times) {
-        ListIterator it = times.listIterator();
+        Iterator<Long> it = times.listIterator();
         while ( it.hasNext() )
-            if ( isOld( (Long) it.next() ))
+            if ( isOld( it.next() ))
                 it.remove();
     }
 
