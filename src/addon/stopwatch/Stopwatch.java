@@ -3,6 +3,7 @@ package addon.stopwatch;
 import bashoid.Message;
 import bashoid.Addon;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import static utils.Constants.*;
 
@@ -82,11 +83,12 @@ public class Stopwatch extends Addon {
             case CMD_REMOVE_TIMER:
             {
                 StopwatchTimer tm = null;
-                ArrayList<StopwatchTimer> tmp = (ArrayList<StopwatchTimer>)timers.clone();
-                for(StopwatchTimer t : tmp) {
+                Iterator<StopwatchTimer> it = timers.iterator();
+                while ( it.hasNext() ) {
+                    StopwatchTimer t = it.next();
                     if(author.equals(t.getAuth())) {
                         tm = t;
-                        timers.remove(timers.indexOf(t));
+                        it.remove();
                     }
                 }
                 if(tm == null)
@@ -216,10 +218,11 @@ public class Stopwatch extends Addon {
         if(stopwatchRunning)
             ++stopwatchTime;
 
-        ArrayList<StopwatchTimer> tmp = (ArrayList<StopwatchTimer>)timers.clone();
-        for(StopwatchTimer t : tmp) {
+        Iterator<StopwatchTimer> it = timers.iterator();
+        while ( it.hasNext() ) {
+            StopwatchTimer t = it.next();
             if(!t.update()) {
-                timers.remove(timers.indexOf(t));
+                it.remove();
                 stopUpdate();
             }
             if(t.getResponse() != null)
