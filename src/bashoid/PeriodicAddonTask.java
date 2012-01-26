@@ -13,8 +13,8 @@ public class PeriodicAddonTask extends TimerTask {
 
     @Override
     public void run() {
-        for(PeriodicAddonListener l : listeners)
-            l.periodicAddonUpdate();
+        for (int i = 0; i < listeners.size(); ++i)
+            listeners.get(i).periodicAddonUpdate();
     }
 
     public void clear() {
