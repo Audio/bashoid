@@ -63,7 +63,7 @@ public class Feed {
                 if (newestTitle == null)
                     newestTitle = title;
             }
-        };
+        }
 
         if (newestTitle != null) {
             lastKnownTitle = newestTitle;
@@ -74,7 +74,7 @@ public class Feed {
     }
 
     protected void addToCache(List<String> newTitles) {
-        lastFiveTitles.addAll(newTitles);
+        lastFiveTitles.addAll(0, newTitles);
         int endIndex = Math.min(5, lastFiveTitles.size() );
         lastFiveTitles = lastFiveTitles.subList(0, endIndex);
     }
