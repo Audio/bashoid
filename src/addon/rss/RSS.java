@@ -5,6 +5,7 @@ import bashoid.Message;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import utils.Config;
 
 import static utils.Constants.*;
@@ -50,10 +51,9 @@ public class RSS extends Addon {
     }
 
     private void checkFeeds() {
-        List<String> msgs = null;
         for(Feed f : feeds) {
             try {
-                msgs = f.check(showMsgsCount);
+                List<String> msgs = f.check(showMsgsCount);
                 if( !msgs.isEmpty() && !firstRun )
                     sendChainedMessages(f, msgs);
             } catch(IOException e) {
@@ -117,7 +117,9 @@ public class RSS extends Addon {
         final String SEPARATOR = " | ";
         boolean isFirstMessageInChain = true;
 
-        for (String message : messages) {
+        ListIterator<String> iterator = messages.listIterator( messages.size() );
+        while ( iterator.hasPrevious() ) {
+            String message = iterator.previous();
             if ( message.length() > MESSAGE_MAX_LENGTH ) {
                 sendMessageToChannels(chain);
                 sendMessageToChannels(message);
