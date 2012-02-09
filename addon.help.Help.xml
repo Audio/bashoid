@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon>
     <settings>
-        <helpCommand>!help</helpCommand>
+        <command>!help</command>
     </settings>
 
     <content>
-        - Bash: bash - prints random entry from http://bash.org
-        - Currency: convert currency (example: "20 czk to euro")
-        - Pepa: *bot's name*: *message_to_pepa* - Talk with pepa! (example: "Bashoid: Hi there!")
-        - RSS: rss list - list available channels || rss show *channel_name* - sends you log of last messages for that *channel_name*
-        - Stopwatch: stopwatch start, stopwatch stop, stopwatch get - stopwatch control
-        -- stopwatch timer *time* *notify_period* - starts timer for *time* and will notify every *notify_period. Time can be in 4h30m4s format or just seconds
-        -- stopwatch rmtimer - removes active timer
-        - Web page title: t *url* - shows content of *url*'s &lt;title&gt; tag
+        <Bash>bash - prints random entry from http://bash.org</Bash>
+        <Currency>convert currency (example: "20 czk to euro")</Currency>
+        <Pepa>*bot's name*: *message_to_pepa* - Talk with pepa! (example: "Bashoid: Hi there!")</Pepa>
+        <RSS>rss list - list available channels || rss show *channel_name* - sends you log of last messages for that *channel_name*</RSS>
+        <Title>t *url* - shows content of web page's &lt;title&gt; tag</Title>
+        <Stopwatch>stopwatch start, stopwatch stop, stopwatch get - stopwatch control</Stopwatch>
+        <StopwatchTimer>stopwatch timer *time* *notify_period* - starts timer for *time* and will notify every *notify_period*. rmtimer removes active timer</StopwatchTimer>
     </content>
 </addon>

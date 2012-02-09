@@ -2,6 +2,7 @@ package addon.help;
 
 import bashoid.Addon;
 import bashoid.Message;
+import org.joox.Match;
 
 
 public class Help extends Addon {
@@ -10,8 +11,13 @@ public class Help extends Addon {
     private String[] content;
 
     public Help() {
-        command = config.getSetting("helpCommand");
-        content = config.getValue("content").trim().split("\n");
+        command = config.getSetting("command");
+
+        Match addons = config.getMatch("content").children();
+        content = new String[ addons.size() ];
+        int index = 0;
+        for ( Match addon : addons.each() )
+            content[index++] = addon.first().tag() + ": " + addon.first().text();
     }
 
     @Override
@@ -22,7 +28,7 @@ public class Help extends Addon {
     @Override
     protected void setReaction(Message message) {
         for(String s : content)
-            sendMessage(message.author, s.trim() );
+            sendMessage(message.author, s);
     }
 
 }
