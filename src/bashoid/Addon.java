@@ -8,6 +8,7 @@ public abstract class Addon implements PeriodicAddonListener {
 
     protected List<String> reaction = new ArrayList<>();
     protected boolean errorOccurred;
+    protected AddonConfig config = new AddonConfig( getClass().getName() );
     protected PeriodicAddonUpdate periodicAddonUpdate;
     protected Exception error;
 
