@@ -3,7 +3,6 @@ package addon.youtube;
 import bashoid.Message;
 import bashoid.Addon;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import org.jsoup.Jsoup;
 import utils.*;
@@ -27,7 +26,7 @@ public class Youtube extends Addon {
         return WebPage.loadWebPage("http://gdata.youtube.com/feeds/api/videos/" + videoID, "UTF-8");
     }
 
-    private String getVideoTitleFromRawXML(WebPage entry) throws ParseException {
+    private String getVideoTitleFromRawXML(WebPage entry) {
         String title = Jsoup.parse( entry.getContent() ).title();
         return Formatter.removeHTML(title);
     }
