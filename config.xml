@@ -5,5 +5,4 @@
   <entry key="server">irc.rizon.net</entry>
   <entry key="channel">#soulwell</entry>
   <entry key="nickname">bashoid</entry>
-  <entry key="helpCommand">!help</entry>
 </properties>

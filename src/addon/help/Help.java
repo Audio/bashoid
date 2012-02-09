@@ -1,44 +1,28 @@
 package addon.help;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.util.ArrayList;
 import bashoid.Addon;
 import bashoid.Message;
-import utils.Config;
 
 
 public class Help extends Addon {
-    private ArrayList<String> help = new ArrayList<>();
-    private String helpCmd;
+
+    private String command;
+    private String[] content;
 
     public Help() {
-        Config config = new Config();
-        helpCmd = config.getValue("helpCommand", "!help");
-        loadHelp();
-    }
-
-    private void loadHelp() {
-        try {
-            BufferedReader in = new BufferedReader(new FileReader("help.txt"));
-            String strLine;
-            while ((strLine = in.readLine()) != null) {
-                help.add(strLine);
-            }
-            in.close();
-        }
-        catch(Exception e) {
-        }
+        command = config.getSetting("helpCommand");
+        content = config.getValue("content").trim().split("\n");
     }
 
     @Override
     public boolean shouldReact(Message message) {
-        return message.text.equals(helpCmd);
+        return message.text.equals(command);
     }
 
     @Override
     protected void setReaction(Message message) {
-        for(String s : help)
-            sendMessage(message.author, s);
+        for(String s : content)
+            sendMessage(message.author, s.trim() );
     }
+
 }
