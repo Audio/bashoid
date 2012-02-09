@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon>
+    <settings>
+        <showMsgsCount>5</showMsgsCount>
+    </settings>
+
+    <feeds>
+        <feed>
+            <name>Catcore</name>
+            <url>https://bitbucket.org/Tasssadar/catcore/rss?token=738b8112d1c805bd66348a71316bcb0d</url>
+        </feed>
+        <feed>
+            <name>MaNGOS</name>
+            <url>https://github.com/mangos/mangos/commits/master.atom</url>
+        </feed>
+        <feed>
+            <name>TrinityCore</name>
+            <url>https://github.com/TrinityCore/TrinityCore/commits/master.atom</url>
+        </feed>
+        <feed>
+            <name>Duckbox</name>
+            <url>http://gitorious.org/open-duckbox-project-sh4/tdt/commits/master/feed.atom</url>
+        </feed>
+        <feed>
+            <name>bashoid</name>
+            <url>https://github.com/Audio/bashoid/commits/master.atom</url>
+        </feed>
+        <feed>
+            <name>SeEx</name>
+            <url>https://github.com/Frca/SeEx/commits/master.atom</url>
+        </feed>
+        <feed>
+            <name>Lorris</name>
+            <url>https://github.com/Tasssadar/Lorris/commits/master.atom</url>
+        </feed>
+    </feeds>
+</addon>

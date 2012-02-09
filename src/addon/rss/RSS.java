@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import utils.Config;
+import org.joox.Match;
 
 import static utils.Constants.*;
 
@@ -15,9 +15,8 @@ public class RSS extends Addon {
 
     private enum Cmds {
         INVALID, LIST, SHOW;
-    };
-    private static final String configKeyName = "channelName";
-    private static final String configKeyUrl = "channelUrl";
+    }
+
     private static final String configKeyCount = "showMsgsCount";
     private static final int MESSAGE_MAX_LENGTH = 450;
 
@@ -29,20 +28,18 @@ public class RSS extends Addon {
     public RSS() {
         setPeriodicUpdate(60000);
 
-        Config config = new Config("rss.xml");
+        Match configFeeds = config.getMatch("feeds feed");
 
-        for(short i = 1; true; ++i) {
-            String name = config.getValue(configKeyName + i, null);
-            String url = config.getValue(configKeyUrl + i, null);
-            if(name == null || url == null)
-                break;
-            feeds.add(new Feed(name, url));
+        for ( Match feed : configFeeds.each() ) {
+            String name = feed.find("name").text();
+            String url = feed.find("url").text();
+            feeds.add(new Feed( name, url));
         }
 
         feeds.add(new EzFeed());
 
         try {
-            showMsgsCount = Integer.valueOf(config.getValue(configKeyCount, "5")).byteValue();
+            showMsgsCount = Integer.valueOf( config.getValue(configKeyCount) ).byteValue();
         } catch(NumberFormatException e) {
             showMsgsCount = 5;
         }
@@ -160,4 +157,5 @@ public class RSS extends Addon {
     public void periodicAddonUpdate() {
         checkFeeds();
     }
+
 }
