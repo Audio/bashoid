@@ -55,6 +55,7 @@ public class RSS extends Addon {
 
     private void reloadFeeds() {
         removeFeeds();
+        firstRun = true;
         addFeeds();
     }
 
