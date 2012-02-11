@@ -13,7 +13,7 @@ import static utils.Constants.*;
 public class Youtube extends Addon {
 
     private static final int VIDEO_ID_LENGTH = 11;
-    private ArrayList<LinkInfo> cache = new ArrayList<>();
+    private ArrayList<LinkInfo> cache = new ArrayList<LinkInfo>();
 
 
     private void downloadParseSave(String videoID) throws Exception {

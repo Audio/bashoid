@@ -27,8 +27,8 @@ public class Feed {
         this.address = address;
         this.name = name;
         this.lastKnownTitle = "";
-        this.lastFiveTitles = new ArrayList<>();
-        this.titlePatterns = new ArrayList<>();
+        this.lastFiveTitles = new ArrayList<String>();
+        this.titlePatterns = new ArrayList<String>();
         this.displayLinks = false;
         this.type = Type.Undefined;
     }
@@ -45,7 +45,7 @@ public class Feed {
         int itemsCount = items.size();
 
         String newestTitle = null;
-        List<String> newTitles = new ArrayList<>();
+        List<String> newTitles = new ArrayList<String>();
 
         for (byte i = 0; i < maxMsgsCount && i < itemsCount; ++i) {
             String title = removeCDATA( items.get(i).getElementsByTag("title").text() );

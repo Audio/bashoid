@@ -4,5 +4,5 @@
   <comment>Configuration file for bashoid, https://github.com/Audio/bashoid</comment>
   <entry key="server">irc.rizon.net</entry>
   <entry key="channel">#soulwell</entry>
-  <entry key="nickname">bashoid</entry>
+  <entry key="nickname">tassoid</entry>
 </properties>

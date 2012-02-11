@@ -5,7 +5,7 @@ import java.util.TimerTask;
 
 
 public class PeriodicAddonTask extends TimerTask {
-    private ArrayList<PeriodicAddonListener> listeners = new ArrayList<>();
+    private ArrayList<PeriodicAddonListener> listeners = new ArrayList<PeriodicAddonListener>();
 
     public void addEventListener(PeriodicAddonListener pl) {
         listeners.add(pl);

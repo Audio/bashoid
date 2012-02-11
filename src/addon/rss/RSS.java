@@ -20,7 +20,7 @@ public class RSS extends Addon {
     private static final String configKeyCount = "showMsgsCount";
     private static final int MESSAGE_MAX_LENGTH = 450;
 
-    private List<Feed> feeds = new ArrayList<>();
+    private List<Feed> feeds = new ArrayList<Feed>();
     private byte showMsgsCount;
     private boolean firstRun = true;
 
@@ -110,6 +110,7 @@ public class RSS extends Addon {
     }
 
     private void sendChainedMessages(Feed feed, List<String> messages) {
+        List<String> outputLines = new ArrayList<String>();
         String chain = feed.getName() + ": ";
         final String SEPARATOR = " | ";
         boolean isFirstMessageInChain = true;
