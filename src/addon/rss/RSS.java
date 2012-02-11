@@ -26,25 +26,30 @@ public class RSS extends Addon {
 
 
     public RSS() {
-        setPeriodicUpdate(60000);
-
-        Match configFeeds = config.getMatch("feeds feed");
-
-        for ( Match feed : configFeeds.each() ) {
-            String name = feed.find("name").text();
-            String url = feed.find("url").text();
-            feeds.add(new Feed( name, url));
-        }
-
-        feeds.add(new EzFeed());
-
         try {
             showMsgsCount = Integer.valueOf( config.getValue(configKeyCount) ).byteValue();
         } catch(NumberFormatException e) {
             showMsgsCount = 5;
         }
 
+        addFeeds();
         checkFeeds();
+        setPeriodicUpdate(60000);
+    }
+
+    private void addFeeds() {
+        Match configFeeds = config.getMatch("feeds feed");
+
+        for ( Match feed : configFeeds.each() ) {
+            String name = feed.find("name").text();
+            String url = feed.find("url").text();
+            feeds.add( new Feed(name, url) );
+        }
+
+        feeds.add( new EzFeed() );
+    }
+
+
     }
 
     private void checkFeeds() {
