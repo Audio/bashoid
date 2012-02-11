@@ -14,7 +14,7 @@ import static utils.Constants.*;
 public class RSS extends Addon {
 
     private enum Cmds {
-        INVALID, LIST, SHOW;
+        INVALID, LIST, RELOAD, SHOW;
     }
 
     private static final String configKeyCount = "showMsgsCount";
@@ -26,25 +26,37 @@ public class RSS extends Addon {
 
 
     public RSS() {
-        setPeriodicUpdate(60000);
-
-        Match configFeeds = config.getMatch("feeds feed");
-
-        for ( Match feed : configFeeds.each() ) {
-            String name = feed.find("name").text();
-            String url = feed.find("url").text();
-            feeds.add(new Feed( name, url));
-        }
-
-        feeds.add(new EzFeed());
-
         try {
             showMsgsCount = Integer.valueOf( config.getValue(configKeyCount) ).byteValue();
         } catch(NumberFormatException e) {
             showMsgsCount = 5;
         }
 
+        addFeeds();
         checkFeeds();
+        setPeriodicUpdate(60000);
+    }
+
+    private void addFeeds() {
+        Match configFeeds = config.getMatch("feeds feed");
+
+        for ( Match feed : configFeeds.each() ) {
+            String name = feed.find("name").text();
+            String url = feed.find("url").text();
+            feeds.add( new Feed(name, url) );
+        }
+
+        feeds.add( new EzFeed() );
+    }
+
+    private void removeFeeds() {
+        feeds.clear();
+    }
+
+    private void reloadFeeds() {
+        removeFeeds();
+        firstRun = true;
+        addFeeds();
     }
 
     private void checkFeeds() {
@@ -92,6 +104,11 @@ public class RSS extends Addon {
                 }
                 return null;
             }
+            case RELOAD:
+            {
+                reloadFeeds();
+                sendMessageToChannels("Feeds have been reloaded.");
+            }
         }
         return null;
     }
@@ -102,11 +119,12 @@ public class RSS extends Addon {
         if(end == NOT_FOUND)
             end = message.length();
 
-        String cmd = message.substring(begin, end);
-
-        if     (cmd.equals("list")) return Cmds.LIST;
-        else if(cmd.equals("show")) return Cmds.SHOW;
-        else                        return Cmds.INVALID;
+        String cmd = message.substring(begin, end).toUpperCase();
+        try {
+            return Cmds.valueOf(cmd);
+        } catch (IllegalArgumentException iae) {
+            return Cmds.INVALID;
+        }
     }
 
     private void sendChainedMessages(Feed feed, List<String> messages) {
