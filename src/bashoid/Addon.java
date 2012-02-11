@@ -86,4 +86,9 @@ public abstract class Addon implements PeriodicAddonListener {
     protected void sendMessageToChannels(String msg) {
         addonListener.sendAddonMessageToChannels(msg);
     }
+
+    protected void reloadConfig() {
+        config.reload();
+    }
+
 }
