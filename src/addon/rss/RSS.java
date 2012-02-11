@@ -14,7 +14,7 @@ import static utils.Constants.*;
 public class RSS extends Addon {
 
     private enum Cmds {
-        INVALID, LIST, SHOW;
+        INVALID, LIST, RELOAD, SHOW;
     }
 
     private static final String configKeyCount = "showMsgsCount";
@@ -49,7 +49,13 @@ public class RSS extends Addon {
         feeds.add( new EzFeed() );
     }
 
+    private void removeFeeds() {
+        feeds.clear();
+    }
 
+    private void reloadFeeds() {
+        removeFeeds();
+        addFeeds();
     }
 
     private void checkFeeds() {
@@ -97,6 +103,11 @@ public class RSS extends Addon {
                 }
                 return null;
             }
+            case RELOAD:
+            {
+                reloadFeeds();
+                sendMessageToChannels("Feeds have been reloaded.");
+            }
         }
         return null;
     }
@@ -107,11 +118,12 @@ public class RSS extends Addon {
         if(end == NOT_FOUND)
             end = message.length();
 
-        String cmd = message.substring(begin, end);
-
-        if     (cmd.equals("list")) return Cmds.LIST;
-        else if(cmd.equals("show")) return Cmds.SHOW;
-        else                        return Cmds.INVALID;
+        String cmd = message.substring(begin, end).toUpperCase();
+        try {
+            return Cmds.valueOf(cmd);
+        } catch (IllegalArgumentException iae) {
+            return Cmds.INVALID;
+        }
     }
 
     private void sendChainedMessages(Feed feed, List<String> messages) {
