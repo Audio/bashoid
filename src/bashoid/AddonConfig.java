@@ -8,12 +8,18 @@ import static org.joox.JOOX.$;
 
 public class AddonConfig {
 
+    private String filename;
     private Match rootElement;
 
 
     public AddonConfig(String classname) {
+        filename = classname + ".xml";
+        reload();
+    }
+
+    protected void reload() {
         try {
-            rootElement = $( new File(classname + ".xml") );
+            rootElement = $( new File(filename) );
         } catch (Exception e) {
             // config file doesn't exist
         }
