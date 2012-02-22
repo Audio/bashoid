@@ -1,13 +1,14 @@
 package addon.explain;
 
-import bashoid.Message;
 import bashoid.Addon;
+import bashoid.Message;
 import java.text.ParseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import utils.Formatter;
 import utils.WebPage;
+
 
 public class Explain extends Addon {
     
@@ -25,7 +26,7 @@ public class Explain extends Addon {
         msg = msg.substring(8);
         msg.replaceAll(" ", "%20");
         return "http://dictionary.reference.com/browse/" + msg;
-        }
+    }
     
     @Override
     public boolean shouldReact(Message message) {
@@ -43,4 +44,5 @@ public class Explain extends Addon {
             setError("Cannot load given URL.", e);
         }
     }
+
 }

@@ -23,8 +23,8 @@ public class Title extends Addon {
 
     private String getUrl(String message) {
         message = message.substring(2);
-        int pos;
-        if ((pos = message.indexOf(" ") ) != NOT_FOUND)
+        int pos = message.indexOf(" ");
+        if (pos != NOT_FOUND)
             message = message.substring(0, pos);
 
         return message;
