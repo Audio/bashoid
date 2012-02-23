@@ -1,8 +1,7 @@
 package addon.title;
 
-import bashoid.Message;
 import bashoid.Addon;
-import java.text.ParseException;
+import bashoid.Message;
 import org.jsoup.Jsoup;
 import utils.*;
 
@@ -16,7 +15,7 @@ public class Title extends Addon {
         return getTitleFromRawHTML(page);
     }
 
-    private String getTitleFromRawHTML(WebPage entry) throws ParseException {
+    private String getTitleFromRawHTML(WebPage entry) {
         String title = Jsoup.parse( entry.getContent() ).title();
         return Formatter.removeHTML(title);
     }
@@ -40,8 +39,6 @@ public class Title extends Addon {
         try {
             String url = getUrl(message.text);
             reaction.add( loadTitle(url) );
-        } catch (ParseException pe) {
-            setError("Given page does NOT contain the title tag.", pe);
         } catch (Exception e) {
             setError("Cannot load given URL.", e);
         }
