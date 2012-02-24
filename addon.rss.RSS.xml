@@ -33,5 +33,9 @@
             <name>Lorris</name>
             <url>https://github.com/Tasssadar/Lorris/commits/master.atom</url>
         </feed>
+        <feed>
+            <name>Wine</name>
+            <url>http://www.winehq.org/news/rss/</url>
+        </feed>
     </feeds>
 </addon>
