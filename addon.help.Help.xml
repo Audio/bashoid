@@ -12,5 +12,7 @@
         <Title>t *url* - shows content of web page's &lt;title&gt; tag</Title>
         <Stopwatch>stopwatch start, stopwatch stop, stopwatch get - stopwatch control</Stopwatch>
         <StopwatchTimer>stopwatch timer *time* *notify_period* - starts timer for *time* and will notify every *notify_period*. rmtimer removes active timer</StopwatchTimer>
+        <Counter>++, --, += *num*, -= *num* - change counter value || counter get - get counter value</Counter>
+        <Explain>explain expression (e.g.: "explain porn")</Explain>
     </content>
 </addon>
