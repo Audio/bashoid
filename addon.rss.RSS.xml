@@ -37,5 +37,9 @@
             <name>Wine</name>
             <url>http://www.winehq.org/news/rss/</url>
         </feed>
+        <feed>
+            <name>rubobek</name>
+            <url>https://github.com/Audio/rubobek/commits/master.atom</url>
+        </feed>
     </feeds>
 </addon>
