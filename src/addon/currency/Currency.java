@@ -4,12 +4,14 @@ import bashoid.Message;
 import bashoid.Addon;
 import java.net.URLEncoder;
 import java.text.ParseException;
+import java.util.regex.Pattern;
 import utils.*;
 
 
 public class Currency extends Addon {
 
     private static final String SERVICE_URL = "http://www.google.com/ig/calculator?hl=en&q=";
+    private static final Pattern PATTERN = Pattern.compile("^\\d+ +[a-zA-Z]+ +to +[a-zA-Z]+$");
 
 
     private String loadResponse(String query) throws Exception {
@@ -25,13 +27,7 @@ public class Currency extends Addon {
 
     @Override
     public boolean shouldReact(Message message) {
-        String[] parts = message.text.split(" ");
-        try {
-            Float.parseFloat(parts[0]);
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return parts.length == 4 && parts[2].equals("to");
+        return PATTERN.matcher(message.text).find();
     }
 
     @Override

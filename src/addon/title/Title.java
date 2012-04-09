@@ -2,13 +2,16 @@ package addon.title;
 
 import bashoid.Addon;
 import bashoid.Message;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import utils.*;
 
-import static utils.Constants.*;
-
 
 public class Title extends Addon {
+
+    private static final Pattern PATTERN = Pattern.compile("^t +(http.+)");
+
 
     private String loadTitle(String url) throws Exception {
         WebPage page = WebPage.loadWebPage(url, "UTF-8");
@@ -20,25 +23,17 @@ public class Title extends Addon {
         return Formatter.removeHTML(title);
     }
 
-    private String getUrl(String message) {
-        message = message.substring(2);
-        int pos = message.indexOf(" ");
-        if (pos != NOT_FOUND)
-            message = message.substring(0, pos);
-
-        return message;
-    }
-
     @Override
     public boolean shouldReact(Message message) {
-        return message.text.startsWith("t http");
+        return PATTERN.matcher(message.text).find();
     }
 
     @Override
     protected void setReaction(Message message) {
         try {
-            String url = getUrl(message.text);
-            reaction.add( loadTitle(url) );
+            Matcher matcher = PATTERN.matcher(message.text);
+            matcher.find();
+            reaction.add( loadTitle( matcher.group(1) ) );
         } catch (Exception e) {
             setError("Cannot load given URL.", e);
         }
