@@ -4,15 +4,16 @@ import bashoid.Message;
 import bashoid.Addon;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import utils.*;
-
-import static utils.Constants.*;
 
 
 public class Youtube extends Addon {
 
-    private static final int VIDEO_ID_LENGTH = 11;
+    private static final Pattern LONG_URL = Pattern.compile("youtube\\.com.*v=([^&$]{11})(&| |$)");
+    private static final Pattern SHORT_URL = Pattern.compile("youtu\\.be/([^&\\?$]{11})(&| |$)");
     private ArrayList<LinkInfo> cache = new ArrayList<>();
 
 
@@ -36,30 +37,14 @@ public class Youtube extends Addon {
             downloadParseSave(videoID);
     }
 
-    private String getVideoIDOrEmptyString(String message) {
-        int beginPosition = getPositionWhereVideoIDStarts(message);
-        if (beginPosition == NOT_FOUND)
-            return "";
+    private String getVideoID(String message) {
+        Matcher matcher = LONG_URL.matcher(message);
+        if ( !matcher.find() ) {
+            matcher = SHORT_URL.matcher(message);
+            matcher.find();
+        }
 
-        return message.substring(beginPosition, beginPosition + VIDEO_ID_LENGTH);
-    }
-
-    private int getPositionWhereVideoIDStarts(String message) {
-        int pos = videoIDPosition(message, "youtu.be/");
-        if (pos != NOT_FOUND)
-            return pos;
-
-        pos = message.indexOf("youtube.com/watch");
-        return (pos != NOT_FOUND) ? videoIDPosition(message, "v=", pos) : NOT_FOUND;
-    }
-
-    private int videoIDPosition(String message, final String URL_PATTERN) {
-        return videoIDPosition(message, URL_PATTERN, 0);
-    }
-
-    private int videoIDPosition(String message, final String URL_PATTERN, int beginPosition) {
-        int position = message.indexOf(URL_PATTERN, beginPosition);
-        return (position != NOT_FOUND) ? position + URL_PATTERN.length() : NOT_FOUND;
+        return matcher.group(1);
     }
 
     private boolean cacheContains(String videoID) {
@@ -76,13 +61,14 @@ public class Youtube extends Addon {
 
     @Override
     public boolean shouldReact(Message message) {
-        return !getVideoIDOrEmptyString(message.text).equals("");
+        return LONG_URL.matcher(message.text).find()
+            || SHORT_URL.matcher(message.text).find();
     }
 
     @Override
     protected void setReaction(Message message) {
         try {
-            String newVideoID = getVideoIDOrEmptyString(message.text);
+            String newVideoID = getVideoID(message.text);
             downloadIfNeeded(newVideoID);
             LinkInfo li = getCachedInfo(newVideoID);
             reaction.add("YouTube: " + li.title() );
