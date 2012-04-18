@@ -29,8 +29,8 @@ public class BashoidMain {
 
     private static void runBot() throws Exception {
         bot = new Bashoid();
-        bot.connect(server);
-        bot.joinChannel(channel);
+        //bot.connect(server);
+        //bot.joinChannel(channel);
 
         connectCheckTimer = new Timer();
         checkTask = new connectedCheckTask();
