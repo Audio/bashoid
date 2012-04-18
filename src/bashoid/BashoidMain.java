@@ -29,12 +29,10 @@ public class BashoidMain {
 
     private static void runBot() throws Exception {
         bot = new Bashoid();
-        bot.connect(server);
-        bot.joinChannel(channel);
 
         connectCheckTimer = new Timer();
         checkTask = new connectedCheckTask();
-        connectCheckTimer.scheduleAtFixedRate(checkTask, CONNECT_CHECK_TIME, CONNECT_CHECK_TIME);
+        connectCheckTimer.scheduleAtFixedRate(checkTask, 0, CONNECT_CHECK_TIME);
     }
 
     private static class connectedCheckTask extends TimerTask {
