@@ -11,7 +11,7 @@ import utils.*;
 public class Currency extends Addon {
 
     private static final String SERVICE_URL = "http://www.google.com/ig/calculator?hl=en&q=";
-    private static final Pattern PATTERN = Pattern.compile("^\\d+ +[a-zA-Z]+ +to +[a-zA-Z]+$");
+    private static final Pattern PATTERN = Pattern.compile("^\\d+((\\.|,)\\d+)? +[a-zA-Z]+ +to +[a-zA-Z]+$");
 
 
     private String loadResponse(String query) throws Exception {
@@ -21,7 +21,7 @@ public class Currency extends Addon {
     }
 
     private String getResponseFromJSON(WebPage entry) throws ParseException {
-        String[] p = entry.getContent().split(",");
+        String[] p = entry.getContent().split("\",");
         return ( p[2].split("\"").length > 1 ) ? "Asi incorrect syntax nebo co." : p[0].split("\"")[1] + " = " + p[1].split("\"")[1];
     }
 
