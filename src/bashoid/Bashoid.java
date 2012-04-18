@@ -1,7 +1,8 @@
 package bashoid;
 
 import java.io.UnsupportedEncodingException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import org.jibble.pircbot.*;
 import utils.Config;
 import utils.FloodChecker;
@@ -9,13 +10,7 @@ import utils.FloodChecker;
 
 public class Bashoid extends PircBot implements AddonListener {
 
-    private static final long CONNECT_CHECK_TIME = 5000;
-
     private ArrayList<Addon> addons = new ArrayList<Addon>();
-    private Timer connectCheckTimer;
-    private Bashoid.ConnectedCheckTask checkTask;
-    private String channel;
-
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
@@ -68,29 +63,6 @@ public class Bashoid extends PircBot implements AddonListener {
     }
 
     @Override
-    protected void onDisconnect() {
-        try {
-            connect( getServer() );
-        } catch (Exception e) {
-            System.err.println("Cannot reconnect to server.");
-        }
-    }
-
-    @Override
-    protected  void	onJoin(String channel, String sender, String login, String hostname) {
-        this.channel = channel;
-        cancelCheckTask();
-    }
-
-    @Override
-    protected void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
-        if ( recipientNick.equals( getNick() ) ) {
-            joinChannel(channel);
-            sendMessage(channel, kickerNick + ": polib si elipsy");
-        }
-    }
-
-    @Override
     protected void onMessage(String channel, String sender, String login, String hostname, String message) {
         onMessage( new Message(channel, sender, login, hostname, message) );
     }
@@ -116,13 +88,11 @@ public class Bashoid extends PircBot implements AddonListener {
     }
 
     @Override
-    protected  void	onRemoveChannelBan(String channel, String sourceNick, String sourceLogin, String sourceHostname, String hostmask) {
-        cancelCheckTask();
-    }
-
-    @Override
-    protected void onSetChannelBan(String channel, String sourceNick, String sourceLogin, String sourceHostname, String hostmask) {
-        runCheckTask();
+    protected void onKick(String channel, String kickerNick, String kickerLogin, String kickerHostname, String recipientNick, String reason) {
+        if ( recipientNick.equals( getNick() ) ) {
+            joinChannel(channel);
+            sendMessage(channel, kickerNick + ": polib si");
+        }
     }
 
     public void sendAddonAction(String target, String msg) {
@@ -166,25 +136,6 @@ public class Bashoid extends PircBot implements AddonListener {
 
     public String getBotNickname() {
         return getNick();
-    }
-
-    private void runCheckTask() {
-        checkTask = new ConnectedCheckTask();
-        connectCheckTimer = new Timer();
-        connectCheckTimer.scheduleAtFixedRate(checkTask, CONNECT_CHECK_TIME, CONNECT_CHECK_TIME);
-    }
-
-    private void cancelCheckTask() {
-        if (checkTask != null)
-            checkTask.cancel();
-    }
-
-    private class ConnectedCheckTask extends TimerTask {
-        @Override
-        public void run() {
-            if( getChannels().length == 0 )
-                joinChannel(channel);
-        }
     }
 
 }
