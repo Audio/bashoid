@@ -22,7 +22,6 @@ public class Bashoid extends PircBot implements AddonListener {
         setAutoNickChange(true);
         setMessageDelay(0);
         trySetUTFEncoding();
-        registerAddons();
     }
 
     private String getNickFromConfig(String defaultNick) {
@@ -54,6 +53,12 @@ public class Bashoid extends PircBot implements AddonListener {
         addons.add( new addon.title.Title() );
         addons.add( new addon.translator.Translator() );
         addons.add( new addon.youtube.Youtube() );
+    }
+
+    @Override
+    protected void onConnect() {
+        if(addons.isEmpty())
+            registerAddons();
     }
 
     @Override
