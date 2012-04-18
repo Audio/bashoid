@@ -46,7 +46,9 @@ public class BashoidMain {
                 }
             }
 
-            if(!Arrays.asList(bot.getChannels()).contains(channel)) {
+            // Bashoid can only connect to one channel,
+            // so we don't have to check channel's name
+            if(bot.getChannels().length == 0) {
                 bot.joinChannel(channel);
             }
         }
