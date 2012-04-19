@@ -67,15 +67,6 @@ public class Bashoid extends PircBot implements AddonListener {
     }
 
     @Override
-    protected void onDisconnect() {
-        try {
-            connect( getServer() );
-        } catch (Exception e) {
-            System.err.println("Cannot reconnect to server.");
-        }
-    }
-
-    @Override
     protected  void	onJoin(String channel, String sender, String login, String hostname) {
         this.channel = channel;
         cancelCheckTask();
