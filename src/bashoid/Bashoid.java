@@ -22,7 +22,6 @@ public class Bashoid extends PircBot implements AddonListener {
         setAutoNickChange(true);
         setMessageDelay(0);
         trySetUTFEncoding();
-        registerAddons();
     }
 
     private String getNickFromConfig(String defaultNick) {
@@ -57,17 +56,14 @@ public class Bashoid extends PircBot implements AddonListener {
     }
 
     @Override
-    protected void onAction(String sender, String login, String hostname, String target, String action) {
-        onMessage(target, sender, login, hostname, action);
+    protected void onConnect() {
+        if(addons.isEmpty())
+            registerAddons();
     }
 
     @Override
-    protected void onDisconnect() {
-        try {
-            connect( getServer() );
-        } catch (Exception e) {
-            System.err.println("Cannot reconnect to server.");
-        }
+    protected void onAction(String sender, String login, String hostname, String target, String action) {
+        onMessage(target, sender, login, hostname, action);
     }
 
     @Override
