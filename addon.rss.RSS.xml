@@ -26,6 +26,10 @@
             <url>https://github.com/Audio/bashoid/commits/master.atom</url>
         </feed>
         <feed>
+            <name>mk2d</name>
+            <url>https://github.com/Audio/mk2d/commits/master.atom</url>
+        </feed>
+        <feed>
             <name>SeEx</name>
             <url>https://github.com/Frca/SeEx/commits/master.atom</url>
         </feed>
@@ -36,10 +40,6 @@
         <feed>
             <name>Wine</name>
             <url>http://www.winehq.org/news/rss/</url>
-        </feed>
-        <feed>
-            <name>rubobek</name>
-            <url>https://github.com/Audio/rubobek/commits/master.atom</url>
         </feed>
         <feed>
             <name>steam</name>
