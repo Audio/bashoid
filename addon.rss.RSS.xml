@@ -45,9 +45,5 @@
             <name>Steam</name>
             <url>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=steam_games</url>
         </feed>
-        <feed>
-            <name>PasswordManager</name>
-            <url>https://github.com/Frca/Password-Manager/commits/master.atom</url>
-        </feed>
     </feeds>
 </addon>
