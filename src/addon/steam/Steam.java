@@ -9,7 +9,7 @@ public class Steam extends Addon {
 
     private static final String ENCODING = "UTF-8";
 
-    public boolean containsOnlyDigits(String str) {
+    private static boolean containsOnlyDigits(String str) {
         if (str == null || str.length() == 0)
             return false;
 
@@ -18,6 +18,23 @@ public class Steam extends Addon {
                 return false;
 
         return true;
+    }
+
+    private String extractParameterValue(String str, String parameterName) {
+        int paraIdx = str.indexOf("\""+parameterName+"\"");
+        if (paraIdx < 0)
+            return "";
+        int startIdx = str.indexOf(":", paraIdx)+1;
+        if (startIdx <= -1)
+            return "";
+        String value;
+        int endIdx = str.indexOf("\"", startIdx+1);
+        if (endIdx <= -1)
+            value = str.substring(startIdx);
+        else
+            value = str.substring(startIdx, endIdx);
+        value = value.replaceAll("\"", "");
+        return value;
     }
 
     public String loadGames(String profileId, String parameters) throws Exception {
@@ -29,44 +46,88 @@ public class Steam extends Addon {
         url += profileId + "/" + parameters;
         WebPage page = WebPage.loadWebPage(url, ENCODING);
         String pageContent = page.getContent();
-        int startIdx = pageContent.indexOf("var rgGames");
-        int endIdx = pageContent.indexOf(";", startIdx);
-        return pageContent.substring(startIdx, endIdx);
+        int lineIdx = pageContent.indexOf("var rgGames");
+        if (lineIdx <= -1) {
+            reaction.add("Invalid profile!");
+            return null;
+        }
+        int startIdx = pageContent.indexOf("[", lineIdx)+1;
+        int endIdx = pageContent.indexOf("];", startIdx);
+        String gamesString = pageContent.substring(startIdx, endIdx);
+        // chop first and last char
+        gamesString = gamesString.substring(1, gamesString.length()-1);
+        return gamesString;
     }
 
-    public List<String> parseGamesString(String gamesString) {
+    public String[] getGamesData(String gamesString) {
+        return gamesString.split("\\},\\{");
+    }
+    public List<String> parseGamesData(String gamesString, String parameter) {
         List<String> games = new ArrayList<>();
-        for (int idx = gamesString.indexOf("name"); idx != -1; idx = gamesString.indexOf("name", idx))
-        {
-            int startIdx = idx+7;
-            idx = gamesString.indexOf("\"", startIdx);
-            games.add(gamesString.substring(startIdx, idx));
-        }
+        String[] data = getGamesData(gamesString);
+        for (String str : data)
+            games.add(extractParameterValue(str, parameter));
+
         return games;
     }
     public String SelectRandomGame(String profileId) throws Exception {
         String gamesString = loadGames(profileId, "games?tab=all");
-        List<String> games = parseGamesString(gamesString);
+        List<String> games = parseGamesData(gamesString, "name");
         int gamePosition = new Random().nextInt(games.size());
         return games.get(gamePosition);
     }
 
     public String SelectMostPlayedWeek(String profileId) throws Exception {
         String gamesString = loadGames(profileId, "games?tab=recent");
-        List<String> games = parseGamesString(gamesString);
-        return games.get(0);
+        List<String> games = parseGamesData(gamesString, "name");
+        List<String> hours = parseGamesData(gamesString, "hours");
+        List<String> hours_ever = parseGamesData(gamesString, "hours_forever");
+        return "Game: " + games.get(0) + ", Played in last two weeks: " + hours.get(0) + "h, Total played: " + hours_ever.get(0) + "h";
     }
 
     public String SelectMostPlayedEver(String profileId) throws Exception {
         String gamesString = loadGames(profileId, "games?tab=all");
-        List<String> games = parseGamesString(gamesString);
-        return games.get(0);
+        List<String> games = parseGamesData(gamesString, "name");
+        List<String> hours_ever = parseGamesData(gamesString, "hours_forever");
+        return "Game: " + games.get(0) + " Total played: " + hours_ever.get(0) + "h";
     }
 
     public String GetGamesCount(String profileId) throws Exception {
         String gamesString = loadGames(profileId, "games?tab=all");
-        List<String> games = parseGamesString(gamesString);
+        List<String> games = parseGamesData(gamesString, "name");
         return Integer.toString(games.size());
+    }
+
+    public String GetPlayedWeek(String profileId) throws Exception {
+        String gamesString = loadGames(profileId, "games?tab=recent");
+        List<String> games = parseGamesData(gamesString, "hours");
+        float total = 0;
+        for (String str : games) {
+            try {
+                total += Float.parseFloat(str);
+            }
+            catch(Exception e) {
+                System.out.println(str);
+            }
+        }
+
+        return Float.toString(total)+"h";
+    }
+
+    public String GetPlayedEver(String profileId) throws Exception {
+        String gamesString = loadGames(profileId, "games?tab=all");
+        List<String> games = parseGamesData(gamesString, "hours_forever");
+        float total = 0;
+        for (String str : games) {
+            try {
+                total += Float.parseFloat(str);
+            }
+            catch(Exception e) {
+                System.out.println(str);
+            }
+        }
+
+        return Float.toString(total)+"h";
     }
 
     @Override
@@ -79,17 +140,20 @@ public class Steam extends Addon {
         try {
             String[] messageParts = message.text.split(" ");
             String profileId = messageParts[1];
+
             String result;
-            switch (messageParts[2])
-            {
+            switch (messageParts[2]) {
                 case "random":      result = SelectRandomGame(profileId); break;
                 case "most_week":   result = SelectMostPlayedWeek(profileId); break;
                 case "most_ever":   result = SelectMostPlayedEver(profileId); break;
                 case "count":       result = GetGamesCount(profileId); break;
+                case "played_ever": result = GetPlayedEver(profileId); break;
+                case "played_week": result = GetPlayedWeek(profileId); break;
                 default:            result = "Co?"; break;
             }
             reaction.add( result );
         } catch (Exception e) {
+            System.out.println(e);
             setError("Cannot load given URL.", e);
         }
     }
