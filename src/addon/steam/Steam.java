@@ -63,7 +63,7 @@ public class Steam extends Addon {
         return gamesString.split("\\},\\{");
     }
     public List<String> parseGamesData(String gamesString, String parameter) {
-        List<String> games = new ArrayList<>();
+        List<String> games = new ArrayList<String>();
         String[] data = getGamesData(gamesString);
         for (String str : data)
             games.add(extractParameterValue(str, parameter));
@@ -142,15 +142,14 @@ public class Steam extends Addon {
             String profileId = messageParts[1];
 
             String result;
-            switch (messageParts[2]) {
-                case "random":      result = SelectRandomGame(profileId); break;
-                case "most_week":   result = SelectMostPlayedWeek(profileId); break;
-                case "most_ever":   result = SelectMostPlayedEver(profileId); break;
-                case "count":       result = GetGamesCount(profileId); break;
-                case "played_ever": result = GetPlayedEver(profileId); break;
-                case "played_week": result = GetPlayedWeek(profileId); break;
-                default:            result = "Co?"; break;
-            }
+            if(messageParts[2].equals("random"))           result = SelectRandomGame(profileId);
+            else if(messageParts[2].equals("most_week"))   result = SelectMostPlayedWeek(profileId);
+            else if(messageParts[2].equals("most_ever"))   result = SelectMostPlayedEver(profileId);
+            else if(messageParts[2].equals("count"))       result = GetGamesCount(profileId);
+            else if(messageParts[2].equals("played_ever")) result = GetPlayedEver(profileId);
+            else if(messageParts[2].equals("played_week")) result = GetPlayedWeek(profileId);
+            else                                           result = "Co?";
+
             reaction.add( result );
         } catch (Exception e) {
             System.out.println(e);
