@@ -49,6 +49,7 @@ public class Bashoid extends PircBot implements AddonListener {
         addons.add( new addon.rss.RSS() );
         // addons.add( new period.PeriodicMessage() );
         addons.add( new addon.slap.Slap() );
+        addons.add( new addon.steam.Steam() );
         addons.add( new addon.stopwatch.Stopwatch() );
         addons.add( new addon.title.Title() );
         addons.add( new addon.translator.Translator() );

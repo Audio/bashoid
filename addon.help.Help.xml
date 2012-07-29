@@ -14,5 +14,6 @@
         <StopwatchTimer>stopwatch timer *time* *notify_period* - starts timer for *time* and will notify every *notify_period*. rmtimer removes active timer</StopwatchTimer>
         <Counter>++, --, += *num*, -= *num* - change counter value || counter get - get counter value</Counter>
         <Explain>explain expression (e.g.: "explain porn")</Explain>
+        <Steam>prints data about specified steam account (e.g.: "steam videjko count")</Steam>
     </content>
 </addon>

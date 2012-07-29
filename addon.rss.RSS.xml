@@ -42,7 +42,7 @@
             <url>http://www.winehq.org/news/rss/</url>
         </feed>
         <feed>
-            <name>steam</name>
+            <name>Steam</name>
             <url>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=steam_games</url>
         </feed>
     </feeds>

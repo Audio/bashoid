@@ -10,7 +10,7 @@ import utils.*;
 
 public class Title extends Addon {
 
-    private static final Pattern PATTERN = Pattern.compile("^t +(http.+)");
+    private static final Pattern PATTERN = Pattern.compile("^t +(http\\S+)");
 
 
     private String loadTitle(String url) throws Exception {
