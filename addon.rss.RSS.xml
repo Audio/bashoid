@@ -34,6 +34,10 @@
             <url>https://github.com/Frca/SeEx/commits/master.atom</url>
         </feed>
         <feed>
+            <name>fIRC</name>
+            <url>https://github.com/Frca/fIRC/commits/master.atom</url>
+        </feed>        
+        <feed>
             <name>Lorris</name>
             <url>https://github.com/Tasssadar/Lorris/commits/master.atom</url>
         </feed>
