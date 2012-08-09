@@ -32,7 +32,7 @@ public class WebPage {
     public static WebPage loadWebPage(String address, String encoding, String postData) throws IOException {
         URL url = new URL(address);
         URLConnection conn = url.openConnection();
-        conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.142 Safari/535.19");
+        conn.addRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/21.0.1180.75 Safari/537.1");
 
         if (postData != null)
             writePostData(postData, conn);
