@@ -26,6 +26,10 @@
             <url>https://github.com/Audio/bashoid/commits/master.atom</url>
         </feed>
         <feed>
+            <name>MMOPlayer</name>
+            <url>https://github.com/Audio/mmoplayer/commits/master.atom</url>
+        </feed>
+        <feed>
             <name>mk2d</name>
             <url>https://github.com/Audio/mk2d/commits/master.atom</url>
         </feed>
