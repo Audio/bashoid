@@ -24,8 +24,7 @@ public class Movie extends Addon {
         String rating_csfd;
         String rating_imdb;
 
-        /*public void print()
-        {
+        /*public void print() {
             System.out.print("Title: " + title + "\n" +
                     "Link_csfd: " + link_csfd + "\n" +
                     "Link_imdb: " + link_imdb + "\n" +
@@ -91,10 +90,8 @@ public class Movie extends Addon {
             data.length = originParts[2].trim();
 
             Elements otherData = movieInfo.getElementsByTag("h4");
-            for (Element ele : otherData)
-            {
-                if (ele.text().equals("Režie:"))
-                {
+            for (Element ele : otherData) {
+                if (ele.text().equals("Režie:"))  {
                     Element directorLink = ele.parent().getElementsByTag("a").first();
                     data.director = directorLink.text();
                     break;
@@ -125,8 +122,8 @@ public class Movie extends Addon {
 
     @Override
     public boolean shouldReact(Message message) {
-        return message.text.startsWith(REACT_MESSAGE) ||
-                message.text.startsWith("http://www.csfd.cz");
+        return message.text.trim().startsWith(REACT_MESSAGE) ||
+                message.text.trim().startsWith("http://www.csfd.cz");
     }
 
     @Override
