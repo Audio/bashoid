@@ -3,6 +3,7 @@ package addon.movie;
 import bashoid.Addon;
 import bashoid.Message;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import utils.WebPage;
@@ -11,6 +12,16 @@ public class Movie extends Addon {
 
     private static final String ENCODING = "UTF-8";
     private static final String REACT_MESSAGE = "movie ";
+    private static final String ID_PREFIX = "/film/";
+    private int reactionId = 0;
+
+    private static class MovieException extends Exception {
+
+        public MovieException(String message)
+        {
+            super(message);
+        }
+    }
 
     class MovieData {
         String title;
@@ -39,9 +50,24 @@ public class Movie extends Addon {
 
         @Override
         public String toString() {
-            // Prometheus (2012), USA, 124 min, csfd: 70%, imdb: 7.5
-            return title + " (" + year +"), " + country + ", " + length + ", Rating: " +
-                    rating_csfd + " (csfd.cz), " + rating_imdb + " (imdb.com)";
+            // Prometheus (2012), USA, 124 min, csfd: 70%, imdb: 7.5, http://csfd.cz/film/290958
+            String result = title + " ";
+            if (year != null)
+                result += "(" + year + ")";
+            result += ", ";
+            if (country != null)
+                result += country + ", ";
+            if (length != null)
+                result += length + ", ";
+            if (rating_csfd != null || rating_imdb != null) {
+                result += "Rating: ";
+                if (rating_csfd != null)
+                    result += rating_csfd + " (csfd.cz), ";
+                if (rating_imdb != null)
+                    result += rating_imdb + " (imdb.com), ";
+            }
+            result += link_csfd;
+            return result;
         }
     }
 
@@ -66,11 +92,33 @@ public class Movie extends Addon {
         movieSearch = movieSearch.replaceAll(" ", "+");
         String url = "http://www.csfd.cz/hledat/?q=" + movieSearch;
         WebPage page = WebPage.loadWebPage(url, ENCODING);
-        Element movies = Jsoup.parse( page.getContent() ).getElementById("search-films");
+        Document doc = Jsoup.parse( page.getContent() );
+
+        String bodyId = doc.body().attr("id");
+        if (!bodyId.equals("ap-web-search"))
+            throw new MovieException("Movie '" + movieSearch + "' not found");
+
+        Element movies = doc.getElementById("search-films");
+
+        if (!movies.getElementsByClass("not-found").isEmpty())
+            throw new MovieException("Movie '" + movieSearch + "' not found");
+
         Element firstMovie = movies.getElementsByClass("subject").first();
         Element movieLink = firstMovie.getElementsByTag("a").first();
-        String link = "http://www.csfd.cz" + movieLink.attr("href");
-        return link;
+        String partialLink = movieLink.attr("href");
+        return GenerateCsfdMovieLink(partialLink);
+    }
+
+    private String ExtractIdFromLink(String partialLink) {
+        int beginIdx = partialLink.indexOf(ID_PREFIX)+ID_PREFIX.length();
+        int endIdx = partialLink.indexOf("-", beginIdx);
+        String id = endIdx != -1 ? partialLink.substring(beginIdx, endIdx) : partialLink.substring(beginIdx);
+        return id;
+    }
+
+    private String GenerateCsfdMovieLink(String partialLink) {
+        String id = ExtractIdFromLink(partialLink);
+        return "http://csfd.cz/film/" + id;
     }
 
     private void LoadMovieData(MovieData data) throws Exception {
@@ -80,14 +128,18 @@ public class Movie extends Addon {
             Element title = movieInfo.getElementsByTag("h1").first();
             data.title = title.text().trim();
 
-            Element genre = movieInfo.getElementsByClass("genre").first();
-            data.genre = genre.text().trim();
+            Elements genres = movieInfo.getElementsByClass("genre");
+            if (!genres.isEmpty())
+                data.genre = genres.first().text().trim();
 
             Element origin = movieInfo.getElementsByClass("origin").first();
             String[] originParts = origin.text().split(",");
-            data.country = originParts[0].trim();
-            data.year = originParts[1].trim();
-            data.length = originParts[2].trim();
+            if (originParts.length > 0)
+                data.country = originParts[0].trim();
+            if (originParts.length > 1)
+                data.year = originParts[1].trim();
+            if (originParts.length > 2)
+                data.length = originParts[2].trim();
 
             Elements otherData = movieInfo.getElementsByTag("h4");
             for (Element ele : otherData) {
@@ -103,44 +155,83 @@ public class Movie extends Addon {
         {
             Element rating = sidebar.getElementById("rating");
             Element average = rating.getElementsByClass("average").first();
-            data.rating_csfd = average.text().trim();
+            if (!average.text().isEmpty())
+                data.rating_csfd = average.text().trim();
 
             Element share = sidebar.getElementById("share");
             Element links = share.getElementsByClass("links").first();
-            Element childImdb = links.getElementsByClass("imdb").first();
-            Element imdb = childImdb.parent();
-            data.link_imdb = imdb.attr("href");
+            Elements imdbs = links.getElementsByClass("imdb");
+            if (!imdbs.isEmpty()) {
+                Element childImdb = imdbs.first();
+                Element imdb = childImdb.parent();
+                data.link_imdb = imdb.attr("href");
+            }
         }
     }
 
     private void LoadImdbData(MovieData data) throws Exception {
         WebPage page = WebPage.loadWebPage(data.link_imdb, ENCODING);
 
-        Element sidebar = Jsoup.parse( page.getContent() ).getElementsByClass("star-box-giga-star").first();
+        Elements sidebarList = Jsoup.parse( page.getContent() ).getElementsByClass("star-box-giga-star");
+
+        if (sidebarList.isEmpty())
+            return;
+
+        Element sidebar = sidebarList.first();
         data.rating_imdb = sidebar.text().trim();
     }
 
     @Override
     public boolean shouldReact(Message message) {
-        return message.text.trim().startsWith(REACT_MESSAGE) ||
-                message.text.trim().startsWith("http://www.csfd.cz");
+        String messageText = message.text.trim();
+        if (messageText.startsWith("movie") ||
+            messageText.startsWith("movies") ||
+            messageText.startsWith("vycsfdkuj") ||
+            messageText.startsWith("vyfilmuj")) {
+                reactionId = 1;
+                return true;
+        }
+
+        if (messageText.startsWith("http://www.csfd.cz/film") ||
+            messageText.startsWith("http://csfd.cz/film")) {
+            reactionId = 2;
+            return true;
+        }
+
+        reactionId = 0;
+        return false;
     }
 
     @Override
     protected void setReaction(Message message) {
         try {
             String result;
-            if (message.text.startsWith(REACT_MESSAGE)) {
-                String movieSearch = message.text.substring(REACT_MESSAGE.length());
-                result = SearchMovieData(movieSearch);
+            String messageText = message.text.trim();
+            switch(reactionId) {
+                case 1: {
+                    String movieSearch = messageText.substring(messageText.indexOf(" ") +1);
+                    result = SearchMovieData(movieSearch);
+                    break;
+                }
+                case 2: {
+                    String csfdLink = GenerateCsfdMovieLink(messageText);
+                    result = GetMovieData(csfdLink);
+                    break;
+                }
+                default:
+                    return;
             }
-            else
-                result = GetMovieData(message.text);
+
             reaction.add( result );
         } catch (Exception e) {
-            System.out.println(e);
-            if (message.text.startsWith(REACT_MESSAGE))
-                setError("Cannot load given URL.", e);
+            if (e instanceof MovieException) {
+                reaction.add( e.getMessage() );
+            }
+            else {
+                System.out.println(e);
+                if (message.text.startsWith(REACT_MESSAGE))
+                    setError("Cannot load given URL.", e);
+            }
         }
     }
 }
