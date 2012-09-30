@@ -57,5 +57,13 @@
             <name>Steam</name>
             <url>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=steam_games</url>
         </feed>
+        <feed>
+            <name>Soulcore</name>
+            <url>http://soulwell.czechdream.cz/rss_git.php?parameters=p%3Dsoulcore.git%3Ba%3Datom</url>
+        </feed>
+        <feed>
+            <name>Soulcore - Bgq</name>
+            <url>http://soulwell.czechdream.cz/rss_git.php?parameters=p%3Dsoulcore.git%3Ba%3Datom%3Bh%3Drefs%2Fheads%2Fbgq</url>
+        </feed>
     </feeds>
 </addon>
