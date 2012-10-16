@@ -42,6 +42,10 @@
             <url>https://github.com/Tasssadar/Lorris/commits/master.atom</url>
         </feed>
         <feed>
+            <name>Lorris mobile</name>
+            <url>https://github.com/Tasssadar/lorris_mobile/commits/master.atom</url>
+        </feed>
+        <feed>
             <name>libenjoy</name>
             <url>https://github.com/Tasssadar/libenjoy/commits/master.atom</url>
         </feed>
