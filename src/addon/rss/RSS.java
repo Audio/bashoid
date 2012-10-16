@@ -87,13 +87,9 @@ public class RSS extends Addon {
             }
             case SHOW:
             {
-                String channel;
                 int index = message.indexOf(" ", message.indexOf("show"));
-                int end = message.indexOf(" ", index+1);
-                if(end == NOT_FOUND)
-                    end = message.length();
+                String channel = message.substring(index+1);
 
-                channel = message.substring(index+1, end);
                 for(Feed f : feeds) {
                     if(channel.equalsIgnoreCase(f.getName())) {
                         List<String> messages = f.getLastMessages(showMsgsCount);
