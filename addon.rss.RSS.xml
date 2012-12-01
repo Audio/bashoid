@@ -10,6 +10,10 @@
             <url>https://github.com/Audio/bashoid/commits/master.atom</url>
         </feed>
         <feed>
+            <name>dozorce</name>
+            <url>https://github.com/Audio/dozorce/commits/master.atom</url>
+        </feed>
+        <feed>
             <name>Duckbox</name>
             <url>http://gitorious.org/open-duckbox-project-sh4/tdt/commits/master/feed.atom</url>
         </feed>
