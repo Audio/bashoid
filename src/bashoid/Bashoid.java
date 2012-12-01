@@ -19,6 +19,7 @@ public class Bashoid extends PircBot implements AddonListener {
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
+        setLogin("bashoid");
         setAutoNickChange(true);
         setMessageDelay(0);
         trySetUTFEncoding();
