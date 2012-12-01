@@ -6,37 +6,21 @@
 
     <feeds>
         <feed>
-            <name>Catcore</name>
-            <url>https://bitbucket.org/Tasssadar/catcore/rss?token=738b8112d1c805bd66348a71316bcb0d</url>
-        </feed>
-        <feed>
-            <name>MaNGOS</name>
-            <url>https://github.com/mangos/mangos/commits/master.atom</url>
-        </feed>
-        <feed>
-            <name>TrinityCore</name>
-            <url>https://github.com/TrinityCore/TrinityCore/commits/master.atom</url>
+            <name>bashoid</name>
+            <url>https://github.com/Audio/bashoid/commits/master.atom</url>
         </feed>
         <feed>
             <name>Duckbox</name>
             <url>http://gitorious.org/open-duckbox-project-sh4/tdt/commits/master/feed.atom</url>
         </feed>
         <feed>
-            <name>bashoid</name>
-            <url>https://github.com/Audio/bashoid/commits/master.atom</url>
-        </feed>
-        <feed>
-            <name>chatar</name>
-            <url>https://github.com/Audio/chatar/commits/master.atom</url>
-        </feed>
-        <feed>
-            <name>SeEx</name>
-            <url>https://github.com/Frca/SeEx/commits/master.atom</url>
-        </feed>
-        <feed>
             <name>fIRC</name>
             <url>https://github.com/Frca/fIRC/commits/master.atom</url>
         </feed>        
+        <feed>
+            <name>libenjoy</name>
+            <url>https://github.com/Tasssadar/libenjoy/commits/master.atom</url>
+        </feed>
         <feed>
             <name>Lorris</name>
             <url>https://github.com/Tasssadar/Lorris/commits/master.atom</url>
@@ -46,24 +30,24 @@
             <url>https://github.com/Tasssadar/lorris_mobile/commits/master.atom</url>
         </feed>
         <feed>
-            <name>libenjoy</name>
-            <url>https://github.com/Tasssadar/libenjoy/commits/master.atom</url>
-        </feed>
-        <feed>
-            <name>Wine</name>
-            <url>http://www.winehq.org/news/rss/</url>
-        </feed>
-        <feed>
-            <name>Steam</name>
-            <url>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=steam_games</url>
+            <name>MaNGOS</name>
+            <url>https://github.com/mangos/server/commits/master.atom</url>
         </feed>
         <feed>
             <name>soulcore</name>
             <url>http://soulwell.czechdream.cz/rss_git.php?parameters=p%3Dsoulcore.git%3Ba%3Datom</url>
         </feed>
         <feed>
-            <name>soulcore-bgq</name>
-            <url>http://soulwell.czechdream.cz/rss_git.php?parameters=p%3Dsoulcore.git%3Ba%3Datom%3Bh%3Drefs%2Fheads%2Fbgq</url>
+            <name>Steam</name>
+            <url>http://api.twitter.com/1/statuses/user_timeline.rss?screen_name=steam_games</url>
+        </feed>
+        <feed>
+            <name>TrinityCore</name>
+            <url>https://github.com/TrinityCore/TrinityCore/commits/master.atom</url>
+        </feed>
+        <feed>
+            <name>Wine</name>
+            <url>http://www.winehq.org/news/rss/</url>
         </feed>
     </feeds>
 </addon>
