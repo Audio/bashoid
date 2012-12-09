@@ -20,7 +20,7 @@
         <feed>
             <name>fIRC</name>
             <url>https://github.com/Frca/fIRC/commits/master.atom</url>
-        </feed>        
+        </feed>
         <feed>
             <name>libenjoy</name>
             <url>https://github.com/Tasssadar/libenjoy/commits/master.atom</url>
@@ -52,6 +52,10 @@
         <feed>
             <name>Wine</name>
             <url>http://www.winehq.org/news/rss/</url>
+        </feed>
+        <feed>
+            <name>AppSales</name>
+            <url>http://feeds.feedburner.com/AppsalesRss?format=xml</url>
         </feed>
     </feeds>
 </addon>
