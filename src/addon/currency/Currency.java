@@ -14,13 +14,13 @@ public class Currency extends Addon {
     private static final Pattern PATTERN = Pattern.compile("^\\d+((\\.|,)\\d+)? +[a-zA-Z]+ +to +[a-zA-Z]+$");
 
 
-    private String loadResponse(String query) throws Exception {
+    protected String loadResponse(String query) throws Exception {
         String url = SERVICE_URL + URLEncoder.encode(query, "UTF-8");
         WebPage page = WebPage.loadWebPage(url, "UTF-8");
         return getResponseFromJSON(page);
     }
 
-    private String getResponseFromJSON(WebPage entry) throws ParseException {
+    protected String getResponseFromJSON(WebPage entry) throws ParseException {
         String[] p = entry.getContent().split("\",");
         return ( p[2].split("\"").length > 1 ) ? "Asi incorrect syntax nebo co." : p[0].split("\"")[1] + " = " + p[1].split("\"")[1];
     }
