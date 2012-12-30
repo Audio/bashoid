@@ -17,8 +17,9 @@ public class Movie extends Addon {
 
     private static class MovieException extends Exception {
 
-        public MovieException(String message)
-        {
+        static final long serialVersionUID = 1L;
+
+        public MovieException(String message) {
             super(message);
         }
     }
