@@ -57,5 +57,9 @@
             <name>AppSales</name>
             <url>http://feeds.feedburner.com/AppsalesRss?format=xml</url>
         </feed>
+        <feed>
+            <name>DotaTimer</name>
+            <url>https://github.com/Frca/DotaTimer/commits/master.atom</url>
+        </feed>
     </feeds>
 </addon>
