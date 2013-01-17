@@ -14,6 +14,7 @@ public class Bashoid extends PircBot implements AddonListener {
 
     public Bashoid() {
         setName( getNickFromConfig("bashoid") );
+        setLogin("bashoid");
         setAutoNickChange(true);
         setMessageDelay(0);
         trySetUTFEncoding();
@@ -38,8 +39,10 @@ public class Bashoid extends PircBot implements AddonListener {
         addons.add( new addon.bash.Bash() );
         addons.add( new addon.counter.Counter() );
         addons.add( new addon.currency.Currency() );
+        addons.add( new addon.currency.CzechCurrency() );
         addons.add( new addon.explain.Explain() );
         addons.add( new addon.help.Help() );
+        addons.add( new addon.movie.Movie() );
         addons.add( new addon.pepa.Pepa() );
         addons.add( new addon.rss.RSS() );
         // addons.add( new period.PeriodicMessage() );

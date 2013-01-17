@@ -13,7 +13,8 @@ import utils.*;
 public class Youtube extends Addon {
 
     private static final Pattern LONG_URL = Pattern.compile("youtube\\.com.*v=([^&$]{11})(&|#| |$)");
-    private static final Pattern SHORT_URL = Pattern.compile("youtu\\.be/([^&\\?$]{11})(&|#| |$)");
+
+    private static final Pattern SHORT_URL = Pattern.compile("youtu\\.be/([^&\\?$]{11})(\\?|&|#| |$)");
     private ArrayList<LinkInfo> cache = new ArrayList<LinkInfo>();
 
     private void downloadParseSave(String videoID) throws Exception {
